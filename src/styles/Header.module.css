@@ -1,0 +1,83 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: #f9f9f9;
+    font-family: sans-serif;
+    flex-wrap: wrap;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 24px;
+    margin-right: 8px;
+}
+
+.brand {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.menuButton {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+/* 메뉴 */
+.nav {
+    display: flex;
+    gap: 30px;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav a:hover {
+    color: #222;
+}
+
+/* 오른쪽 버튼 */
+.right {
+}
+
+/* 📱 반응형 설정 */
+@media (max-width: 768px) {
+    .menuButton {
+        display: block;
+    }
+
+    .nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 10px;
+    }
+
+    .show {
+        display: flex;
+    }
+
+    .header {
+        align-items: flex-start;
+    }
+
+    .right {
+        margin-top: 10px;
+        align-self: flex-end;
+    }
+}
