@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import styles from '../styles/Header.module.css';
 
 export default function Header(){
@@ -14,8 +15,8 @@ export default function Header(){
         <header className={styles.header}>
             {/*좌측 로고*/}
             <div className={styles.left}>
-                <img src="../assets/logo.png"  className={styles.logo} />
-                <span className={styles.brand}>Mindify</span>
+                {/*<img src="../../public/assets/logo.png" className={styles.logo} />*/}
+                <span className={styles.brand}>DODO</span>
             </div>
 
             {/*햄버거 메뉴 버튼*/}
@@ -25,10 +26,10 @@ export default function Header(){
 
             {/*메뉴 네비게이션 영역*/}
             <nav className={`${styles.nav} ${menuOpen ? styles.show : ''}`}>
-                <a href="#">About Me</a>
-                <a href="#">Services</a>
-                <a href="#">How It Works</a>
-                <a href="#">Testimonials</a>
+                <Link to="/">Home</Link>
+                <Link to="/ReadingRecords">Recent Records</Link>
+                <a href="#">My Shelf</a>
+                <a href="#">Reading Calendar</a>
             </nav>
         </header>
     );
