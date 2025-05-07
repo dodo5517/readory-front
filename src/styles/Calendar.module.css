@@ -1,0 +1,80 @@
+.hr {
+    margin:  0 100px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.calendar {
+    padding: 40px 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: sans-serif;
+}
+
+.main{
+    text-align: center;
+}
+
+.subheading {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #888;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.header h2 {
+    font-size: 1.25rem;
+}
+
+.header button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+    text-align: center;
+}
+
+.weekday {
+    padding: 8px 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.day {
+    height: 60px;
+    text-align: center;
+    padding-top: 10px;
+    border: 1px solid #eee;
+    /*border-radius: 6px;*/
+    background-color: #fafafa;
+    font-size: 0.95rem;
+}
+
+.active {
+    background-color: #76a7d6;
+    color: white;
+    font-weight: bold;
+}
+@media (max-width: 768px) {
+    .hr {
+        margin: 0;
+    }
+}
