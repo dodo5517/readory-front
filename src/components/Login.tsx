@@ -9,11 +9,14 @@ export default function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false); // submit 연속 요청 방지
 
     // 로그인 핸들러
     const handleLogin = async(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (isSubmitting) return;
 
+        setIsSubmitting(true);
         console.log('로그인 시도:', { email, password });
 
         try {
@@ -22,8 +25,11 @@ export default function Login() {
             // localStorage에 accessToken 저장
             localStorage.setItem('accessToken', data.accessToken);
             navigate('/main');
-        } catch (e) {
+        } catch (err: any) {
+            console.log("로그인 실패: ", err);
             alert("로그인 실패");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -55,7 +61,7 @@ export default function Login() {
                 </form>
 
                 <div className={styles.footer}>
-                    Don’t have an account? <Link to="/signUp"><a>Sign Up</a></Link>
+                    Don’t have an account? <Link to="/signUp"className={styles.a}>Sign Up</Link>
                 </div>
             </div>
         </div>

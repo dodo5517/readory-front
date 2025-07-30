@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Link, Navigate, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import styles from '../styles/Login.module.css';
 import {registerUser} from "../services/authService"; // 동일 스타일 재사용
 
@@ -10,10 +10,13 @@ export default function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false); // submit 연속 요청 방지
 
     const handleRegister = async(e: React.FormEvent) => {
         e.preventDefault();
+        if (isSubmitting) return;
 
+        setIsSubmitting(true);
         if (password !== confirm) {
             alert('비밀번호가 일치하지 않습니다.');
             return;
@@ -26,8 +29,11 @@ export default function SignUp() {
             // 따로 화면 필요할듯
             alert("회원가입 성공");
             navigate('/login');
-        } catch (e) {
-            alert("회원가입 실패");
+        } catch (err: any) {
+            console.error("회원가입 실패: ", err);
+            alert("회원가입 실패:");
+        } finally {
+            setIsSubmitting(false);
         }
 
     };
@@ -76,7 +82,7 @@ export default function SignUp() {
                 </form>
 
                 <div className={styles.footer}>
-                    Already have an account? <Link to="/login"><a>Log In</a></Link>
+                    Already have an account? <Link to="/login" className={styles.a}>Log In</Link>
                 </div>
             </div>
         </div>
