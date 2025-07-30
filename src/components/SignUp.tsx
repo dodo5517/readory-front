@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import {Link, Navigate} from "react-router-dom";
-import styles from '../styles/Login.module.css'; // 동일 스타일 재사용
+import {Link, Navigate, useNavigate} from "react-router-dom";
+import styles from '../styles/Login.module.css';
+import {registerUser} from "../services/authService"; // 동일 스타일 재사용
 
 export default function SignUp() {
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleRegister = async(e: React.FormEvent) => {
         e.preventDefault();
 
         if (password !== confirm) {
@@ -16,8 +19,17 @@ export default function SignUp() {
             return;
         }
 
-        console.log('회원가입 정보:', { username, email, password });
-        // 실제 회원가입 로직 연결
+        console.log('회원가입 시도:', { email, username, password });
+
+        try {
+            await registerUser( email, username, password);
+            // 따로 화면 필요할듯
+            alert("회원가입 성공");
+            navigate('/login');
+        } catch (e) {
+            alert("회원가입 실패");
+        }
+
     };
 
     return (
@@ -26,7 +38,7 @@ export default function SignUp() {
                 <h1 className={styles.title}>Create Account</h1>
                 <p className={styles.subtitle}>Join us and start your reading notes</p>
 
-                <form onSubmit={handleSubmit} className={styles.form}>
+                <form onSubmit={handleRegister} className={styles.form}>
                     <input
                         type="text"
                         placeholder="Name"

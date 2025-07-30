@@ -23,7 +23,7 @@ export default function Login() {
             localStorage.setItem('accessToken', data.accessToken);
             navigate('/main');
         } catch (e) {
-            alert('로그인 실패');
+            alert("로그인 실패");
         }
     };
 
