@@ -1,14 +1,33 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Login.module.css';
 
 export default function Login() {
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    // 로그인 핸들러
+    const handleLogin = async(event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
         console.log('로그인 시도:', { email, password });
-        // 실제 로그인 요청은 여기에 연결
+
+        const response = await fetch('http://localhost:8080/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok){
+            const data = await response.json();
+            // localStorage에 accessToken 저장
+            localStorage.setItem('accessToken', data.accessToken);
+            navigate('/main');
+        } else {
+            alert('로그인을 실패했습니다.');
+        }
     };
 
     return (
@@ -17,7 +36,7 @@ export default function Login() {
                 <h1 className={styles.title}>Welcome!</h1>
                 <p className={styles.subtitle}>Please log in to continue</p>
 
-                <form onSubmit={handleSubmit} className={styles.form}>
+                <form onSubmit={handleLogin} className={styles.form}>
                     <input
                         type="email"
                         placeholder="Email"
