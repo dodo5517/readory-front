@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, Link } from 'react-router-dom';
+
 import styles from '../styles/Login.module.css';
+import {loginUser} from "../services/authService";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -14,19 +16,14 @@ export default function Login() {
 
         console.log('로그인 시도:', { email, password });
 
-        const response = await fetch('http://localhost:8080/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        });
-
-        if (response.ok){
-            const data = await response.json();
+        try {
+            // authService
+            const data = await loginUser(email, password);
             // localStorage에 accessToken 저장
             localStorage.setItem('accessToken', data.accessToken);
             navigate('/main');
-        } else {
-            alert('로그인을 실패했습니다.');
+        } catch (e) {
+            alert('로그인 실패');
         }
     };
 
@@ -58,7 +55,7 @@ export default function Login() {
                 </form>
 
                 <div className={styles.footer}>
-                    Don’t have an account? <a href="#">Sign Up</a>
+                    Don’t have an account? <Link to="/signUp"><a>Sign Up</a></Link>
                 </div>
             </div>
         </div>

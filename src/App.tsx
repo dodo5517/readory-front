@@ -8,6 +8,7 @@ import ReadingRecordsPage from "./pages/ReadingRecordsPage";
 import PrivateRoute from "./components/PrivateRoute";
 import './App.css';
 import Layout from "./components/Layout";
+import SignUp from "./components/SignUp";
 
 function App() {
   return (
@@ -15,8 +16,9 @@ function App() {
               <Routes>
                   <Route path="/" element={<RootRedirect />} />
                   <Route path="/login" element={<Login/>}/>
+                  <Route path="/signUp" element={<SignUp/>}/>
 
-                  <Route path="/" element={<Layout />}>
+                  <Route element={<Layout />}>
                       <Route path="/main" element={<PrivateRoute><Main/></PrivateRoute>} />
                       <Route path="/readingrecords" element={<PrivateRoute><ReadingRecordsPage/></PrivateRoute>}/>
                   </Route>
