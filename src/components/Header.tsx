@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import { useUser } from '../contexts/UserContext';
 import styles from '../styles/Header.module.css';
 
 export default function Header(){
     // 메뉴 오픈 상태
     const [menuOpen, setMenuOpen] = useState(false);
+    const { user } = useUser();
+
+    console.log(user);
 
     // 메뉴
     const toggleMenu = () => {
@@ -16,7 +20,7 @@ export default function Header(){
             {/*좌측 로고*/}
             <div className={styles.left}>
                 {/*<img src="../../public/assets/logo.png" className={styles.logo} />*/}
-                <span className={styles.brand}>DODO</span>
+                <span className={styles.username}>{user?.username}</span>
             </div>
 
             {/*햄버거 메뉴 버튼*/}
