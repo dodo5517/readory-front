@@ -1,10 +1,10 @@
-const API_BASE_URL = 'http://localhost:8080';
+import {fetchWithAuth} from "../utils/fetchWithAuth";
 
 // 일반 회원가입(POST)
 export async function registerUser(email: string, username: string, password: string) {
     console.log('RegisterUser');
 
-    const response = await fetch(`${API_BASE_URL}/users`, {
+    const response = await fetchWithAuth(`/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, username, password }),
@@ -21,7 +21,7 @@ export async function registerUser(email: string, username: string, password: st
 export async function loginUser(email: string, password: string) {
     console.log("loginUser")
 
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    const response = await fetchWithAuth(`/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -39,7 +39,7 @@ export async function fetchCurrentUser(){
     console.log("fetchCurrentUser")
 
     const accessToken = localStorage.getItem("accessToken");
-    const response = await fetch(`${API_BASE_URL}/users/me`, {
+    const response = await fetchWithAuth(`/users/me`, {
         headers: { 'Authorization': `Bearer ${accessToken}`
         },
         credentials: 'include',
@@ -52,10 +52,9 @@ export async function fetchCurrentUser(){
     return await response.json();
 }
 
-
 // accessToken 재발급(POST)
 export async function reissueAccessToken(): Promise<boolean> {
-    const response = await fetch(`${API_BASE_URL}/auth/reissue`, {
+    const response = await fetchWithAuth(`/auth/reissue`, {
         method: 'POST',
         credentials: 'include', // refreshToken 쿠키 전송
     });
@@ -74,7 +73,7 @@ export async function reissueAccessToken(): Promise<boolean> {
 // 로그아웃(POST)
 export async function logoutUser() {
     // 백엔드에 로그아웃 요청 보내고 쿠키 제거 (옵션)
-    await fetch(`${API_BASE_URL}/auth/logout`, {
+    await fetchWithAuth(`/auth/logout`, {
         method: 'POST',
         credentials: 'include',
     });
