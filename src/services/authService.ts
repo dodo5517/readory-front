@@ -72,7 +72,7 @@ export async function reissueAccessToken(): Promise<boolean> {
 
 // 로그아웃(POST)
 export async function logoutUser() {
-    // 백엔드에 로그아웃 요청 보내고 쿠키 제거 (옵션)
+    // 백엔드에 로그아웃 요청 보내고 쿠키 제거
     await fetchWithAuth(`/auth/logout`, {
         method: 'POST',
         credentials: 'include',

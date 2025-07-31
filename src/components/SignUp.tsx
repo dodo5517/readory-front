@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import styles from '../styles/Login.module.css';
-import {registerUser} from "../services/authService"; // 동일 스타일 재사용
+import {registerUser} from "../services/authService";
 
 export default function SignUp() {
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function SignUp() {
             navigate('/login');
         } catch (err: any) {
             console.error("회원가입 실패: ", err);
-            alert("회원가입 실패:");
+            alert("회원가입을 실패했습니다.");
         } finally {
             setIsSubmitting(false);
         }
