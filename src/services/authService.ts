@@ -70,6 +70,26 @@ export async function reissueAccessToken(): Promise<boolean> {
     }
 }
 
+// api_key 재발급(POST)
+export async function reissueApiKey(): Promise<{ maskedApiKey: string }> {
+    const accessToken = localStorage.getItem('accessToken');
+
+    const response = await fetchWithAuth('/users/api-key/reissue', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+        },
+        credentials: 'include',
+    });
+
+    if (!response.ok) {
+        throw new Error('API Key 재발급 실패');
+    }
+
+    return await response.json(); // { maskedApiKey: "************abcd" }
+}
+
 // 현재 기기에서 로그아웃(POST)
 export async function logoutUser() {
     // 백엔드에 로그아웃 요청 보내고 쿠키 제거

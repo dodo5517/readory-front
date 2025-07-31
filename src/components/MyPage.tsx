@@ -1,19 +1,35 @@
 import React, {useState} from 'react';
 import {useUser} from "../contexts/UserContext";
-import {logoutAllDevices, logoutUser} from "../services/authService";
+import {logoutAllDevices, reissueApiKey} from "../services/authService";
 import styles from '../styles/MyPage.module.css';
 import {useNavigate} from "react-router-dom";
 
 export default function MyPage() {
     const navigate = useNavigate();
-    const { user } = useUser();
+    const [loading, setLoading] = useState(false);
+    const { user, setUser } = useUser();
 
     const handleCopy = (text: string) => {
         navigator.clipboard.writeText(text);
         alert('클립보드에 복사되었습니다. \n\ \n\API Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
     };
-    const handleReissue = () => {
-        alert('API Key를 새로 만들었습니다. \n\ \n\API Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
+
+    // api_key 재발급 핸들러
+    const handleReissue = async () => {
+        try {
+            setLoading(true);
+            const result = await reissueApiKey();
+            setUser({
+                ...user!,
+                maskedApiKey: result.maskedApiKey
+            });
+            console.log("마스킹된 키:", result.maskedApiKey);
+            alert('API Key를 새로 만들었습니다. \n\ \n\API Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
+        } catch (error) {
+            alert('새로 만드는 중 오류가 발생했습니다.');
+        } finally {
+            setLoading(false);
+        }
     };
     
     // 모든 기기에서 로그아웃 핸들러
@@ -59,7 +75,7 @@ export default function MyPage() {
                 </li>
                 <li>
                     <span className={styles.label}></span>
-                    <button className={styles.copyBtn} onClick={() => handleReissue()}>Api Key 새로 만들기</button>
+                    <button className={styles.copyBtn} onClick={() => handleReissue()}>{loading ? '재발급 중...' : 'Api Key 새로 만들기'}</button>
                 </li>
             </ul>
 
