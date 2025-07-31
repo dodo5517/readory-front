@@ -53,7 +53,7 @@ export default function MyPage() {
                     <span className={styles.label}>API Key</span>
                     <div className={styles.copyRow}>
                         {/*실제 값으로 수정*/}
-                        <span className={styles.value}>************abc</span>
+                        <span className={styles.value}>{user?.maskedApiKey}</span>
                         <button className={styles.copyBtn} onClick={() => handleCopy("********abc")}>복사하기</button>
                     </div>
                 </li>

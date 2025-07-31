@@ -6,6 +6,7 @@ interface User {
     email: string;
     profileImageUrl: string|null;
     role: string;
+    maskedApiKey: string;
 }
 
 interface UserContextType {
