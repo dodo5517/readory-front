@@ -3,29 +3,31 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f9f9f9;
+    background-color: var(--bg);
     font-family: sans-serif;
 }
 
 .card {
-    background-color: white;
+    background-color: var(--card-bg);
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     max-width: 400px;
     width: 100%;
     text-align: center;
+    color: var(--text-main);
 }
 
 .title {
     font-size: 1.8rem;
     font-weight: bold;
     margin-bottom: 8px;
+    color: var(--text-main);
 }
 
 .subtitle {
     font-size: 0.95rem;
-    color: #666;
+    color: var(--text-sub);
     margin-bottom: 24px;
 }
 
@@ -37,20 +39,22 @@
 
 .input {
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--input-border);
     border-radius: 6px;
     font-size: 1rem;
     outline: none;
+    background-color: transparent;
+    color: var(--text-main);
 }
 
 .input:focus {
-        border-color: #5e92c6;
-    box-shadow: 0 0 0 2px rgba(30, 107, 65, 0.1);
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 2px var(--input-focus-shadow);
 }
 
 .button {
     padding: 12px;
-    background-color: #76a7d6;
+    background-color: var(--btn-bg);
     color: white;
     font-weight: bold;
     border: none;
@@ -60,17 +64,17 @@
 }
 
 .button:hover {
-    background-color: #5e92c6;
+    background-color: var(--btn-hover);
 }
 
 .footer {
     margin-top: 20px;
     font-size: 0.85rem;
-    color: #666;
+    color: var(--text-sub);
 }
 
 .footer a {
-    color: #5e92c6;
+    color: var(--link);
     text-decoration: none;
     font-weight: 500;
 }
