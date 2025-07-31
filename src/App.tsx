@@ -10,6 +10,7 @@ import { UserProvider } from './contexts/UserContext';
 import './App.css';
 import Layout from "./components/Layout";
 import SignUp from "./components/SignUp";
+import MyPage from "./components/MyPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
 
                       <Route element={<Layout />}>
                           <Route path="/main" element={<PrivateRoute><Main/></PrivateRoute>} />
+                          <Route path={"/myPage"} element={<PrivateRoute><MyPage/></PrivateRoute>} />
                           <Route path="/readingrecords" element={<PrivateRoute><ReadingRecordsPage/></PrivateRoute>}/>
                       </Route>
               </Routes>

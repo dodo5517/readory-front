@@ -19,10 +19,15 @@
 }
 
 .username {
+    text-decoration: none;
     margin-top: 5px;
     font-size: 1.2rem;
     font-weight: bold;
     color: #333;
+}
+
+.username:hover {
+    color: #222;
 }
 
 .menuButton {
@@ -53,6 +58,19 @@
 
 /* 오른쪽 버튼 */
 .right {
+}
+
+.logoutButton {
+    all: unset; /* 기본 스타일 제거 (배경, 테두리, 폰트 등) */
+    cursor: pointer;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.2s;
+    text-decoration: none;
+}
+
+.logoutButton:hover {
+    color: #222;
 }
 
 /* 📱 반응형 설정 */

@@ -15,12 +15,16 @@ export default function Header(){
         setMenuOpen(prev => !prev);
     };
 
+    const handleLogout = () => {
+        // 로그아웃 구현
+    }
+
     return (
         <header className={styles.header}>
             {/*좌측 로고*/}
             <div className={styles.left}>
                 {/*<img src="../../public/assets/logo.png" className={styles.logo} />*/}
-                <span className={styles.username}>{user?.username}</span>
+                <Link to="/myPage" className={styles.username}>{user?.username}</Link>
             </div>
 
             {/*햄버거 메뉴 버튼*/}
@@ -34,6 +38,7 @@ export default function Header(){
                 <Link to="/ReadingRecords">Recent Records</Link>
                 <a href="#">My Shelf</a>
                 <a href="#">Reading Calendar</a>
+                <button className={styles.logoutButton}>Logout</button>
             </nav>
         </header>
     );
