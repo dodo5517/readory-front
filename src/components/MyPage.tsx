@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useUser} from "../contexts/UserContext";
-import {logoutAllDevices, reissueApiKey} from "../services/authService";
+import {getFullApiKey, logoutAllDevices, reissueApiKey} from "../services/authService";
 import styles from '../styles/MyPage.module.css';
 import {useNavigate} from "react-router-dom";
 
@@ -9,9 +9,11 @@ export default function MyPage() {
     const [loading, setLoading] = useState(false);
     const { user, setUser } = useUser();
 
-    const handleCopy = (text: string) => {
-        navigator.clipboard.writeText(text);
-        alert('클립보드에 복사되었습니다. \n\ \n\API Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
+    // api_key 전체 복사 핸들러
+    const handleCopy = async () => {
+        const res = await getFullApiKey();
+        await navigator.clipboard.writeText(res.apiKey);
+        alert('API Key가 클립보드에 복사되었습니다. \n\ \n\API Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
     };
 
     // api_key 재발급 핸들러
@@ -70,7 +72,7 @@ export default function MyPage() {
                     <div className={styles.copyRow}>
                         {/*실제 값으로 수정*/}
                         <span className={styles.value}>{user?.maskedApiKey}</span>
-                        <button className={styles.copyBtn} onClick={() => handleCopy("********abc")}>복사하기</button>
+                        <button className={styles.copyBtn} onClick={() => handleCopy()}>복사하기</button>
                     </div>
                 </li>
                 <li>

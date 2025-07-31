@@ -90,6 +90,26 @@ export async function reissueApiKey(): Promise<{ maskedApiKey: string }> {
     return await response.json(); // { maskedApiKey: "************abcd" }
 }
 
+// api_key 전체(마스킹 안 된) 조회(GET)
+export async function getFullApiKey(): Promise<{ apiKey: string }> {
+    const accessToken = localStorage.getItem('accessToken');
+
+    const response = await fetchWithAuth('/users/api-key', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+        },
+        credentials: 'include',
+    });
+
+    if (!response.ok) {
+        throw new Error('API Key 조회 실패');
+    }
+
+    return await response.json(); // { apiKey: "abcd1234..." }
+}
+
+
 // 현재 기기에서 로그아웃(POST)
 export async function logoutUser() {
     // 백엔드에 로그아웃 요청 보내고 쿠키 제거
