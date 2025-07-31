@@ -70,10 +70,23 @@ export async function reissueAccessToken(): Promise<boolean> {
     }
 }
 
-// 로그아웃(POST)
+// 현재 기기에서 로그아웃(POST)
 export async function logoutUser() {
     // 백엔드에 로그아웃 요청 보내고 쿠키 제거
     await fetchWithAuth(`/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+    });
+
+    // accessToken 삭제
+    localStorage.removeItem('accessToken');
+    window.location.href = '/login';
+}
+
+// 모든 기기에서 로그아웃(POST)
+export async function logoutAllDevices() {
+    // 백엔드에 로그아웃 요청 보내고 쿠키 제거
+    await fetchWithAuth(`/auth/logout/all`, {
         method: 'POST',
         credentials: 'include',
     });
