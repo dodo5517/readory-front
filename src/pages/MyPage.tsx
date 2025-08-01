@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useUser} from "../contexts/UserContext";
 import {getFullApiKey, logoutAllDevices, reissueApiKey} from "../services/authService";
 import styles from '../styles/MyPage.module.css';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function MyPage() {
     const navigate = useNavigate();
@@ -57,7 +57,7 @@ export default function MyPage() {
             <ul className={styles.infoList}>
                 <li>
                     <span className={styles.label}>이름</span>
-                    <span className={styles.value}>{user?.username}</span>
+                    <span className={styles.value}>{user?.username} <Link to="/myPage/edit-name" className={styles.updatebtn}>→</Link> </span>
                 </li>
                 <li>
                     <span className={styles.label}>이메일</span>
@@ -65,7 +65,7 @@ export default function MyPage() {
                 </li>
                 <li>
                     <span className={styles.label}>비밀번호</span>
-                    <button className={styles.linkBtn}>변경</button>
+                    <Link to="/myPage/edit-password" className={styles.updatebtn}>→</Link>
                 </li>
                 <li>
                     <span className={styles.label}>API Key</span>

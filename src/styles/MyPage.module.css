@@ -36,6 +36,19 @@
     color: var(--text-main);
 }
 
+.updatebtn {
+    all: unset;
+    font-weight: bold;
+    color: #888888;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 4px;
+}
+
+.updatebtn:hover {
+    color: #555555;
+}
+
 .linkBtn {
     font-size: 0.85rem;
     color: var(--link-color);

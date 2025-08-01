@@ -52,6 +52,38 @@ export async function fetchCurrentUser(){
     return await response.json();
 }
 
+// 유저이름 수정(PATCH)
+export async function updateUsername(newUsername : string) {
+    const response = await fetchWithAuth(`/users/me/username`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newUsername: newUsername }),
+    });
+
+    if (!response.ok) {
+        throw new Error("유저이름 수정 실패");
+    }
+
+    return null;
+}
+
+
+// 유저 비밀번호 수정(PATCH)
+export async function updatePassword(currentPassword : string, newPassword : string) {
+    const response = await fetchWithAuth(`/users/me/password`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword, newPassword }),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "비밀번호 수정 실패");
+    }
+
+    return null;
+}
+
 // accessToken 재발급(POST)
 export async function reissueAccessToken(): Promise<boolean> {
     const response = await fetchWithAuth(`/auth/reissue`, {
