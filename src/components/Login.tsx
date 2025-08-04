@@ -70,7 +70,7 @@ export default function Login() {
                     <button onClick={() => window.location.href = '/oauth2/authorization/kakao'}>
                         <img src="/assets/social/kakao_login.png" alt="Kakao Login"/>
                     </button>
-                    <button onClick={() => window.location.href = '/oauth2/authorization/naver'}>
+                    <button onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/naver"}>
                         <img src="/assets/social/naver_login.png" alt="Naver Login"/>
                     </button>
                 </div>
