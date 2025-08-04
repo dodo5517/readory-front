@@ -15,6 +15,7 @@ import SignUp from "./components/SignUp";
 import MyPage from "./pages/MyPage";
 import EditNamePage from "./pages/EditNamePage";
 import EditPasswordPage from "./pages/EditPasswordPage";
+import OAuthCallback from "./components/OAuthCallback";
 
 function App() {
   return (
@@ -23,17 +24,17 @@ function App() {
               <UserProvider>
                   <ThemeToggle />
                   <Routes>
-                      <Route path="/" element={<RootRedirect />} />
-                      <Route path="/login" element={<Login/>}/>
-                      <Route path="/signUp" element={<SignUp/>}/>
-
+                      <Route path={"/"} element={<RootRedirect />} />
+                      <Route path={"/login"} element={<Login/>}/>
+                      <Route path={"/signUp"} element={<SignUp/>}/>
+                      <Route path={"/oauth/callback"} element={<OAuthCallback/>}/>
 
                       <Route element={<Layout />}>
-                          <Route path="/main" element={<PrivateRoute><Main/></PrivateRoute>} />
+                          <Route path={"/main"} element={<PrivateRoute><Main/></PrivateRoute>} />
                           <Route path={"/myPage"} element={<PrivateRoute><MyPage/></PrivateRoute>} />
                           <Route path={"/myPage/edit-name"} element={<PrivateRoute><EditNamePage/></PrivateRoute>} />
                           <Route path={"/myPage/edit-password"} element={<PrivateRoute><EditPasswordPage/></PrivateRoute>} />
-                          <Route path="/readingrecords" element={<PrivateRoute><ReadingRecordsPage/></PrivateRoute>}/>
+                          <Route path={"/readingrecords"} element={<PrivateRoute><ReadingRecordsPage/></PrivateRoute>}/>
                       </Route>
                   </Routes>
                 {/*<Footer />*/}

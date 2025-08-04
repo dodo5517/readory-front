@@ -61,7 +61,18 @@ export default function Login() {
                 </form>
 
                 <div className={styles.footer}>
-                    Don’t have an account? <Link to="/signUp"className={styles.a}>Sign Up</Link>
+                    Don’t have an account? <Link to="/signUp" className={styles.a}>Sign Up</Link>
+                </div>
+                <div className={styles.socialLogin}>
+                    <button onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}>
+                        <img src="/assets/social/google_login.png" alt="Google Login"/>
+                    </button>
+                    <button onClick={() => window.location.href = '/oauth2/authorization/kakao'}>
+                        <img src="/assets/social/kakao_login.png" alt="Kakao Login"/>
+                    </button>
+                    <button onClick={() => window.location.href = '/oauth2/authorization/naver'}>
+                        <img src="/assets/social/naver_login.png" alt="Naver Login"/>
+                    </button>
                 </div>
             </div>
         </div>

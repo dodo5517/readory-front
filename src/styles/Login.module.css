@@ -82,3 +82,32 @@
 .footer a:hover {
     text-decoration: underline;
 }
+
+.socialLogin {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;   /* 가로 가운데 정렬 */
+    align-items: center;       /* 세로 가운데 정렬 */
+    gap: 16px;                 /* 아이콘 사이 간격 */
+    margin-top: 20px;
+}
+
+.socialLogin button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 50px;               /* 버튼 크기 고정 */
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.socialLogin img {
+    width: 100%;               /* 버튼 안에 꽉 차게 */
+    height: 100%;
+    border-radius: 10%;
+    object-fit: cover;         /* 왜곡 방지 */
+    /*border: 1px solid #ddd;    !* 선택적 테두리 *!*/
+}
