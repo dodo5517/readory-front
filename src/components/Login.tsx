@@ -67,7 +67,7 @@ export default function Login() {
                     <button onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}>
                         <img src="/assets/social/google_login.png" alt="Google Login"/>
                     </button>
-                    <button onClick={() => window.location.href = '/oauth2/authorization/kakao'}>
+                    <button onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/kakao"}>
                         <img src="/assets/social/kakao_login.png" alt="Kakao Login"/>
                     </button>
                     <button onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/naver"}>
