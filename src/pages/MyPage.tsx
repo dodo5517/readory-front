@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {useUser} from "../contexts/UserContext";
-import {getFullApiKey, logoutAllDevices, reissueApiKey} from "../services/authService";
+import {getFullApiKey, logoutAllDevices, reissueApiKey, uploadProfileImage} from "../services/authService";
 import styles from '../styles/MyPage.module.css';
 import {Link, useNavigate} from "react-router-dom";
 
@@ -8,6 +8,7 @@ export default function MyPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { user, setUser } = useUser();
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     // api_key 전체 복사 핸들러
     const handleCopy = async () => {
@@ -50,14 +51,54 @@ export default function MyPage() {
         }
     };
 
+    // 파일 업로드 창 열기
+    const handleUploadClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    // 프로필 이미지 업로드
+    const handleProfileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file || !user) return;
+
+        try {
+            const imageUrl = await uploadProfileImage(user.id, file);
+            setUser({
+                ...user!,
+                profileImageUrl: imageUrl
+            });
+
+            alert("프로필 이미지가 변경되었습니다!");
+        } catch (err) {
+            console.error("업로드 에러:", err);
+            alert("이미지 업로드에 실패했습니다.");
+        }
+    }
+
     return (
         <section className={styles.container}>
-            <div className={styles.avatar}></div>
-
+            <div className={styles.avatarWrapper}>
+                <img
+                    src={user?.profileImageUrl || "/assets/readory_icon.png"}
+                    alt="프로필 이미지"
+                    className={styles.avatar}
+                />
+                <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleProfileUpload}
+                    style={{display: "none"}}
+                />
+                <button className={styles.avatarAddBtn} onClick={handleUploadClick}>
+                    <span>＋</span>
+                </button>
+            </div>
             <ul className={styles.infoList}>
                 <li>
                     <span className={styles.label}>이름</span>
-                    <span className={styles.value}>{user?.username} <Link to="/myPage/edit-name" className={styles.updatebtn}>→</Link> </span>
+                    <span className={styles.value}>{user?.username} <Link to="/myPage/edit-name"
+                                                                          className={styles.updatebtn}>→</Link> </span>
                 </li>
                 <li>
                     <span className={styles.label}>이메일</span>
@@ -70,14 +111,14 @@ export default function MyPage() {
                 <li>
                     <span className={styles.label}>API Key</span>
                     <div className={styles.copyRow}>
-                        {/*실제 값으로 수정*/}
                         <span className={styles.value}>{user?.maskedApiKey}</span>
                         <button className={styles.copyBtn} onClick={() => handleCopy()}>복사하기</button>
                     </div>
                 </li>
                 <li>
                     <span className={styles.label}></span>
-                    <button className={styles.copyBtn} onClick={() => handleReissue()}>{loading ? '재발급 중...' : 'Api Key 새로 만들기'}</button>
+                    <button className={styles.copyBtn}
+                            onClick={() => handleReissue()}>{loading ? '재발급 중...' : 'Api Key 새로 만들기'}</button>
                 </li>
             </ul>
 

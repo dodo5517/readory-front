@@ -3,11 +3,14 @@ const API_BASE_URL = 'http://localhost:8080';
 export async function fetchWithAuth(input: string, init: RequestInit = {}): Promise<Response> {
     const accessToken = localStorage.getItem('accessToken');
 
+    const isFormData = init.body instanceof FormData;
+
     // 요청 헤더 설정
+    // Content-Type을 formData일 경우 생략
     const headers: HeadersInit = {
         ...(init.headers || {}),
         'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     };
 
     const requestInit: RequestInit = {

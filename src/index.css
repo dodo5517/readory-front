@@ -20,6 +20,9 @@
   --link-color: #007bff;
   --border-color: #eee;
   --avatar-bg: #f3bcbc;
+  --img-border: #ffffff;
+  --img-bg: #f3f3f3;
+  --img-hover: #ddd;
 }
 
 [data-theme='dark'] {
@@ -44,6 +47,9 @@
   --copy-border: #666;
   --link-color: #4da6ff;
   --avatar-bg: #5c3b3b;
+  --img-border: #1e1e1e;
+  --img-bg: #ffffff;
+  --img-hover: #ccc;
 }
 body {
   margin: 0;
