@@ -159,6 +159,18 @@ export async function uploadProfileImage(userId: number, file: File): Promise<st
     return await res.text(); // 백엔드에서 imageUrl string을 반환함
 }
 
+// 프로필 이미지 삭제
+export async function deleteProfileImage(userId: number): Promise<void> {
+    const res = await fetchWithAuth(`/users/${userId}/profile-image`, {
+        method: "DELETE",
+        credentials: "include"
+    });
+
+    if (!res.ok) {
+        throw new Error("프로필 이미지 삭제 실패");
+    }
+}
+
 
 // 현재 기기에서 로그아웃(POST)
 export async function logoutUser() {

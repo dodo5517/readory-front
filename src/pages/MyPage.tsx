@@ -1,6 +1,12 @@
 import React, {useRef, useState} from 'react';
 import {useUser} from "../contexts/UserContext";
-import {getFullApiKey, logoutAllDevices, reissueApiKey, uploadProfileImage} from "../services/authService";
+import {
+    deleteProfileImage,
+    getFullApiKey,
+    logoutAllDevices,
+    reissueApiKey,
+    uploadProfileImage
+} from "../services/authService";
 import styles from '../styles/MyPage.module.css';
 import {Link, useNavigate} from "react-router-dom";
 
@@ -75,6 +81,25 @@ export default function MyPage() {
         }
     }
 
+    const handleDeleteProfileImage = async () => {
+        if (!user) return;
+
+        const confirmed = window.confirm("정말 프로필 이미지를 삭제하시겠습니까?");
+        if (!confirmed) return;
+
+        try {
+            await deleteProfileImage(user.id);
+            setUser({
+                ...user!,
+                profileImageUrl: null
+            });
+            alert("프로필 이미지가 삭제되었습니다.");
+        } catch (err) {
+            console.error("이미지 삭제 실패:", err);
+            alert("이미지 삭제에 실패했습니다.");
+        }
+    }
+
     return (
         <section className={styles.container}>
             <div className={styles.avatarWrapper}>
@@ -93,6 +118,11 @@ export default function MyPage() {
                 <button className={styles.avatarAddBtn} onClick={handleUploadClick}>
                     <span>＋</span>
                 </button>
+                {user?.profileImageUrl && (
+                    <button className={styles.avatarDeleteBtn} onClick={handleDeleteProfileImage}>
+                        ✕
+                    </button>
+                )}
             </div>
             <ul className={styles.infoList}>
                 <li>

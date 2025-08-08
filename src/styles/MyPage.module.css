@@ -43,6 +43,23 @@
     background-color: var(--img-hover);
 }
 
+.avatarDeleteBtn {
+    position: absolute;
+    top: -6px;
+    right: -9px;
+    width: 24px;
+    height: 24px;
+    color: #333;
+    border-radius: 50%;
+    background-color: var(--img-bg);
+    border: 4px solid var(--img-border);
+    font-size: 12px;
+    cursor: pointer;
+}
+.avatarDeleteBtn:hover {
+    background-color: var(--img-hover);
+}
+
 .infoList {
     list-style: none;
     padding: 0;
