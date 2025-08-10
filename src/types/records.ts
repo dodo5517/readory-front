@@ -1,4 +1,4 @@
-export interface SummaryApiItem {
+export interface Record {
     id: number;
     title: string;
     author: string;
@@ -9,7 +9,7 @@ export interface SummaryApiItem {
     recordedAt: string; // ISO 문자열
 }
 
-export interface ListItem {
+export interface SummaryRecord {
     id: number;
     date: string;     // "YYYY.MM.DD HH:mm"
     title: string;

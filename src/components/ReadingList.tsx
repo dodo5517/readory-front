@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import styles from '../styles/ReadingList.module.css';
 import { fetchMySummaryRecords } from "../api/ReadingRecord";
 import {Link} from "react-router-dom";
-import {ListItem} from "../types/records";
+import {SummaryRecord} from "../types/records";
 
 export default function ReadingList() {
-    const [list, setList] = useState<ListItem[]>([]);
+    const [list, setList] = useState<SummaryRecord[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 

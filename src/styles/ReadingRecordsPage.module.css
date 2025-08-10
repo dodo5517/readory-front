@@ -59,6 +59,8 @@
 .bookTitle {
     font-size: 1.1rem;
     font-weight: bold;
+    overflow-wrap: anywhere;   /* 긴 단어 강제 줄바꿈 */
+    word-break: break-word;    /* 구형 브라우저 호환 */
 }
 
 .sentence {
