@@ -1,48 +1,34 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styles from '../styles/ReadingList.module.css';
-
-interface ListProps {
-    id: number;
-    title: string|null;
-    author: string|null;
-    date: string|null;
-    sentence: string|null;
-    comment: string|null;
-}
-
-const list: ListProps[] = [
-    {
-        id: 1,
-        title: "title1",
-        author: "author1",
-        date: "2025-05-01",
-        sentence: "sentence1",
-        comment: "comments1"
-    },
-    {
-        id: 2,
-        title: "title2",
-        author: "author2",
-        date: "2025-05-02",
-        sentence: "sentence2",
-        comment: "comments2"
-    },
-    {
-        id: 3,
-        title: "title3",
-        author: "author3",
-        date: "2025-05-03",
-        sentence: "sentence3",
-        comment: "comments3"
-    },
-];
+import { fetchMySummaryRecords } from "../api/ReadingRecord";
+import {Link} from "react-router-dom";
+import {ListItem} from "../types/records";
 
 export default function ReadingList() {
+    const [list, setList] = useState<ListItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const items = await fetchMySummaryRecords();
+                setList(items);
+                console.log("fetchMySummaryRecords");
+            } catch (e: any) {
+                console.error(e);
+                setError("불러오기 실패");
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []);
+
     return (
         <section className={styles.container}>
             <div className={styles.left}>
                 <p className={styles.pageTitle}>Recent Records</p>
-                <a href="#">Check all recrods ←</a>
+                <Link to="/ReadingRecords">Check all recrods ←</Link>
             </div>
 
             <div className={styles.right}>
@@ -50,12 +36,13 @@ export default function ReadingList() {
                     <div key={index} className={styles.list}>
                         <span className={styles.date}>{list.date}</span>
                         <div className={styles.content}>
-                            <div>
+                            <div className={styles.main}>
                                 <h3 className={styles.title}>{list.title}</h3>
                                 <div className={styles.sentence}>{list.sentence}</div>
                             </div>
                             <div className={styles.comments}>
-                                💬 {list.comment}
+                                <span className={styles.commentIcon}>💬</span>
+                                <span className={styles.commentText}>{list.comment}</span>
                             </div>
                         </div>
                     </div>
