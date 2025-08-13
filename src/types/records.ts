@@ -6,6 +6,7 @@ export interface Record {
     comment: string | null;
     matched: boolean;
     bookId: number | null;
+    coverUrl: string | null;
     recordedAt: string; // ISO 문자열
 }
 

@@ -63,6 +63,11 @@
     word-break: break-word;    /* 구형 브라우저 호환 */
 }
 
+.author {
+    font-size: 0.8rem;
+    color: #444;
+}
+
 .sentence {
     font-size: 0.95rem;
     color: #444;
@@ -71,4 +76,19 @@
 .comment {
     font-size: 0.85rem;
     color: #666;
+}
+
+.linkBtn {
+    margin-top: 16px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border: 1px solid var(--copy-border);
+    background-color: var(--white);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+.linkBtn:hover {
+    background-color: var(--link-hover);
 }

@@ -106,7 +106,7 @@ export async function reissueAccessToken(): Promise<boolean> {
 export async function reissueApiKey(): Promise<{ maskedApiKey: string }> {
     const accessToken = localStorage.getItem('accessToken');
 
-    const response = await fetchWithAuth('/users/api-key/reissue', {
+    const response = await fetchWithAuth(`/users/api-key/reissue`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ export async function reissueApiKey(): Promise<{ maskedApiKey: string }> {
 export async function getFullApiKey(): Promise<{ apiKey: string }> {
     const accessToken = localStorage.getItem('accessToken');
 
-    const response = await fetchWithAuth('/users/api-key', {
+    const response = await fetchWithAuth(`/users/api-key`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${accessToken}`,
