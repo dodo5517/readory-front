@@ -10,17 +10,17 @@ type Props = {
     loading?: boolean;
     keyword?: string;                 // 상단 검색 입력값(선택)
     onKeywordChange?: (v: string) => void;
+
+    sortKey?: 'title' | 'author';
+    onSortKeyChange?: (k: 'title' | 'author') => void;
+
+    onSubmitSearch?: () => void; // 검색 클릭 시 호출
 };
 
-export default function BookSelectModal({
-                                            open,
-                                            candidates,
-                                            onSelect,
-                                            onClose,
-                                            loading = false,
-                                            keyword = "",
-                                            onKeywordChange,
-                                        }: Props) {
+export default function BookSelectModal({open, candidates, onSelect, onClose,
+                                            loading = false, keyword = "", onKeywordChange,
+                                            sortKey = 'title', onSortKeyChange,
+                                            onSubmitSearch,}: Props) {
     const overlayRef = useRef<HTMLDivElement>(null);
     const [focused, setFocused] = useState<number>(-1);
 
@@ -38,9 +38,7 @@ export default function BookSelectModal({
     }, [open]);
 
     const empty = !loading && candidates.length === 0;
-
     const list = useMemo(() => candidates, [candidates]);
-
     if (!open) return null;
 
     return (
@@ -57,17 +55,48 @@ export default function BookSelectModal({
         >
             <section className={styles.modal}>
                 <header className={styles.header}>
-                    <h2 className={styles.title}>책 후보 선택</h2>
+                    <h2 className={styles.title}>책 선택</h2>
                 </header>
+                <form className={styles.toolbar} onSubmit={(e) => {
+                    e.preventDefault();
+                    onSubmitSearch?.();
+                }}>
+                    {/* 세그먼트: 버튼 2개 */}
+                    <div className={styles.segment}>
+                        <button
+                            type="button"
+                            className={`${styles.segBtn} ${sortKey === 'title' ? styles.isActive : ''}`}
+                            aria-pressed={sortKey === 'title'}
+                            onClick={() =>  onSortKeyChange?.('title')}
+                        >
+                            제목
+                        </button>
+                        <button
+                            type="button"
+                            className={`${styles.segBtn} ${sortKey === 'author' ? styles.isActive : ''}`}
+                            aria-pressed={sortKey === 'author'}
+                            onClick={() => onSortKeyChange?.('author')}
+                        >
+                            작가
+                        </button>
+                    </div>
 
-                <div className={styles.searchRow}>
-                    <input
-                        className={styles.searchInput}
-                        placeholder="제목, 작가로 검색"
-                        value={keyword}
-                        onChange={(e) => onKeywordChange?.(e.target.value)}
-                    />
-                </div>
+                    {/* 인풋 + 내부 버튼 */}
+                    <div className={styles.field}>
+                        <input
+                            className={styles.input}
+                            placeholder="제목 또는 작가를 입력하세요"
+                            value={keyword}
+                            onChange={(e) => onKeywordChange?.(e.target.value)}
+                            aria-label="검색어"
+                        />
+                        {!!keyword && (
+                            <button type="button" className={styles.clearBtn} onClick={() => onKeywordChange?.('')}
+                                    aria-label="검색어 지우기">×</button>
+                        )}
+                        <button type="submit" className={styles.iconBtn} aria-label="검색">🔎</button>
+                    </div>
+                </form>
 
                 <div className={styles.content}>
                     {loading && <div className={styles.helperText}>불러오는 중…</div>}
@@ -88,7 +117,8 @@ export default function BookSelectModal({
                                     >
                                         <div className={styles.thumbWrap}>
                                             {b.thumbnailUrl ? (
-                                                <img className={styles.thumb} src={b.thumbnailUrl} alt={`${b.title} 표지`} />
+                                                <img className={styles.thumb} src={b.thumbnailUrl}
+                                                     alt={`${b.title} 표지`}/>
                                             ) : (
                                                 <div className={styles.thumbPlaceholder}>No Image</div>
                                             )}
@@ -122,7 +152,7 @@ export default function BookSelectModal({
                                     >
                                         <div className={styles.cardThumbWrap}>
                                             {b.thumbnailUrl ? (
-                                                <img className={styles.cardThumb} src={b.thumbnailUrl} alt="" />
+                                                <img className={styles.cardThumb} src={b.thumbnailUrl} alt=""/>
                                             ) : (
                                                 <div className={styles.thumbPlaceholder}>No Image</div>
                                             )}
