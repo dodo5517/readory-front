@@ -10,3 +10,20 @@ export type BookCandidate = {
     thumbnailUrl?: string | null;
     score?: number | null;
 };
+
+export type ConfirmedBook = {
+    id: number;
+    title: string;
+    author: string;
+    isbn10?: string;
+    isbn13?: string;
+    coverUrl: string;
+    lastRecordAt: string;
+}
+
+export type SummaryBook = {
+    id: number;
+    title: string;
+    author: string;
+    coverUrl: string;
+}

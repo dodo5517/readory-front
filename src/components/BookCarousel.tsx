@@ -1,65 +1,12 @@
-import React, { useRef } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from "../styles/BookCarousel.module.css";
-
-interface Book {
-    id: number;
-    title: string;
-    author: string;
-    imageUrl: string;
-}
-
-const books: Book[] = [
-    {
-        id: 1,
-        title: "채식주의자 (리마스터판)",
-        author: "한강",
-        imageUrl: "/assets/test_img.jpg"
-    },
-    {
-        id: 2,
-        title: "희랍어 시간",
-        author: "한강",
-        imageUrl: "/assets/test_img.jpg"
-    },
-    {
-        id: 3,
-        title: "한강 스페셜 에디션",
-        author: "한강",
-        imageUrl: "/assets/test_img.jpg"
-    },
-    {
-        id: 4,
-        title: "디 에센셜 한강",
-        author: "한강",
-        imageUrl: "/assets/test_img.jpg"
-    },
-    {
-        id: 5,
-        title: "소년이 온다",
-        author: "한강",
-        imageUrl: "/assets/test_img.jpg"
-    },
-    {
-        id: 6,
-        title: "소년이 온다",
-        author: "한강",
-        imageUrl: "/assets/test_img.jpg"
-    },
-    {
-        id: 7,
-        title: "소년이 온다",
-        author: "한강",
-        imageUrl: "/assets/test_img.jpg"
-    },
-    {
-        id: 8,
-        title: "소년이 온다",
-        author: "한강",
-        imageUrl: "/assets/test_img.jpg"
-    }
-];
+import {SummaryBook} from "../types/books";
+import {fetchMySummaryBooks} from "../api/ReadingRecord";
 
 export default function BookCarousel() {
+    const [list, setList] = useState<SummaryBook[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const listRef = useRef<HTMLDivElement>(null);
 
     const scroll = (direction: 'left' | 'right') => {
@@ -71,6 +18,22 @@ export default function BookCarousel() {
             });
         }
     };
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const books = await fetchMySummaryBooks();
+                setList(books);
+                console.log("fetchMySummaryBooks");
+            } catch (e: any){
+                console.error(e);
+                setError("불러오기 실패")
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []);
+
     return (
         <section className={styles.carousel}>
             <h2 className={styles.heading}>My Shelf</h2>
@@ -81,9 +44,9 @@ export default function BookCarousel() {
                 </button>
 
                 <div className={styles.bookList} ref={listRef}>
-                    {books.map((book) => (
+                    {list.map((book) => (
                         <div key={book.id} className={styles.bookItem}>
-                            <img src={book.imageUrl} alt={book.title} className={styles.bookImage}/>
+                            <img src={book.coverUrl} alt={book.title} className={styles.bookImage}/>
                             <div className={styles.bookTitle}>{book.title}</div>
                             <div className={styles.bookAuthor}>{book.author}</div>
                         </div>

@@ -1,16 +1,16 @@
 import { fetchWithAuth } from "../utils/fetchWithAuth";
 import { Record, SummaryRecord } from "../types/records";
 import { formatYMDhm } from "../utils/datetime";
-import {BookCandidate} from "../types/books";
+import {BookCandidate, SummaryBook} from "../types/books";
 
 // 메인에 쓸 최근 3개의 메모 불러오기
 export async function fetchMySummaryRecords(): Promise<SummaryRecord[]> {
-    const respopnse = await fetchWithAuth(`/records/me/summary`, { method: "GET" });
-    if (!respopnse.ok) {
-        throw new Error(`요청 실패: ${respopnse.status}`);
+    const response = await fetchWithAuth(`/records/me/summary`, { method: "GET" });
+    if (!response.ok) {
+        throw new Error(`요청 실패: ${response.status}`);
     }
 
-    const data: Record[] = await respopnse.json();
+    const data: Record[] = await response.json();
 
     // 화면용으로 매핑
     return data
@@ -39,6 +39,27 @@ export async function fetchMyRecords(): Promise<Record[]> {
         recordedAt: formatYMDhm(r.recordedAt),
     }));
 }
+
+// 메인에 쓸 최근 8개의 책 불러오기
+export async function fetchMySummaryBooks(): Promise<SummaryBook[]> {
+    const response = await fetchWithAuth(`/records/me/books?size=8`, { method: "GET" });
+    if (!response.ok) {
+        throw new Error(`요청 실패: ${response.status}`);
+    }
+
+    const pageData = await response.json(); // Page 객체
+    console.log(pageData);
+
+    // content만 꺼내서 화면용으로 매핑
+    return pageData.content
+        .map((b:SummaryBook) => ({
+            id: b.id,
+            title: b.title || "(제목 없음)",
+            author: b.author ?? "",
+            coverUrl: b.coverUrl ?? "",
+        }));
+}
+
 
 // 책 후보 요청
 export async function fetchCandidates(rawTitle : string, rawAuthor: string): Promise<BookCandidate[]> {
