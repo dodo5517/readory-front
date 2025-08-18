@@ -145,3 +145,12 @@ export async function linkRecord(recordId: number, book: BookCandidate):Promise<
         throw new Error("기록과 연결 실패");
     }
 }
+
+// 책 매칭 취소
+export async function fetchRemoveMatch(recordId : number): Promise<void> {
+    const response = await fetchWithAuth(`/records/${recordId}/remove`, { method: "POST" });
+
+    if (!response) {
+        throw new Error("책 매칭 취소 실패");
+    }
+}

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styles from '../styles/ReadingRecordsPage.module.css';
-import {fetchCandidates, fetchMyRecords, linkRecord} from "../api/ReadingRecord";
+import {fetchCandidates, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
 import {Record} from "../types/records";
 import {BookCandidate} from "../types/books";
 import BookSelectModal from "../components/BookSelectModal";
@@ -113,6 +113,28 @@ export default function ReadingRecordsPage() {
         }
     };
 
+    // 책 매칭 취소
+    const handleRemoveMatch = async (recordId: number) => {
+        setCandidatesLoading(true);
+        try {
+            await fetchRemoveMatch(recordId);
+            setRecord((prev) =>
+                prev.map((r) =>
+                    r.id === recordId
+                        ? {
+                            ...r,
+                            bookId: null
+                        }
+                        : r
+                )
+            );
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setCandidatesLoading(false);
+        }
+    };
+
 
     return (
         <section className={styles.container}>
@@ -177,14 +199,22 @@ export default function ReadingRecordsPage() {
                         </div>
                         <div className={styles.actions}>
                             <button
+                                type="button"
                                 className={styles.linkBtn}
                                 onClick={() => openSelectModal(record)}
                             >
                                 {record.bookId ? "책 다시 연결" : "책 연결"}
                             </button>
+                            {record.bookId && (<button
+                                type="button"
+                                className={styles.linkBtn}
+                                onClick={() => handleRemoveMatch(record.id)}
+                            >
+                                책 연결 끊기
+                            </button>)}
                         </div>
                     </div>
-                    ))}
+                ))}
             </div>
 
             {/* 책 후보 선택 모달 */}

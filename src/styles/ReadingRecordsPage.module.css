@@ -105,10 +105,17 @@
     color: #3355aa;
 }
 
+.actions {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column; /* 가로 → 세로 정렬 */
+    gap: 8px; /* 버튼 사이 간격 */
+}
+
 .linkBtn {
-    margin-top: 16px;
+    /*margin-top: 16px;*/
     padding: 6px 12px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     border: 1px solid var(--copy-border);
     background-color: var(--white);
     border-radius: 6px;
@@ -133,5 +140,6 @@
     .actions {
         grid-column: 1 / -1;
         justify-self: end;
+        flex-direction: row;
     }
 }
