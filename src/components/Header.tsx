@@ -54,8 +54,8 @@ export default function Header(){
             {/*메뉴 네비게이션 영역*/}
             <nav className={`${styles.nav} ${menuOpen ? styles.show : ''}`}>
                 <Link to="/">Home</Link>
-                <Link to="/ReadingRecords">Recent Records</Link>
-                <a href="#">My Shelf</a>
+                <Link to="/readingRecords">Recent Records</Link>
+                <a href="/bookshelf">My Shelf</a>
                 <a href="#">Reading Calendar</a>
                 <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
             </nav>

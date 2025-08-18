@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import styles from "../styles/BookCarousel.module.css";
 import {SummaryBook} from "../types/books";
 import {fetchMySummaryBooks} from "../api/ReadingRecord";
+import {Link} from "react-router-dom";
 
 export default function BookCarousel() {
     const [list, setList] = useState<SummaryBook[]>([]);
@@ -36,7 +37,10 @@ export default function BookCarousel() {
 
     return (
         <section className={styles.carousel}>
-            <h2 className={styles.heading}>My Shelf</h2>
+            <div className={styles.left}>
+                <h2 className={styles.heading}>My Shelf</h2>
+                <Link to="/bookShelf">Check all books ←</Link>
+            </div>
 
             <div className={styles.wrapper}>
                 <button className={styles.navBtn} onClick={() => scroll('left')}>

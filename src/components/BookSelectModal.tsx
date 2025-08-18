@@ -84,17 +84,19 @@ export default function BookSelectModal({open, candidates, onSelect, onClose,
                     {/* 인풋 + 내부 버튼 */}
                     <div className={styles.field}>
                         <input
-                            className={styles.input}
+                            className={styles.searchInput}
                             placeholder="제목 또는 작가를 입력하세요"
                             value={keyword}
                             onChange={(e) => onKeywordChange?.(e.target.value)}
                             aria-label="검색어"
                         />
                         {!!keyword && (
-                            <button type="button" className={styles.clearBtn} onClick={() => onKeywordChange?.('')}
+                            <button type="button"
+                                    className={`${styles.searchBtn} ${styles.searchBtnClear}`}
+                                    onClick={() => onKeywordChange?.('')}
                                     aria-label="검색어 지우기">×</button>
                         )}
-                        <button type="submit" className={styles.iconBtn} aria-label="검색">🔎</button>
+                        <button type="submit" className={styles.searchBtn} aria-label="검색">🔎</button>
                     </div>
                 </form>
 

@@ -1,7 +1,7 @@
 import { fetchWithAuth } from "../utils/fetchWithAuth";
 import { Record, SummaryRecord } from "../types/records";
 import { formatYMDhm } from "../utils/datetime";
-import {BookCandidate, SummaryBook} from "../types/books";
+import {BookCandidate, PageResponse, PageResult, SummaryBook} from "../types/books";
 
 // 메인에 쓸 최근 3개의 메모 불러오기
 export async function fetchMySummaryRecords(): Promise<SummaryRecord[]> {
@@ -40,7 +40,7 @@ export async function fetchMyRecords(): Promise<Record[]> {
     }));
 }
 
-// 메인에 쓸 최근 8개의 책 불러오기
+// 메인에 쓸 최근 8개의 책(매핑된) 불러오기
 export async function fetchMySummaryBooks(): Promise<SummaryBook[]> {
     const response = await fetchWithAuth(`/records/me/books?size=8`, { method: "GET" });
     if (!response.ok) {
@@ -60,6 +60,48 @@ export async function fetchMySummaryBooks(): Promise<SummaryBook[]> {
         }));
 }
 
+// 해당 유저가 기록한 모든 책(매핑된) 불러오기
+export async function fetchMyBooks(opts: {
+    page: number;          // 0-base
+    size?: number;         // 서버에서 default 20임
+    sort?: "recent" | "title";
+    q?: string;
+}): Promise<PageResult<SummaryBook>> {
+    const { page, size = 8, sort = "recent", q } = opts;
+    const params = new URLSearchParams({
+        page: String(page),
+        size: String(size),
+        sort,
+    });
+    if (q && q.trim()) params.set("q", q.trim());
+
+    const response = await fetchWithAuth(`/records/me/books?${params.toString()}`, { method: "GET" });
+    if (!response.ok) {
+        throw new Error(`요청 실패: ${response.status}`);
+    }
+
+    const pageData: PageResponse<any> = await response.json(); // Page 객체
+    console.log(pageData);
+
+    // 책 정보만 저장
+    const books: SummaryBook[] = pageData.content.map((b: any) => ({
+        id: b.id,
+        title: b.title || "(제목 없음)",
+        author: b.author ?? "",
+        coverUrl: b.coverUrl ?? "",
+    }));
+
+    // PageResult로 매핑
+    return {
+        books,
+        page: pageData.number ?? page,
+        size: pageData.size ?? size,
+        totalPages: pageData.totalPages ?? 0,
+        totalElements: pageData.totalElements ?? books.length,
+        hasPrev: !(pageData.first ?? page === 0),
+        hasNext: !(pageData.last ?? page + 1 >= (pageData.totalPages ?? 0)),
+    };
+}
 
 // 책 후보 요청
 export async function fetchCandidates(rawTitle : string, rawAuthor: string): Promise<BookCandidate[]> {

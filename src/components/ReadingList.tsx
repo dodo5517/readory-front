@@ -28,7 +28,7 @@ export default function ReadingList() {
         <section className={styles.container}>
             <div className={styles.left}>
                 <p className={styles.pageTitle}>Recent Records</p>
-                <Link to="/ReadingRecords">Check all recrods ←</Link>
+                <Link to="/readingRecords">Check all recrods ←</Link>
             </div>
 
             <div className={styles.right}>

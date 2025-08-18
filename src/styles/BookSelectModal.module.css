@@ -82,34 +82,49 @@
 }
 
 /* ===== 인풋 + 내부 버튼 ===== */
-.field { position: relative; }
-.input {
-    height: var(--ctl-h);
-    width: 100%;
-    padding: 0 88px 0 12px;    /* 오른쪽 공간: × + 🔎 */
+.field {
+    position: relative;
+    display: flex;
+    align-items: center;
     border: var(--bd);
     border-radius: var(--ctl-r);
-    background: var(--light-bg);
-    color: var(--text-main);
-    font-size: 1rem;
-}
-.input:focus { outline: 0; }
-
-.clearBtn, .iconBtn {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    height: calc(var(--ctl-h) - 8px); min-width: 36px;
-    padding: 0 10px;
-    border: var(--bd);
-    border-radius: 6px;
     background: var(--white);
-    color: var(--text-main);
-    display: inline-flex; align-items: center; justify-content: center;
-    cursor: pointer;
+    height: var(--ctl-h);
+    overflow: hidden;
 }
-.clearBtn { right: 48px; }
-.iconBtn  { right: 8px; }
-.clearBtn:hover, .iconBtn:hover { background: var(--img-hover); }
 
+/* 인풋 */
+.searchInput {
+    flex: 1;
+    border: none;
+    height: 100%;
+    padding: 0 12px;
+    font-size: .95rem;
+    color: var(--text-main);
+    background: transparent;
+}
+.searchInput::placeholder { color: var(--text-muted); }
+.searchInput:focus { outline: none; }
+
+/* 버튼 (검색/지우기) */
+.searchBtn {
+    height: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0 12px;
+    color: var(--text-muted);
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+}
+.searchBtn:hover { background: var(--img-hover); color: var(--text-main); }
+.searchBtn:focus-visible { outline: none; }
+
+/* 지우기 버튼은 살짝 연한 느낌 */
+.searchBtnClear {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
 .content {
     max-height: 48vh;
     overflow: auto;

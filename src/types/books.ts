@@ -27,3 +27,24 @@ export type SummaryBook = {
     author: string;
     coverUrl: string;
 }
+
+export type PageResponse<T> = {
+    content: T[];
+    totalPages: number;
+    totalElements: number;
+    size: number;         // 페이지 크기
+    number: number;       // 현재 페이지(0-base)
+    first: boolean;
+    last: boolean;
+    numberOfElements: number;
+};
+
+export type PageResult<T> = {
+    books: T[];              // 화면용 데이터
+    page: number;            // 0-base
+    size: number;
+    totalPages: number;
+    totalElements: number;
+    hasPrev: boolean;
+    hasNext: boolean;
+};

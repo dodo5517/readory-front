@@ -9,6 +9,11 @@
     margin-bottom: 24px;
 }
 
+.left { min-width: 200px; }
+.left h2 { font-size: 1.5rem; margin-bottom: 8px; }
+.left a {  color: #666; font-size: 0.95rem; text-decoration: none; }
+.left a:hover { text-decoration: underline; }
+
 .wrapper{
     position: relative;
     display: flex;
@@ -74,6 +79,10 @@
         text-align: center;
     }
 
+    .left { text-align: center; }
+    .left h2 { margin-bottom: 0;}
+    .left a { padding: 0 0 10px 0; }
+
     .wrapper{
         position: relative;
         display: flex;
@@ -87,7 +96,7 @@
 
     .bookList {
         gap: 16px;
-        margin: 0 0 0 5px;
+        margin: 10px 0 0 5px;
     }
 
     .bookItem {
