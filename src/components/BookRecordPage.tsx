@@ -33,6 +33,13 @@ export default function BookRecordPage() {
         const mi = String(d.getMinutes()).padStart(2, "0");
         return { day: `${yyyy}.${mm}.${dd}`, time: `${hh}:${mi}` };
     }
+    function formatYMD(iso: string): string {
+        const d = new Date(iso);
+        const yyyy = d.getFullYear();
+        const MM = String(d.getMonth() + 1);
+        const dd = String(d.getDate());
+        return `${yyyy}.${MM}.${dd}`;
+    }
     function groupByDay(items: BookRecord[]) {
         const map = new Map<string, BookRecord[]>();
         for (const r of items) {
@@ -155,11 +162,11 @@ export default function BookRecordPage() {
                         {!!book?.publishedDate && <span>· {book.publishedDate}</span>}
                     </div>
 
-                    {(book as any)?.periodStart || (book as any)?.periodEnd ? (
+                    {book?.periodStart || book?.periodEnd ? (
                         <div className={styles.periodCard}>
                             <div className={styles.periodLabel}>기록한 기간</div>
                             <div className={styles.periodValue}>
-                                {(book as any)?.periodStart ?? "—"} ~ {(book as any)?.periodEnd ?? "—"}
+                                {formatYMD(book?.periodStart) ?? "—"} ~ {formatYMD(book?.periodEnd) ?? "—"}
                             </div>
                         </div>
                     ) : null}

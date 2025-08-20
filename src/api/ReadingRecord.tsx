@@ -181,6 +181,8 @@ export async function fetchBookRecords(bookId: number, cursor: string|null, size
         publisher: data.book.publisher,
         publishedDate: data.book.publishedDate,
         coverUrl: data.book.coverUrl,
+        periodStart: data.book.periodStart,
+        periodEnd: data.book.periodEnd
     };
 
     // 기록 저장
@@ -195,6 +197,6 @@ export async function fetchBookRecords(bookId: number, cursor: string|null, size
         book,
         content,
         nextCursor: data.nextCursor,
-        hasMore: data.hasMore,
+        hasMore: data.hasMore
     };
 }

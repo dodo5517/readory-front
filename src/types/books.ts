@@ -35,6 +35,8 @@ export type BookMeta = {
     publisher: string | null;
     publishedDate: string | null;
     coverUrl: string | null;
+    periodStart: string;
+    periodEnd: string;
 }
 
 export type PageResponse<T> = {
