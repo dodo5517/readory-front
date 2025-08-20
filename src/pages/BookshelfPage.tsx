@@ -1,7 +1,8 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from "../styles/BookshelfPage.module.css";
 import {PageResult, SummaryBook} from "../types/books";
 import {fetchMyBooks} from "../api/ReadingRecord";
+import {useNavigate} from "react-router-dom";
 
 export default function BookshelfPage() {
     const [data, setData] = useState<PageResult<SummaryBook >| null>(null);
@@ -10,6 +11,8 @@ export default function BookshelfPage() {
     const [q, setQ] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -34,6 +37,10 @@ export default function BookshelfPage() {
     }
 
     const books = data?.books ?? [];
+
+    const handleBookRecord = async () => {
+
+    }
 
     return (
         <section className={styles.container} aria-label="책장">
@@ -90,7 +97,7 @@ export default function BookshelfPage() {
                     <li key={b.id} className={styles.card}>
                         <button
                             className={styles.cardBtn}
-                            // onClick={() => onSelect?.(b)}
+                            onClick={() => navigate(`/bookRecord/${b.id}`)}
                             aria-label={`${b.title}${b.author ? `, ${b.author}` : ""}`}
                         >
                             <div className={styles.coverWrap}>

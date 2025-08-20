@@ -1,7 +1,7 @@
 import { fetchWithAuth } from "../utils/fetchWithAuth";
-import { Record, SummaryRecord } from "../types/records";
+import {BookRecord, BookRecordsPage, Record, SummaryRecord} from "../types/records";
 import { formatYMDhm } from "../utils/datetime";
-import {BookCandidate, PageResponse, PageResult, SummaryBook} from "../types/books";
+import {BookCandidate, BookMeta, PageResponse, PageResult, SummaryBook} from "../types/books";
 
 // 메인에 쓸 최근 3개의 메모 불러오기
 export async function fetchMySummaryRecords(): Promise<SummaryRecord[]> {
@@ -153,4 +153,48 @@ export async function fetchRemoveMatch(recordId : number): Promise<void> {
     if (!response) {
         throw new Error("책 매칭 취소 실패");
     }
+}
+
+// 해당 유저의 책 한 권에 대한 모든 기록 불러오기
+export async function fetchBookRecords(bookId: number, cursor: string|null, size: number|null):
+    Promise<BookRecordsPage<BookMeta, BookRecord>>{
+    
+    // Url 매개변수 설정
+    const params = new URLSearchParams();
+    if (cursor) params.set("cursor", cursor);
+    if (size != null) params.set("size", String(size));
+    const url = `/records/books/${bookId}${params.toString() ? `?${params.toString()}` : ""}`;
+
+    const response = await fetchWithAuth(url, { method: "GET" });
+    if (!response.ok) {
+        throw new Error(`요청 실패: ${response.status}`);
+    }
+
+    const data: BookRecordsPage<BookMeta, BookRecord> = await response.json();
+    console.log(data);
+
+    // 책 정보 저장
+    const book: BookMeta = {
+        id: data.book.id,
+        title: data.book.title,
+        author: data.book.author,
+        publisher: data.book.publisher,
+        publishedDate: data.book.publishedDate,
+        coverUrl: data.book.coverUrl,
+    };
+
+    // 기록 저장
+    const content: BookRecord[] = data.content.map((r: any) => ({
+        id: r.id,
+        recordedAt: r.recordedAt,     // "YYYY.MM.DD HH:mm"
+        sentence: r.sentence,
+        comment: r.comment,
+    }));
+
+    return {
+        book,
+        content,
+        nextCursor: data.nextCursor,
+        hasMore: data.hasMore,
+    };
 }

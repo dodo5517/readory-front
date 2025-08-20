@@ -17,3 +17,17 @@ export interface SummaryRecord {
     sentence: string;
     comment: string;
 }
+
+export interface BookRecord {
+    id: number;
+    recordedAt: string;
+    sentence: string | null;
+    comment: string | null;
+}
+
+export type BookRecordsPage<T, A> = {
+    book: T;
+    content: A[];
+    nextCursor: string | null;
+    hasMore: boolean;
+}

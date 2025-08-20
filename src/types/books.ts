@@ -28,6 +28,15 @@ export type SummaryBook = {
     coverUrl: string;
 }
 
+export type BookMeta = {
+    id: number;
+    title: string;
+    author: string;
+    publisher: string | null;
+    publishedDate: string | null;
+    coverUrl: string | null;
+}
+
 export type PageResponse<T> = {
     content: T[];
     totalPages: number;
