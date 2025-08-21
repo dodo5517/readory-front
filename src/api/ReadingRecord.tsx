@@ -24,20 +24,48 @@ export async function fetchMySummaryRecords(): Promise<SummaryRecord[]> {
 }
 
 // 해당 유저의 모든 기록 불러오기
-export async function fetchMyRecords(): Promise<Record[]> {
-    const response = await fetchWithAuth(`/records/me`, { method: "GET" });
+export async function fetchMyRecords(opts: {
+    page: number;
+    size?: number;
+    q?: string
+}): Promise<PageResult<Record>> {
+    const { page, size, q } = opts;
+
+    const params = new URLSearchParams({
+        page: String(page),
+        size: String(size),
+    });
+    if (q && q.trim()) params.set("q", q.trim());
+
+    const response = await fetchWithAuth(`/records/me?${params.toString()}`, { method: "GET" });
     if (!response.ok) {
         throw new Error(`요청 실패: ${response.status}`);
     }
 
-    const pageData = await response.json(); // Page 객체
+    const pageData: PageResponse<any> = await response.json(); // Page 객체
     console.log(pageData);
 
-    // content만 꺼내서 recordedAt 변환
-    return pageData.content.map((r: Record) => ({
-        ...r,
-        recordedAt: formatYMDhm(r.recordedAt),
+    const items: Record[] = (pageData.content ?? []).map((r: any) => ({
+        id: r.id,
+        title: r.title ?? "(제목 없음)",
+        author: r.author ?? null,
+        sentence: r.sentence ?? null,
+        comment: r.comment ?? null,
+        matched: Boolean(r.matched),
+        bookId: r.bookId ?? null,
+        coverUrl: r.coverUrl ?? null,
+        recordedAt: formatYMDhm(r.recordedAt), // "YYYY-MM-DD HH:mm" 같은 포맷
     }));
+
+    return {
+        items,
+        page: pageData.number ?? page,
+        size: pageData.size ?? size,
+        totalPages: pageData.totalPages ?? 0,
+        totalElements: pageData.totalElements ?? items.length,
+        hasPrev: !(pageData.first ?? page === 0),
+        hasNext: !(pageData.last ?? page + 1 >= (pageData.totalPages ?? 0)),
+    };
 }
 
 // 메인에 쓸 최근 8개의 책(매핑된) 불러오기
@@ -67,7 +95,7 @@ export async function fetchMyBooks(opts: {
     sort?: "recent" | "title";
     q?: string;
 }): Promise<PageResult<SummaryBook>> {
-    const { page, size = 8, sort = "recent", q } = opts;
+    const { page, size, sort = "recent", q } = opts;
     const params = new URLSearchParams({
         page: String(page),
         size: String(size),
@@ -84,7 +112,7 @@ export async function fetchMyBooks(opts: {
     console.log(pageData);
 
     // 책 정보만 저장
-    const books: SummaryBook[] = pageData.content.map((b: any) => ({
+    const items: SummaryBook[] = pageData.content.map((b: any) => ({
         id: b.id,
         title: b.title || "(제목 없음)",
         author: b.author ?? "",
@@ -93,11 +121,11 @@ export async function fetchMyBooks(opts: {
 
     // PageResult로 매핑
     return {
-        books,
+        items,
         page: pageData.number ?? page,
         size: pageData.size ?? size,
         totalPages: pageData.totalPages ?? 0,
-        totalElements: pageData.totalElements ?? books.length,
+        totalElements: pageData.totalElements ?? items.length,
         hasPrev: !(pageData.first ?? page === 0),
         hasNext: !(pageData.last ?? page + 1 >= (pageData.totalPages ?? 0)),
     };
@@ -157,15 +185,15 @@ export async function fetchRemoveMatch(recordId : number): Promise<void> {
 
 // 해당 유저의 책 한 권에 대한 모든 기록 불러오기
 export async function fetchBookRecords(bookId: number, cursor: string|null, size: number|null):
-    Promise<BookRecordsPage<BookMeta, BookRecord>>{
-    
+    Promise<BookRecordsPage<BookMeta, BookRecord>> {
+
     // Url 매개변수 설정
     const params = new URLSearchParams();
     if (cursor) params.set("cursor", cursor);
     if (size != null) params.set("size", String(size));
     const url = `/records/books/${bookId}${params.toString() ? `?${params.toString()}` : ""}`;
 
-    const response = await fetchWithAuth(url, { method: "GET" });
+    const response = await fetchWithAuth(url, {method: "GET"});
     if (!response.ok) {
         throw new Error(`요청 실패: ${response.status}`);
     }

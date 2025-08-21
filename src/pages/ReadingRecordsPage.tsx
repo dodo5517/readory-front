@@ -2,18 +2,26 @@ import React, {useEffect, useState} from 'react';
 import styles from '../styles/ReadingRecordsPage.module.css';
 import {fetchCandidates, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
 import {Record} from "../types/records";
-import {BookCandidate} from "../types/books";
+import {BookCandidate, PageResult} from "../types/books";
 import BookSelectModal from "../components/BookSelectModal";
+import Pagination from "../components/pagination/Pagination";
+
+// 초기 페이지크기: 모바일 8, 데스크탑 10
+const getInitialPageSize = () => {
+    if (typeof window === "undefined") return 10;
+    return window.matchMedia("(max-width: 768px)").matches ? 6 : 10;
+};
 
 export default function ReadingRecordsPage() {
-    const [record, setRecord] = useState<Record[]>([]);
+    const [data, setData] = useState<PageResult<Record>| null>(null);
+    const items = data?.items ?? [];
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState<number>(getInitialPageSize); //모바일=8, 데스크탑=10
+    const [q, setQ] = useState("");
+    const [queryInput, setQueryInput] = useState("");
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
-    const [search, setSearch] = useState('');
-    const [sortKey, setSortKey] = useState<'title' | 'author' | 'date'>('title');
-    const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
-    const query = `?sort=${sortKey}&order=${sortOrder}`;
 
     // 모달/후보/연결용 상태
     const [modalOpen, setModalOpen] = useState(false);
@@ -25,21 +33,38 @@ export default function ReadingRecordsPage() {
     const [modalKeyword, setModalKeyword] = useState("");
     const [modalSortKey, setModalSortKey] = useState<'title' | 'author'>('title');
 
-
+    // 화면 크기 변경 시 size 동기화
     useEffect(() => {
+        const mql = window.matchMedia("(max-width: 768px)");
+        const apply = (matches: boolean) => {
+            const next = matches ? 6 : 10;
+            // 값이 달라질 때만 업데이트 (불필요한 재요청 방지)
+            setSize(prev => (prev === next ? prev : next));
+            setPage(0);
+        };
+        apply(mql.matches);
+        const handler = (e: MediaQueryListEvent) => apply(e.matches);
+        mql.addEventListener("change", handler);
+        return () => mql.removeEventListener("change", handler);
+    }, []);
+
+    // 목록 fetch: page/size/q 변화에 반응
+    useEffect(() => {
+        let aborted = false;
         (async () => {
             try {
-                const items = await fetchMyRecords();
-                setRecord(items);
-                console.log("fetchMyRecords");
+                setLoading(true);
+                setError(null);
+                const next = await fetchMyRecords({ page, size, q });
+                if (!aborted) setData(next);
             } catch (e: any) {
-                console.error(e);
-                setError("불러오기 실패");
+                if (!aborted) setError("불러오기 실패");
             } finally {
-                setLoading(false);
+                if (!aborted) setLoading(false);
             }
         })();
-    }, []);
+        return () => { aborted = true; };
+    }, [page, size, q]);
 
     // 책 후보 검색 후 모달 띄움
     const openSelectModal = async (rec: Record) => {
@@ -75,22 +100,10 @@ export default function ReadingRecordsPage() {
         if (!selectedRecordId) return;
         try {
             await linkRecord(selectedRecordId, book);
-            // 목록에 선택한 책 정보 반영
-            setRecord((prev) =>
-                prev.map((r) =>
-                    r.id === selectedRecordId
-                        ? {
-                            ...r,
-                            title: book.title,
-                            author: book.author?.[0] ?? r.author ?? "",
-
-                        }
-                        : r
-                )
-            );
+            // 책 선택 → 서버 반영 후 현재 페이지 재조회
+            const updated = await fetchMyRecords({ page, size, q });
+            setData(updated);
             setModalOpen(false);
-            const updatedItems = await fetchMyRecords();
-            setRecord(updatedItems);
         } catch (e: any) {
             alert(e?.message ?? "기록과 책 연결에 실패했습니다.");
         }
@@ -118,16 +131,10 @@ export default function ReadingRecordsPage() {
         setCandidatesLoading(true);
         try {
             await fetchRemoveMatch(recordId);
-            setRecord((prev) =>
-                prev.map((r) =>
-                    r.id === recordId
-                        ? {
-                            ...r,
-                            bookId: null
-                        }
-                        : r
-                )
-            );
+            setData(prev => prev ? {
+                ...prev,
+                items: prev.items.map(r => r.id === recordId ? { ...r, bookId: null } : r)
+            } : prev);
         } catch (e) {
             console.error(e);
         } finally {
@@ -140,38 +147,42 @@ export default function ReadingRecordsPage() {
         <section className={styles.container}>
             <h1 className={styles.title}>My Reading Records</h1>
 
-            <div className={styles.filters}>
-                <input
-                    type="text"
-                    placeholder="Search by title, sentence, or comment"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className={styles.searchInput}
-                />
-
-                <select
-                    value={sortKey}
-                    onChange={(e) => setSortKey(e.target.value as 'title' | 'author' | 'date')}
-                    className={styles.select}
-                >
-                    <option value="title">제목</option>
-                    <option value="author">작가</option>
-                    <option value="date">날짜</option>
-                </select>
-
-                <select
-                    value={sortOrder}
-                    onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
-                    className={styles.select}
-                >
-                    <option value="asc">오름차순</option>
-                    <option value="desc">내림차순</option>
-                </select>
-
+            {/* 검색 + 정렬 툴바 */}
+            <div className={styles.toolbar}>
+                <div style={{display: "flex", gap: "8px", flex: 1}}>
+                    <input
+                        type="text"
+                        value={queryInput}
+                        onChange={(e) => setQueryInput(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                setPage(0);
+                                setQ(queryInput.trim());
+                            }
+                        }}
+                        placeholder="책 제목, 저자 검색..."
+                        className={styles.searchInput}
+                    />
+                    <button
+                        className={styles.searchBtn}
+                        onClick={() => {
+                            setPage(0);
+                            setQ(queryInput.trim());
+                        }}
+                    >
+                        🔍
+                    </button>
+                </div>
             </div>
 
+            {loading ? (
+                <div className={styles.loading} aria-live="polite">로딩 중…</div>
+            ) : error ? (
+                <div className={styles.error} role="alert">{error}</div>
+            ) : (
+                <>
             <div className={styles.list}>
-                {record.map((record) => (
+                {items.map((record) => (
                     <div key={record.id} className={styles.card}>
                         <div className={styles.coverArea}>
                             {record.bookId ? (
@@ -211,11 +222,29 @@ export default function ReadingRecordsPage() {
                                 onClick={() => handleRemoveMatch(record.id)}
                             >
                                 책 연결 끊기
-                            </button>)}
+                            </button>
+                            )}
                         </div>
                     </div>
                 ))}
             </div>
+
+            <Pagination
+                page={data?.page ?? page}
+                totalPages={data?.totalPages ?? 0}
+                hasPrev={data?.hasPrev}
+                hasNext={data?.hasNext}
+                onChange={(next) => {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    setPage(next);
+                }}
+                pageSize={size}
+                onChangePageSize={(s) => { setPage(0); setSize(s); }}
+                disabled={loading}
+                windowSize={5}
+            />
+            </>
+            )}
 
             {/* 책 후보 선택 모달 */}
             <BookSelectModal

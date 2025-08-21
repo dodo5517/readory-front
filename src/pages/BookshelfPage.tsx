@@ -3,10 +3,12 @@ import styles from "../styles/BookshelfPage.module.css";
 import {PageResult, SummaryBook} from "../types/books";
 import {fetchMyBooks} from "../api/ReadingRecord";
 import {useNavigate} from "react-router-dom";
+import Pagination from "../components/pagination/Pagination";
 
 export default function BookshelfPage() {
     const [data, setData] = useState<PageResult<SummaryBook >| null>(null);
     const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10); // 데스크탑(10), 모바일(6)
     const [sort, setSort] = useState<"recent" | "title">("recent");
     const [q, setQ] = useState("");
     const [loading, setLoading] = useState(true);
@@ -14,10 +16,29 @@ export default function BookshelfPage() {
 
     const navigate = useNavigate();
 
+    // 화면 크기에 따라 페이지 사이즈 설정
+    useEffect(() => {
+        const mql = window.matchMedia("(max-width: 768px)");
+
+        const apply = (matches: boolean) => {
+            const next = matches ? 6 : 10;
+            setSize((prev) => (prev === next ? prev : next));
+            // 화면 크기 바뀌면 첫 페이지로
+            setPage(0);
+        };
+
+        // 초기 1회 동기화 (혹시 hydration 뒤 값이 달라졌을 경우)
+        apply(mql.matches);
+
+        const handler = (e: MediaQueryListEvent) => apply(e.matches);
+        mql.addEventListener("change", handler);
+        return () => mql.removeEventListener("change", handler);
+    }, []);
+
     useEffect(() => {
         (async () => {
             try {
-                const json = await fetchMyBooks({page: page, sort: sort, q: q});
+                const json = await fetchMyBooks({page, size, sort, q});
                 setData(json);
                 console.log("fetchMyBooks");
             } catch (e: any){
@@ -27,7 +48,7 @@ export default function BookshelfPage() {
                 setLoading(false);
             }
         })();
-    },[page, sort, q]);
+    },[page, sort, size, q]);
 
     if (loading) {
         return <div className={styles.container} aria-live="polite">로딩 중...</div>;
@@ -36,11 +57,7 @@ export default function BookshelfPage() {
         return <div className={styles.container} role="alert">{error}</div>;
     }
 
-    const books = data?.books ?? [];
-
-    const handleBookRecord = async () => {
-
-    }
+    const books = data?.items ?? [];
 
     return (
         <section className={styles.container} aria-label="책장">
@@ -113,6 +130,24 @@ export default function BookshelfPage() {
                     </li>
                 ))}
             </ul>
+            {/* 페이지네이션 */}
+            <Pagination
+                page={data?.page ?? page}
+                totalPages={data?.totalPages ?? 0}
+                hasPrev={data?.hasPrev}
+                hasNext={data?.hasNext}
+                onChange={(next) => {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    setPage(next);
+                }}
+                pageSize={size}
+                onChangePageSize={(s) => {
+                    setPage(0);
+                    setSize(s);
+                }}
+                disabled={loading}
+                windowSize={5}
+            />
         </section>
     );
 }
