@@ -1,8 +1,8 @@
 :root {
   --bg: #f9f9f9;
-  --card-bg: #ffffff;
+  --card-bg: #fff;
   --text-main: #000000;
-  --text-sub: #666666;
+  --text-sub: #666;
   --input-border: #ddd;
   --input-focus: #5e92c6;
   --input-focus-shadow: rgba(30, 107, 65, 0.1);
@@ -15,7 +15,7 @@
   --text-normal: #555555;
   --text-muted: #888;
   --light-bg: #f5f5f5;
-  --white: #ffffff;
+  --white: #fff;
   --copy-border: #ccc;
   --link-color: #007bff;
   --border-color: #eee;
@@ -24,6 +24,25 @@
   --img-bg: #f3f3f3;
   --img-hover: #ddd;
   --link-hover: #f0f0f0;
+  --main-hr: #eee;
+  --comment: #999;
+  --day-heaing: #333;
+  --card-border: #e8e8e8;
+  --record-comment: #9ca3af;
+  --record-quote: #444;
+  --badge-linked-bg: #f6f9ff;
+  --badge-linked-text: #3355aa;
+  --page-btn: #111;
+  --placeholder: #777;
+  --search-btn: #f6f9f7;
+
+  --weekday-text: #555;
+  --day-bg: #f9f9f9;
+
+  --calendar-intensity-1: rgba(118, 167, 214, 0.45);
+  --calendar-intensity-2: rgba(118, 167, 214, 0.65);
+  --calendar-intensity-3: rgba(118, 167, 214, 0.85);
+  --calendar-intensity-4: rgba(118, 167, 214, 1);
 }
 
 [data-theme='dark'] {
@@ -52,6 +71,33 @@
   --img-bg: #ffffff;
   --img-hover: #ccc;
   --link-hover: #2a2a2a;
+  --main-hr: #333;
+  --comment: #bbb;
+  --day-heaing: #ccc;
+  --card-border: #2c2c2c;
+  --record-comment: #4b5563;
+  --record-quote: #bbb;
+  --badge-linked-bg: #444;
+  --badge-linked-text: #93c5fd;
+  --page-btn: #eee;
+  --placeholder: #777;
+  --search-btn: #1f1f23;
+
+
+  --weekday-text: #aaa;
+  --day-bg: #262626;
+
+  /*보라 계열*/
+  --calendar-intensity-1: rgba(167, 139, 250, 0.35);
+  --calendar-intensity-2: rgba(167, 139, 250, 0.55);
+  --calendar-intensity-3: rgba(167, 139, 250, 0.75);
+  --calendar-intensity-4: rgba(167, 139, 250, 1);
+
+  /*청록계열*/
+  /*--calendar-intensity-1: rgba(79, 209, 197, 0.35);*/
+  /*--calendar-intensity-2: rgba(79, 209, 197, 0.55);*/
+  /*--calendar-intensity-3: rgba(79, 209, 197, 0.75);*/
+  /*--calendar-intensity-4: rgba(79, 209, 197, 1);*/
 }
 body {
   margin: 0;
@@ -61,7 +107,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg);
-  color: var(--text);
+  color: var(--text-main);
   transition: background-color 0.3s, color 0.3s;
 }
 

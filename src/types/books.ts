@@ -51,7 +51,7 @@ export type PageResponse<T> = {
 };
 
 export type PageResult<T> = {
-    books: T[];              // 화면용 데이터
+    items: T[];              // 화면용 데이터
     page: number;            // 0-base
     size: number;
     totalPages: number;

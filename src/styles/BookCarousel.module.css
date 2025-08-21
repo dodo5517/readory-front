@@ -7,11 +7,12 @@
     font-size: 1.4rem;
     font-weight: bold;
     margin-bottom: 24px;
+    color: var(--text-main);
 }
 
 .left { min-width: 200px; }
 .left h2 { font-size: 1.5rem; margin-bottom: 8px; }
-.left a {  color: #666; font-size: 0.95rem; text-decoration: none; }
+.left a {  color: var(--text-sub); font-size: 0.95rem; text-decoration: none; }
 .left a:hover { text-decoration: underline; }
 
 .wrapper{
@@ -22,7 +23,7 @@
 }
 
 .navBtn {
-    background-color: white;
+    background-color:transparent;
     border: none;
     font-size: 30px;
     padding: 5px 10px;
@@ -31,6 +32,7 @@
     /*border-radius: 50%;*/
     position: relative;
     z-index: 1;
+    color: var(--text-main);
 }
 
 .bookList {
@@ -60,12 +62,13 @@
     margin-top: 8px;
     font-size: 0.95rem;
     font-weight: 600;
+    color: var(--text-main);
 }
 
 .bookAuthor {
     margin-top: 4px;
     font-size: 0.85rem;
-    color: #666;
+    color: var(--text-sub);
 }
 
 @media (max-width: 768px) {

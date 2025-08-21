@@ -2,8 +2,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 35px 60px;
-    background-color: var(--header-bg);
+    padding: 35px 60px 0;
+    background-color: var(--bg);
     font-family: sans-serif;
     flex-wrap: wrap;
 }
@@ -37,6 +37,7 @@
     border: none;
     cursor: pointer;
     margin-left: auto;
+    color: var(--text-main);
 }
 
 /* 메뉴 */
@@ -73,27 +74,47 @@
     color: var(--text-hover);
 }
 
-/* 📱 반응형 설정 */
+/* 반응형 설정 */
 @media (max-width: 768px) {
     .menuButton {
         display: block;
     }
 
     .nav {
-        display: none;
+        display: flex;
         width: 100%;
         flex-direction: column;
         gap: 16px;
         margin-top: 10px;
+
+        /* 애니메이션 초기 상태(접힘) */
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-6px);
+        pointer-events: none;
+
+        /* 배경/테두리 선택적으로 */
+        background: var(--bg);
+        border-radius: 8px;
+
+        transition:
+                max-height 260ms ease,
+                opacity 200ms ease,
+                transform 220ms ease;
     }
 
     .show {
-        display: flex;
+        /*display: flex;*/
+        max-height: 320px; /* 메뉴 개수에 맞춰 넉넉히 */
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
     }
 
     .header {
         align-items: flex-start;
-        padding: 20px 30px;
+        padding: 20px 30px 10px
     }
 
     .right {

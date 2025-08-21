@@ -1,16 +1,11 @@
 :root{
-    --border: 1px solid var(--copy-border, #ddd);
-    --bg: var(--white, #fff);
-    --hover: var(--img-hover, #f6f6f7);
-    --main: var(--text-main, #111);
-    --muted: var(--text-muted, #777);
     --radius: 12px;
 }
 
 /* 래퍼 */
 .wrap{
     max-width: 1024px;
-    margin: 0 auto;
+    margin: 20px auto 0;
     padding: 28px 16px 48px;
     font-family: sans-serif;
 }
@@ -29,37 +24,37 @@
 .coverBox{
     width: 112px;
     aspect-ratio: 2 / 3;
-    border: var(--border);
+    border: var(--input-border);
     border-radius: 10px;
     overflow: hidden;
-    background: var(--avatar-bg, #f1f1f3);
+    background: var(--avatar-bg);
 }
 .cover{ width: 100%; height: 100%; object-fit: cover; }
-.coverPlaceholder{ color: var(--muted); display: grid; place-items: center; height: 100%; }
+.coverPlaceholder{ color: var(--placeholder); display: grid; place-items: center; height: 100%; }
 
 .meta{ display: grid; gap: 6px; }
-.title{ letter-spacing:-0.01em; font-size: 1.35rem; font-weight: 800; color: var(--main); }
-.author{ color: var(--main); font-weight: 700; }
-.subMeta{ color: var(--muted); font-size: .92rem; display: flex; gap: 6px; align-items: center; }
+.title{ letter-spacing:-0.01em; font-size: 1.35rem; font-weight: 800; color: var(--text-main); }
+.author{ color: var(--record-quote); font-weight: 700; }
+.subMeta{ color: var(--text-sub); font-size: .92rem; display: flex; gap: 6px; align-items: center; }
 
 /* 기간 카드 */
 .periodCard{
     margin-top: 12px;
-    border: var(--border);
-    background: var(--bg);
+    border: var(--input-border);
+    background: var(--card-bg);
     border-radius: 10px;
     padding: 10px 12px;
     width: fit-content;
     box-shadow: 0 1px 2px rgba(0,0,0,.03);
 }
-.periodLabel{ font-size: .85rem; color: var(--muted); }
-.periodValue{ font-size: 0.98rem; font-weight: 500; color: var(--main); }
+.periodLabel{ font-size: .85rem; color: var(--placeholder); }
+.periodValue{ font-size: 0.98rem; font-weight: 500; color: var(--record-quote); }
 
 /* 구분선 */
 .divider{
     margin: 16px 0 8px;
     border: 0;
-    border-top: var(--border);
+    border-top: var(--input-border);
 }
 
 /* ===== 기록 리스트 ===== */
@@ -68,10 +63,10 @@
 .dayHeading{
     position: sticky; top: 0;
     font-size: 1.15rem;
-    background: var(--bg); z-index: 2;
+    background: transparent; z-index: 2;
     margin: 24px 0 10px; padding: 6px 0;
     font-weight: 800; letter-spacing: 0.02em;
-    color: #333;
+    color: var(--day-heaing);
     border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 .recordUl{
@@ -89,7 +84,7 @@
 }
 
 .time{
-    color: var(--muted);
+    color: var(--placeholder);
     font-size: .9rem;
     font-variant-numeric: tabular-nums;
     text-align: right;
@@ -97,8 +92,8 @@
 }
 
 .recordCard{
-    background: var(--bg);
-    border: 1px solid #e8e8e8;       /* 기존 var(--border) → 옅은 회색으로 */
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius: 12px;
     padding: 16px;                    /* 기존 12px → 16px */
     line-height: 1.65;                /* 행간 확장 */
@@ -109,33 +104,33 @@
 
 .quote{
     margin: 0 0 10px;
-    color: var(--main);
+    color: var(--record-quote);
     font-size: 0.95rem;
     line-height: 1.7;
 }
 .comment{
     font-size: 0.85rem;
     margin: 0;
-    color: #4b5563;
+    color: var(--record-comment);
     line-height: 1.65;
 }
 
 /* 상태/헬퍼 */
 .helper{
     text-align: center;
-    color: var(--muted);
+    color: var(--placeholder);
     padding: 16px 0;
 }
 .sentinel{ height: 1px; }
 
 /* ===== 데스크탑 최적화 ===== */
 @media (min-width: 1024px){
-    .wrap{ padding: 32px 20px 56px; }
+    .wrap{ padding: 32px 20px 56px;}
 }
 
 /* ===== 모바일(<=768px): 더 촘촘/읽기 편하게 조정 ===== */
 @media (max-width: 768px){
-    .wrap{ padding: 20px 5px 36px; }
+    .wrap{ padding: 20px 5px 36px; margin: 0 auto;}
     .header{ grid-template-columns: 80px 1fr; gap:12px; }
     .coverBox{ width: 80px; border-radius: 8px; }
     .title{ font-size: 1.18rem; }
@@ -166,8 +161,8 @@
         top: 10px; left: 16px;
         padding: 2px 0px;
         /*border: 1px solid var(--copy-border, #ddd);*/
-        /*background: var(--hover);*/
-        color: var(--muted);
+        /*background: var(--search-btn);*/
+        color: var(--placeholder);
         border-radius: 999px;
         font-size: .78rem;
         line-height: 1;

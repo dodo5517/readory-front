@@ -1,11 +1,12 @@
 .hr {
     margin:  0 100px;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+    border-top: 1px solid var(--main-hr);
+    border-bottom: 1px solid var(--main-hr);
 }
 
 .calendar {
     padding: 40px 20px;
+    min-height: 600px;
     max-width: 600px;
     margin: 0 auto;
     font-family: sans-serif;
@@ -18,7 +19,7 @@
 .subheading {
     font-size: 0.9rem;
     font-weight: bold;
-    color: #888;
+    color: var(--text-muted);
 }
 
 .header {
@@ -29,6 +30,7 @@
 }
 
 .header h2 {
+    color: var(--text-main);
     font-size: 1.25rem;
 }
 
@@ -37,6 +39,7 @@
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
+    color: var(--text-main);
 }
 
 .weekdays {
@@ -44,7 +47,7 @@
     grid-template-columns: repeat(7, 1fr);
     margin-bottom: 8px;
     font-weight: bold;
-    color: #555;
+    color: var(--weekday-text);
     text-align: center;
 }
 
@@ -62,10 +65,11 @@
     height: 60px;
     text-align: center;
     padding-top: 10px;
-    border: 1px solid #eee;
+    border: 1px solid var(--border-color);
     /*border-radius: 6px;*/
-    background-color: #fafafa;
+    background-color: var(--day-bg);
     font-size: 0.95rem;
+    color: var(--text-main);
 }
 
 .active {
@@ -73,8 +77,33 @@
     color: white;
     font-weight: bold;
 }
+/* 배지 */
+.badge {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.1);
+    color: currentColor;
+}
+
+/* --- 히트맵 강도: 기존 .active 배경 위를 부드럽게 덮어쓰기 --- */
+/* 0은 기록 없음 => 덮어쓰기 없음(클래스 안 붙음) */
+.intensity-1 { background-color: var(--calendar-intensity-1); }
+.intensity-2 { background-color: var(--calendar-intensity-2); }
+.intensity-3 { background-color: var(--calendar-intensity-3); }
+.intensity-4 { background-color: var(--calendar-intensity-4); }
 @media (max-width: 768px) {
     .hr {
         margin: 0;
+    }
+    .calendar {
+        min-height: 550px;
+    }
+    .day {
+        height: 55px;
+        padding-top: 5px;
     }
 }
