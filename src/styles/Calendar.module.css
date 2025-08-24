@@ -14,6 +14,21 @@
 
 .main{
     text-align: center;
+    cursor: pointer;
+}
+.month{
+    display: inline-flex;           /* 클릭 영역을 덩어리로 */
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    cursor: pointer;                /* ⬅ 마우스 포인터 */
+    user-select: none;
+    transition: background .15s ease, color .15s ease, transform .02s ease;
+}
+.month:hover{
+    background: var(--link-hover);  /* ⬅ 호버 시 시각적 피드백 */
 }
 
 .subheading {

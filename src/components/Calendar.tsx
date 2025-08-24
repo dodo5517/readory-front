@@ -1,5 +1,5 @@
-// src/components/Calendar.tsx
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate, createSearchParams } from "react-router-dom";
 import styles from "../styles/Calendar.module.css";
 import {
     formatYMD,
@@ -8,7 +8,7 @@ import {
     calcMaxCount,
     countToIntensity,
 } from "../utils/calendar";
-import {fetchCalendarRange} from "../api/ReadingRecord";
+import {fetchCalendarRange} from "../api/Calendar";
 import {CalendarRangeResponse} from "../types/calendar";
 
 export default function Calendar() {
@@ -16,6 +16,8 @@ export default function Calendar() {
     const [data, setData] = useState<CalendarRangeResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState<string | null>(null);
+
+    const navigate = useNavigate();
 
     const { y, m0, startDay, totalDays } = useMemo(
         () => getMonthMeta(currentDate),
@@ -47,6 +49,32 @@ export default function Calendar() {
         setCurrentDate(d);
     };
 
+    // 하루 기록
+    const goDay = (fullDate: string) => {
+        console.log("goDay, fullDate: ", fullDate);
+        navigate({
+            pathname: "/calendar",
+            search: `?${createSearchParams({
+                mode: "day",
+                date: fullDate,      // 예: 2025-07-03
+            })}`,
+        });
+    };
+    
+    // 월 기록
+    const goMonth = (year: number, month1: number) => {
+        const mm = String(month1).padStart(2, "0");
+        console.log("mm: ", mm);
+        navigate({
+            pathname: "/calendar",
+            search: `?${createSearchParams({
+                mode: "month",
+                year: String(year),
+                month: mm,           // 예: 07
+            })}`,
+        });
+    };
+
     const days: React.ReactNode[] = [];
     for (let i = 0; i < startDay; i++) {
         days.push(<div key={`empty-${i}`} className={styles.day} />);
@@ -68,10 +96,7 @@ export default function Calendar() {
                 title={hasRecord ? `${fullDate} · ${count}건` : fullDate}
                 role="button"
                 tabIndex={0}
-                onClick={() => {
-                    // TODO: 날짜 클릭 동작 연결 (예: navigate(`/records?day=${fullDate}`))
-                    console.log("clicked", fullDate);
-                }}
+                onClick={() => goDay(fullDate)}
                 onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") (e.currentTarget as HTMLDivElement).click();
                 }}
@@ -90,10 +115,11 @@ export default function Calendar() {
             <section className={styles.calendar}>
                 <div className={styles.header}>
                     <button onClick={() => changeMonth(-1)} aria-label="이전 달">‹</button>
-                    <span className={styles.main}>
-            <h2>{y}/ {m0 + 1}</h2>
-            <p className={styles.subheading}>Reading Calendar</p>
-          </span>
+                    <span className={styles.main}
+                        onClick={()=> goMonth(y, m0 + 1)}>
+                        <h2 className={styles.month}>{y}/ {m0 + 1}</h2>
+                        <p className={styles.subheading}>Reading Calendar</p>
+                      </span>
                     <button onClick={() => changeMonth(1)} aria-label="다음 달">›</button>
                 </div>
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import {createSearchParams, Link, useNavigate} from "react-router-dom";
 import { useUser } from '../contexts/UserContext';
 import {logoutUser} from "../services/authService";
 import styles from '../styles/Header.module.css';
@@ -42,6 +42,16 @@ export default function Header(){
         document.addEventListener('mousedown', onOutside);
         return () => document.removeEventListener('mousedown', onOutside);
     }, []);
+
+    // 이번 달 자동 설정
+    const now = new Date();
+    const year = String(now.getFullYear());
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const search = `?${createSearchParams({
+        mode: "month",
+        year,
+        month,
+    }).toString()}`;
 
     // 해당 기기에서 로그아웃 핸들러
     const handleLogout = async(e: React.FormEvent) => {
@@ -89,7 +99,9 @@ export default function Header(){
                 <Link to="/" role="menuitem">Home</Link>
                 <Link to="/readingRecords" role="menuitem">Recent Records</Link>
                 <a href="/bookshelf" role="menuitem">My Shelf</a>
-                <a href="#" role="menuitem">Reading Calendar</a>
+                <Link to={{ pathname: "/calendar", search }} role="menuitem">
+                    Reading Calendar
+                </Link>
                 <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
             </nav>
         </header>

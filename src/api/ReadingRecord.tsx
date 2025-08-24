@@ -2,7 +2,6 @@ import { fetchWithAuth } from "../utils/fetchWithAuth";
 import {BookRecord, BookRecordsPage, Record, SummaryRecord} from "../types/records";
 import { formatYMDhm } from "../utils/datetime";
 import {BookCandidate, BookMeta, PageResponse, PageResult, SummaryBook} from "../types/books";
-import {CalendarRangeResponse, CalendarSummary, DayCount} from "../types/calendar";
 
 // 메인에 쓸 최근 3개의 메모 불러오기
 export async function fetchMySummaryRecords(): Promise<SummaryRecord[]> {
@@ -227,46 +226,5 @@ export async function fetchBookRecords(bookId: number, cursor: string|null, size
         content,
         nextCursor: data.nextCursor,
         hasMore: data.hasMore
-    };
-}
-
-export async function fetchCalendarRange(year: number, month: number)
-    : Promise<CalendarRangeResponse> {
-
-    const normalizedMonth =
-        month >= 1 && month <= 12 ? month : month >= 0 && month <= 11 ? month + 1 : (() => {
-            throw new Error(`잘못된 month 값: ${month}`);
-        })();
-
-    // Url 매개변수 설정
-    const params = new URLSearchParams({
-        year: String(year),
-        month: String(normalizedMonth),
-    }).toString();
-
-    const response = await fetchWithAuth(`/records/calendar?${params}`, { method: "GET" });
-    if (!response.ok) {
-        throw new Error(`요청 실패: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    const days: DayCount[] = data.days.map((d: any) =>({
-        date: d.date,
-        count: d.count,
-    }));
-
-    const summary : CalendarSummary = {
-        totalDaysWithRecord: data.summary.totalDaysWithRecord,
-        totalRecords: data.summary.totalRecords,
-        firstRecordedAt: data.summary.firstRecordedAt,
-        lastRecordedAt: data.summary.lastRecordedAt
-    }
-
-    return {
-        rangeStart: data.rangeStart,
-        rangeEndExclusive: data.rangeEndExclusive,
-        days: days,
-        summary: summary
     };
 }

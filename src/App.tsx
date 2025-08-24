@@ -17,7 +17,8 @@ import MyPage from "./pages/MyPage";
 import EditNamePage from "./pages/EditNamePage";
 import EditPasswordPage from "./pages/EditPasswordPage";
 import OAuthCallback from "./components/OAuthCallback";
-import BookRecordPage from "./components/BookRecordPage";
+import BookRecordPage from "./pages/BookRecordPage";
+import CalendarPage from "./pages/CalendarPage";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
                           <Route path={"/readingRecords"} element={<PrivateRoute><ReadingRecordsPage/></PrivateRoute>}/>
                           <Route path={"/bookshelf"} element={<PrivateRoute><BookshelfPage /></PrivateRoute>} />
                           <Route path={"/bookRecord/:bookId"} element={<PrivateRoute><BookRecordPage /></PrivateRoute>} />
+                          <Route path={"/calendar"} element={<PrivateRoute><CalendarPage /></PrivateRoute>} />
                       </Route>
                   </Routes>
                 {/*<Footer />*/}

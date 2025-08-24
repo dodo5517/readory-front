@@ -4,6 +4,26 @@
   padding: 0;
   box-sizing: border-box;
 }
+* {
+  user-select: none;
+  cursor: default;
+}
+
+/* input 요소들은 예외 처리 */
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  user-select: text !important;
+  cursor: text !important;
+}
+
+/* 버튼과 링크는 포인터 커서 */
+button,
+a,
+[role="button"] {
+  cursor: pointer !important;
+}
 
 html, body, #root {
   height: 100%;

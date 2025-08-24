@@ -11,6 +11,9 @@
     margin-bottom: 24px;
     font-weight: bold;
 }
+.recordToolbar{
+    margin-bottom: 10px;
+}
 
 /* 툴바 */
 .toolbar{
