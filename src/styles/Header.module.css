@@ -12,6 +12,9 @@
     display: flex;
     align-items: center;
 }
+.desktopOnly { display: inline; }
+.mobileOnly  { display: none; }
+
 
 .logo {
     height: 24px;
@@ -76,6 +79,9 @@
 
 /* 반응형 설정 */
 @media (max-width: 768px) {
+    .desktopOnly { display: none; }   /* 데스크탑 전용 숨김 */
+    .mobileOnly  { display: inline; } /* 모바일 전용 표시 */
+
     .menuButton {
         display: block;
     }
@@ -105,12 +111,11 @@
     }
 
     .show {
-        /*display: flex;*/
         max-height: 320px; /* 메뉴 개수에 맞춰 넉넉히 */
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
-        padding: 10px;
+        padding: 5px 0 15px;
     }
 
     .header {

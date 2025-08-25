@@ -77,7 +77,15 @@ export default function Header(){
         <header className={styles.header}>
             {/*좌측 로고*/}
             <div className={styles.left}>
-                <Link to="/myPage" className={styles.username}>{user?.username}</Link>
+                {/*데스크탑 화면일 때 보임*/}
+                <Link to="/myPage" className={`${styles.username} ${styles.desktopOnly}`}>
+                    {user?.username}
+                </Link>
+
+                {/*모바일 화면일 때 보임*/}
+                <Link to="/" className={`${styles.username} ${styles.mobileOnly}`}>
+                    Home
+                </Link>
             </div>
 
             {/*햄버거 메뉴 버튼*/}
@@ -96,12 +104,15 @@ export default function Header(){
                  ref={navRef}
                 onClick={handleNavClick}
             >
-                <Link to="/" role="menuitem">Home</Link>
+                {/*데스크탑일 때는 보임*/}
+                <Link to="/" role="menuitem" className={`${styles.desktopOnly}`}>Home</Link>
                 <Link to="/readingRecords" role="menuitem">Recent Records</Link>
                 <a href="/bookshelf" role="menuitem">My Shelf</a>
                 <Link to={{ pathname: "/calendar", search }} role="menuitem">
                     Reading Calendar
                 </Link>
+                {/*모바일일 때는 보임*/}
+                <Link to="/myPage" className={`${styles.mobileOnly}`}>MyPage</Link>
                 <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
             </nav>
         </header>
