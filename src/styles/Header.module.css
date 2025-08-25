@@ -110,11 +110,19 @@
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
+        padding: 10px;
     }
 
     .header {
+        position: fixed;     /* 화면에 고정 */
+        top: 0;              /* 맨 위 */
+        height: 93px;        /* 원하는 높이 */
+        z-index: 30;       /* 다른 요소보다 위에 오도록 */
+        left: 0;
+        right: 0;
         align-items: flex-start;
-        padding: 20px 30px 10px
+        padding: 20px 20px 10px 21px;
+        height: 70px;
     }
 
     .right {

@@ -68,6 +68,7 @@
     background: var(--white);
     font-size: 0.8rem;
     color: var(--text-main);
+    font-family: Arial, sans-serif;
 }
 .textarea:focus-visible{ outline: none; }
 
@@ -112,4 +113,6 @@
 @media (max-width:768px){
     .modal{ padding: 20px; }
     :root{ --ctl-h: 44px; }
+    .input{ font-size: 1rem; }
+    .textarea{ font-size: 1rem; }
 }
