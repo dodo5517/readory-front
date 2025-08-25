@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createSearchParams, Link, useNavigate} from "react-router-dom";
 import { useUser } from '../contexts/UserContext';
-import {logoutUser} from "../services/authService";
+import {logoutUser, reissueAccessToken} from "../services/authService";
 import styles from '../styles/Header.module.css';
 
 export default function Header(){
@@ -15,7 +15,30 @@ export default function Header(){
     const btnRef = useRef<HTMLButtonElement | null>(null);
     const navRef = useRef<HTMLElement | null>(null);
 
+    // 토큰 남은 시간 상태
+    const [remainSec, setRemainSec] = useState<number | null>(null);
+
+    // 이번 달 자동 설정
+    const now = new Date();
+    const year = String(now.getFullYear());
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const search = `?${createSearchParams({
+        mode: "month",
+        year,
+        month,
+    }).toString()}`;
+
     console.log(user);
+
+    // 남은 초 포맷
+    function formatRemain(sec: number) {
+        if (sec <= 0) return "만료됨";
+        const h = Math.floor(sec / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        const s = sec % 60;
+        const pad = (n: number) => String(n).padStart(2, "0");
+        return h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+    }
 
     // 메뉴
     const toggleMenu = () => {
@@ -43,35 +66,85 @@ export default function Header(){
         return () => document.removeEventListener('mousedown', onOutside);
     }, []);
 
-    // 이번 달 자동 설정
-    const now = new Date();
-    const year = String(now.getFullYear());
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const search = `?${createSearchParams({
-        mode: "month",
-        year,
-        month,
-    }).toString()}`;
-
     // 해당 기기에서 로그아웃 핸들러
-    const handleLogout = async(e: React.FormEvent) => {
-        e.preventDefault();
+    const handleLogout = async (e?: React.SyntheticEvent) => {
+        e?.preventDefault?.();
         if (isSubmitting) return;
-        
-        setIsSubmitting(true);
-        console.log("해당 기기에서 로그아웃 시도");
 
+        setIsSubmitting(true);
         try {
             await logoutUser();
             alert("로그아웃 되었습니다.");
             navigate('/login');
-        } catch (err: any) {
+        } catch (err) {
             console.error("로그아웃 실패: ", err);
             alert("로그아웃을 실패했습니다.");
         } finally {
             setIsSubmitting(false);
         }
-    }
+    };
+
+    // 남은 시간 읽기
+    const readRemain = () => {
+        const expRaw = localStorage.getItem("accessTokenExpiresAt");
+        if (!expRaw) {
+            setRemainSec(null);
+            return;
+        }
+        const exp = Number(expRaw);
+        const now = Date.now();
+        const diffSec = Math.max(0, Math.floor((exp - now) / 1000));
+        setRemainSec(diffSec);
+    };
+
+    // 남은 시간 타이머
+    useEffect(() => {
+        // 초기 1회 + 1초 간격 업데이트
+        readRemain();
+        const id = setInterval(readRemain, 1000);
+        return () => clearInterval(id);
+    }, []);
+    // 여러 탭 동기화(다른 탭에서 재발급/로그아웃 시)
+    useEffect(() => {
+        const handler = (e: StorageEvent) => {
+            if (e.key === "accessTokenExpiresAt") {
+                // 변경되면 즉시 남은 시간 재계산
+                const expRaw = localStorage.getItem("accessTokenExpiresAt");
+                if (!expRaw) { setRemainSec(null); return; }
+                const exp = Number(expRaw);
+                setRemainSec(Math.max(0, Math.floor((exp - Date.now()) / 1000)));
+            }
+        };
+        window.addEventListener("storage", handler);
+        return () => window.removeEventListener("storage", handler);
+    }, []);
+
+    useEffect(() => {
+        if (remainSec !== null && remainSec <= 0) {
+            if (document.visibilityState !== "visible") return;
+
+            const ok = window.confirm("세션이 만료되었습니다. 연장하시겠습니까?");
+            if (ok) {
+                handleExtend(); // = reissueToken 호출, localStorage 갱신
+            } else {
+                handleLogout();
+            }
+        }
+    }, [remainSec]);
+
+    const handleExtend = async () => {
+        setRefreshing(true);
+        try {
+            await reissueAccessToken();
+            readRemain();
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setRefreshing(false);
+        }
+    };
+
+    const [refreshing, setRefreshing] = useState(false);
 
     return (
         <header className={styles.header}>
@@ -86,6 +159,24 @@ export default function Header(){
                 <Link to="/" className={`${styles.username} ${styles.mobileOnly}`}>
                     Home
                 </Link>
+
+                {remainSec !== null && (
+                    <span className={styles.tokenWrap}>
+                    <span className={styles.tokenBadge} aria-live="polite">
+                      {formatRemain(remainSec)}
+                    </span>
+                    <button
+                        type="button"
+                        className={styles.extendBtn}
+                        onClick={handleExtend}
+                        disabled={refreshing}
+                        aria-label="토큰 연장"
+                        title="토큰 연장"
+                    >
+                      {refreshing ? "연장 중…" : "연장"}
+                    </button>
+                  </span>
+                )}
             </div>
 
             {/*햄버거 메뉴 버튼*/}
@@ -112,7 +203,7 @@ export default function Header(){
                     Reading Calendar
                 </Link>
                 {/*모바일일 때는 보임*/}
-                <Link to="/myPage" className={`${styles.mobileOnly}`}>MyPage</Link>
+                <Link to="/myPage" className={`${styles.mobileOnly}`}>My Page</Link>
                 <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
             </nav>
         </header>

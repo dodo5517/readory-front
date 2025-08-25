@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     padding: 60px 0px 40px 100px;
-    margin: 93px 30px 100px;
+    margin: 0 30px 100px;
     /*border-top: 1px solid var(--main-hr);*/
     border-bottom: 1px solid var(--main-hr);
     gap: 250px;

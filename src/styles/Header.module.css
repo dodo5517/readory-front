@@ -33,6 +33,67 @@
     color: var(--text-hover);
 }
 
+/* 토큰 뱃지 + 연장 버튼 래핑 */
+.tokenWrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+/* 남은 시간 뱃지 */
+.tokenBadge {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    line-height: 1;
+    background: var(--white);
+    color: var(--text-muted);
+    opacity: 0.9;
+    transition: opacity .2s ease, filter .2s ease, transform .2s ease;
+}
+
+/* 연장 버튼 (처음엔 숨김) */
+.extendBtn {
+    position: absolute;
+    right: -6px;         /* 살짝 겹쳐보이게 */
+    top: 50%;
+    transform: translateY(-50%) translateX(8px); /* 살짝 오른쪽 밖에서 들어오게 */
+    padding: 2px 8px;
+    font-size: 12px;
+    line-height: 1.2;
+    border-radius: 999px;
+    border: 1px solid var(--white);
+    background: var(--white);
+    color: var(--text-muted);
+    box-shadow: var(--text-muted);
+    cursor: pointer;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease, transform .15s ease;
+}
+
+/* 호버/포커스 시 버튼 등장 & 뱃지 살짝 희미하게 */
+.tokenWrap:hover .extendBtn,
+.tokenWrap:focus-within .extendBtn {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) translateX(0);
+}
+
+.tokenWrap:hover .tokenBadge,
+.tokenWrap:focus-within .tokenBadge {
+    opacity: 0.4;
+}
+
+/* 모바일: hover 없음 → 탭 포커스로도 뜨게 하고, 너무 겹치면 위치 조정 */
+@media (max-width: 768px) {
+    .extendBtn {
+        right: -2px;
+    }
+}
+
 .menuButton {
     display: none;
     font-size: 24px;

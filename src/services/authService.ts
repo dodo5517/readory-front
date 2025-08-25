@@ -85,7 +85,7 @@ export async function updatePassword(currentPassword : string, newPassword : str
 }
 
 // accessToken 재발급(POST)
-export async function reissueAccessToken(): Promise<boolean> {
+export async function reissueAccessToken() {
     const response = await fetchWithAuth(`/auth/reissue`, {
         method: 'POST',
         credentials: 'include', // refreshToken 쿠키 전송
@@ -94,6 +94,8 @@ export async function reissueAccessToken(): Promise<boolean> {
     if (response.ok) {
         const data = await response.json();
         localStorage.setItem('accessToken', data.accessToken);
+        const expiresAt = (data.serverTime ?? Date.now()) + (data.expiresIn ?? 0) * 1000;
+        localStorage.setItem('accessTokenExpiresAt', String(expiresAt));
         return true;
     } else {
         localStorage.removeItem('accessToken');
@@ -175,25 +177,31 @@ export async function deleteProfileImage(userId: number): Promise<void> {
 // 현재 기기에서 로그아웃(POST)
 export async function logoutUser() {
     // 백엔드에 로그아웃 요청 보내고 쿠키 제거
-    await fetchWithAuth(`/auth/logout`, {
-        method: 'POST',
-        credentials: 'include',
-    });
-
-    // accessToken 삭제
-    localStorage.removeItem('accessToken');
-    window.location.href = '/login';
+    try {
+        await fetchWithAuth(`/auth/logout`, {
+            method: 'POST',
+            credentials: 'include',
+        }).catch(() => {});
+    } finally {
+        // accessToken 삭제
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('accessTokenExpiresAt');
+        window.location.replace('/login');
+    }
 }
 
 // 모든 기기에서 로그아웃(POST)
 export async function logoutAllDevices() {
     // 백엔드에 로그아웃 요청 보내고 쿠키 제거
-    await fetchWithAuth(`/auth/logout/all`, {
-        method: 'POST',
-        credentials: 'include',
-    });
-
-    // accessToken 삭제
-    localStorage.removeItem('accessToken');
-    window.location.href = '/login';
+    try {
+        await fetchWithAuth(`/auth/logout/all`, {
+            method: 'POST',
+            credentials: 'include',
+        }).catch(() => {});
+    } finally {
+        // accessToken 삭제
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('accessTokenExpiresAt');
+        window.location.replace('/login');
+    }
 }
