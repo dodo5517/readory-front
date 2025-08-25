@@ -18,6 +18,13 @@ export interface SummaryRecord {
     comment: string;
 }
 
+export interface UpdateRecord {
+    rawTitle: string;
+    rawAuthor: string;
+    sentence: string | null;
+    comment: string | null;
+}
+
 export interface BookRecord {
     id: number;
     recordedAt: string;

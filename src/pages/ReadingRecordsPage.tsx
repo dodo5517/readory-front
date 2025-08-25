@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import styles from '../styles/ReadingRecordsPage.module.css';
-import {fetchCandidates, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
+import {fetchCandidates, fetchDeleteRecord, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
 import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";
 import BookSelectModal from "../components/BookSelectModal";
 import Pagination from "../components/pagination/Pagination";
+import RecordEditModal from "../components/RecordEditModal";
 
 // 초기 페이지크기: 모바일 6, 데스크탑 10
 const getInitialPageSize = () => {
@@ -23,15 +24,42 @@ export default function ReadingRecordsPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // 모달/후보/연결용 상태
+    // 책 연결 모달/후보/연결용 상태
     const [modalOpen, setModalOpen] = useState(false);
     const [candidates, setCandidates] = useState<BookCandidate[]>([]);
     const [candidatesLoading, setCandidatesLoading] = useState(false);
     const [selectedRecordId, setSelectedRecordId] = useState<number | null>(null);
 
+
+    // 기록 수정 모달 상태
+    const [editOpen, setEditOpen] = useState(false);
+    const [editing, setEditing] = useState<Record | null>(null);
+    const openEditModal = (rec: Record) => {
+        setEditing(rec);
+        setEditOpen(true);
+    };
+
     // 모달 검색 제어 상태
     const [modalKeyword, setModalKeyword] = useState("");
     const [modalSortKey, setModalSortKey] = useState<'title' | 'author'>('title');
+
+    // 기록 삭제 핸들러
+    const handleDeleteRecord = async (record:Record) => {
+        // eslint-disable-next-line no-restricted-globals
+        const ok = confirm("이 기록을 삭제할까요? 삭제 후 되돌릴 수 없습니다.");
+        if (!ok) return;
+        try {
+            await fetchDeleteRecord(record.id);
+            // 삭제 후 현재 페이지 재조회
+            const updated = await fetchMyRecords({ page, size, q });
+            setData(updated);
+        } catch (e:any) {
+            alert(e?.message ?? "삭제에 실패했습니다.");
+        } finally {
+            setEditOpen(false);
+            alert("해당 기록을 삭제했습니다.");
+        }
+    };
 
     // 화면 크기 변경 시 size 동기화
     useEffect(() => {
@@ -131,17 +159,14 @@ export default function ReadingRecordsPage() {
         setCandidatesLoading(true);
         try {
             await fetchRemoveMatch(recordId);
-            setData(prev => prev ? {
-                ...prev,
-                items: prev.items.map(r => r.id === recordId ? { ...r, bookId: null } : r)
-            } : prev);
+            const updated = await fetchMyRecords({ page, size, q });
+            setData(updated);
         } catch (e) {
             console.error(e);
         } finally {
             setCandidatesLoading(false);
         }
     };
-
 
     return (
         <section className={styles.container}>
@@ -211,19 +236,39 @@ export default function ReadingRecordsPage() {
                         <div className={styles.actions}>
                             <button
                                 type="button"
+                                className={styles.editBtn}
+                                onClick={() => openEditModal(record)}
+                                aria-label="기록 수정"
+                                title="기록 수정"
+                            >
+                                ✏️ 수정
+                            </button>
+
+                            <button
+                                type="button"
                                 className={styles.linkBtn}
                                 onClick={() => openSelectModal(record)}
                             >
                                 {record.bookId ? "책 다시 연결" : "책 연결"}
                             </button>
                             {record.bookId && (<button
-                                type="button"
-                                className={styles.linkBtn}
-                                onClick={() => handleRemoveMatch(record.id)}
-                            >
-                                책 연결 끊기
-                            </button>
+                                    type="button"
+                                    className={styles.linkBtn}
+                                    onClick={() => handleRemoveMatch(record.id)}
+                                >
+                                    책 연결 끊기
+                                </button>
                             )}
+
+                            <button
+                                type="button"
+                                className={styles.dangerBtn}
+                                onClick={() => handleDeleteRecord(record)}
+                                aria-label="기록 삭제"
+                                title="기록 삭제"
+                            >
+                                🗑️ 삭제
+                            </button>
                         </div>
                     </div>
                 ))}
@@ -260,6 +305,27 @@ export default function ReadingRecordsPage() {
                 onSortKeyChange={setModalSortKey}
                 onSubmitSearch={handleModalSearch}
             />
+
+            {/*책 수정 모달*/}
+            {editing && editOpen && (
+                <RecordEditModal
+                    open={editOpen}
+                    initial={{
+                        id: editing.id,
+                        recordedAt: editing.recordedAt,
+                        title: editing.title ?? "",
+                        author: editing.author ?? "",
+                        sentence: editing.sentence ?? "",
+                        comment: editing.comment ?? "",
+                    }}
+                    onSave={async (form) => {
+                        const updated = await fetchMyRecords({ page, size, q });
+                        setData(updated);
+                    }}
+                    onDelete={async (id) => handleDeleteRecord(editing)}
+                    onClose={() => setEditOpen(false)}
+                />
+            )}
         </section>
     );
 }

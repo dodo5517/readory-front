@@ -1,9 +1,9 @@
 import { fetchWithAuth } from "../utils/fetchWithAuth";
-import {BookRecord, BookRecordsPage, Record, SummaryRecord} from "../types/records";
+import {BookRecord, BookRecordsPage, Record, SummaryRecord, UpdateRecord} from "../types/records";
 import { formatYMDhm } from "../utils/datetime";
 import {BookCandidate, BookMeta, PageResponse, PageResult, SummaryBook} from "../types/books";
 
-// 메인에 쓸 최근 3개의 메모 불러오기
+// 메인에 쓸 최근 3개의 메모 조회
 export async function fetchMySummaryRecords(): Promise<SummaryRecord[]> {
     const response = await fetchWithAuth(`/records/me/summary`, { method: "GET" });
     if (!response.ok) {
@@ -23,7 +23,7 @@ export async function fetchMySummaryRecords(): Promise<SummaryRecord[]> {
         }));
 }
 
-// 해당 유저의 모든 기록 불러오기
+// 해당 유저의 모든 기록 조회
 export async function fetchMyRecords(opts: {
     page: number;
     size?: number;
@@ -68,7 +68,7 @@ export async function fetchMyRecords(opts: {
     };
 }
 
-// 메인에 쓸 최근 8개의 책(매핑된) 불러오기
+// 메인에 쓸 최근 8개의 책(매핑된) 조회
 export async function fetchMySummaryBooks(): Promise<SummaryBook[]> {
     const response = await fetchWithAuth(`/records/me/books?size=8`, { method: "GET" });
     if (!response.ok) {
@@ -88,7 +88,7 @@ export async function fetchMySummaryBooks(): Promise<SummaryBook[]> {
         }));
 }
 
-// 해당 유저가 기록한 모든 책(매핑된) 불러오기
+// 해당 유저가 기록한 모든 책(매핑된) 조회
 export async function fetchMyBooks(opts: {
     page: number;          // 0-base
     size?: number;         // 서버에서 default 20임
@@ -183,7 +183,7 @@ export async function fetchRemoveMatch(recordId : number): Promise<void> {
     }
 }
 
-// 해당 유저의 책 한 권에 대한 모든 기록 불러오기
+// 해당 유저의 책 한 권에 대한 모든 기록 조회
 export async function fetchBookRecords(bookId: number, cursor: string|null, size: number|null):
     Promise<BookRecordsPage<BookMeta, BookRecord>> {
 
@@ -227,4 +227,34 @@ export async function fetchBookRecords(bookId: number, cursor: string|null, size
         nextCursor: data.nextCursor,
         hasMore: data.hasMore
     };
+}
+
+// 기록 수정
+export async function fetchUpdateRecord(recordId: number, record : UpdateRecord ): Promise<void> {
+    const response = await fetchWithAuth(`/records/update/${recordId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            rawTitle: record.rawTitle,
+            rawAuthor: record.rawAuthor,
+            sentence: record.sentence,
+            comment: record.comment,
+        })
+    });
+
+    if (!response.ok) {
+        throw new Error("기록 수정 실패");
+    }
+}
+
+// 기록 삭제
+export async function fetchDeleteRecord(recordId: number): Promise<void> {
+    const response = await fetchWithAuth(`/records/delete/${recordId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" }
+    });
+
+    if (!response.ok) {
+        throw new Error("기록 삭제 실패");
+    }
 }

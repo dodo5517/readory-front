@@ -135,8 +135,10 @@
     gap: 8px; /* 버튼 사이 간격 */
 }
 
-.linkBtn {
-    /*margin-top: 16px;*/
+.editBtn,
+.linkBtn,
+.dangerBtn {
+    min-width: 91.6px;
     padding: 6px 12px;
     font-size: 0.8rem;
     border: 1px solid var(--copy-border);
@@ -145,11 +147,31 @@
     cursor: pointer;
     color: var(--text-main);
 }
+.editBtn:hover,
+.linkBtn:hover { background-color: var(--link-hover); }
 
-.linkBtn:hover {
-    background-color: var(--link-hover);
+.dangerBtn {
+    border-color: var(--danger-border);     /* 연한 붉은기 */
+    color: var(--danger-color);            /* 톤다운된 빨강 */
+    background: var(--danger-bg);       /* 거의 흰색 */
 }
+.dangerBtn:hover {
+    background: var(--danger-hover);       /* hover도 은은하게 */
+}
+
 @media (max-width: 768px) {
+    .actions {
+        grid-column: 1 / -1;
+        justify-self: end;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .editBtn, .linkBtn, .dangerBtn {
+        min-width: 69px;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
     .container {
         padding: 0;
     }

@@ -35,6 +35,10 @@
   --page-btn: #111;
   --placeholder: #777;
   --search-btn: #f6f9f7;
+  --danger-border: #e5a5a5;
+  --danger-color: #b94a4a;
+  --danger-bg: #faf7f7;
+  --danger-hover: #f6eaea;
 
   --weekday-text: #555;
   --day-bg: #f9f9f9;
@@ -82,6 +86,10 @@
   --page-btn: #eee;
   --placeholder: #777;
   --search-btn: #1f1f23;
+  --danger-border: #663333;
+  --danger-color: #ff6b6b;
+  --danger-bg: #2a1e1e;
+  --danger-hover: #3a2626;
 
 
   --weekday-text: #aaa;
