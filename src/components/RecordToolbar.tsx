@@ -118,7 +118,7 @@ export default function  RecordToolbar({
                     <span className={styles.searchIcon} aria-hidden>🔎</span>
                     <input
                         className={styles.searchInput}
-                        placeholder="문장/코멘트 검색…"
+                        placeholder="문장/메모 검색…"
                         value={q}
                         onChange={(e) => setQ(e.target.value)}
                         aria-label="검색어"

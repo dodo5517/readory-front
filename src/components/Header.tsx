@@ -55,15 +55,18 @@ export default function Header(){
     };
     // 바깥 클릭 시 닫기
     useEffect(() => {
-        const onOutside = (e: MouseEvent) => {
+        const onOutside = (e: PointerEvent) => {
             const target = e.target as Node;
             if (!navRef.current || !btnRef.current) return;
+            // nav도 아니고 메뉴 버튼도 아니면 닫기
             if (!navRef.current.contains(target) && !btnRef.current.contains(target)) {
                 setMenuOpen(false);
             }
         };
-        document.addEventListener('mousedown', onOutside);
-        return () => document.removeEventListener('mousedown', onOutside);
+
+        const opts: AddEventListenerOptions = { capture: true };
+        document.addEventListener('pointerdown', onOutside, opts);
+        return () => document.removeEventListener('pointerdown', onOutside, opts);
     }, []);
 
     // 해당 기기에서 로그아웃 핸들러

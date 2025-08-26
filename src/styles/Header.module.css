@@ -176,7 +176,7 @@
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
-        padding: 5px 0 15px;
+        padding: 5px 20px 15px;
     }
 
     .header {

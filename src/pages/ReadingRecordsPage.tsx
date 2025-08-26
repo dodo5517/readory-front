@@ -18,18 +18,23 @@ export default function ReadingRecordsPage() {
     const items = data?.items ?? [];
     const [page, setPage] = useState(0);
     const [size, setSize] = useState<number>(getInitialPageSize); //모바일=6, 데스크탑=10
+    const [sort, setSort] = useState<"titleAndAuthor" | "segmentAndComment">("titleAndAuthor");
     const [q, setQ] = useState("");
     const [queryInput, setQueryInput] = useState("");
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const PLACEHOLDER = {
+        titleAndAuthor: '제목/작가에서 검색...',
+        segmentAndComment: '문장/메모에서 검색...',
+    };
+
     // 책 연결 모달/후보/연결용 상태
     const [modalOpen, setModalOpen] = useState(false);
     const [candidates, setCandidates] = useState<BookCandidate[]>([]);
     const [candidatesLoading, setCandidatesLoading] = useState(false);
     const [selectedRecordId, setSelectedRecordId] = useState<number | null>(null);
-
 
     // 기록 수정 모달 상태
     const [editOpen, setEditOpen] = useState(false);
@@ -185,7 +190,8 @@ export default function ReadingRecordsPage() {
                                 setQ(queryInput.trim());
                             }
                         }}
-                        placeholder="책 제목, 저자 검색..."
+                        placeholder={PLACEHOLDER[sort]}
+                        aria-label={PLACEHOLDER[sort]}
                         className={styles.searchInput}
                     />
                     <button
@@ -198,6 +204,27 @@ export default function ReadingRecordsPage() {
                         🔍
                     </button>
                 </div>
+
+                <div className={styles.segment}>
+                    <button
+                        className={`${styles.segBtn} ${sort === "titleAndAuthor" ? styles.isActive : ""}`}
+                        onClick={() => {
+                            setSort("titleAndAuthor");
+                            setPage(0);
+                        }}
+                    >
+                        제목/작가
+                    </button>
+                    <button
+                        className={`${styles.segBtn} ${sort === "segmentAndComment" ? styles.isActive : ""}`}
+                        onClick={() => {
+                            setSort("segmentAndComment");
+                            setPage(0);
+                        }}
+                    >
+                        문장/메모
+                    </button>
+                </div>
             </div>
 
             {loading ? (
@@ -206,16 +233,16 @@ export default function ReadingRecordsPage() {
                 <div className={styles.error} role="alert">{error}</div>
             ) : (
                 <>
-            <div className={styles.list}>
-                {items.map((record) => (
-                    <div key={record.id} className={styles.card}>
-                        <div className={styles.coverArea}>
-                            {record.bookId ? (
-                                <img
-                                    src={record.coverUrl ?? undefined} // null이면 undefined로 변환
-                                    alt={`${record.title} 표지`}
-                                    className={styles.coverImg}
-                                    loading="lazy"
+                    <div className={styles.list}>
+                        {items.map((record) => (
+                            <div key={record.id} className={styles.card}>
+                                <div className={styles.coverArea}>
+                                    {record.bookId ? (
+                                        <img
+                                            src={record.coverUrl ?? undefined} // null이면 undefined로 변환
+                                            alt={`${record.title} 표지`}
+                                            className={styles.coverImg}
+                                            loading="lazy"
                                     referrerPolicy="no-referrer"
                                 />
                             ) : (
