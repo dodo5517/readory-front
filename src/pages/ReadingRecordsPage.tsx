@@ -18,7 +18,7 @@ export default function ReadingRecordsPage() {
     const items = data?.items ?? [];
     const [page, setPage] = useState(0);
     const [size, setSize] = useState<number>(getInitialPageSize); //모바일=6, 데스크탑=10
-    const [sort, setSort] = useState<"titleAndAuthor" | "segmentAndComment">("titleAndAuthor");
+    const [scope, setScope] = useState<"titleAndAuthor" | "sentenceAndComment">("titleAndAuthor");
     const [q, setQ] = useState("");
     const [queryInput, setQueryInput] = useState("");
 
@@ -27,7 +27,7 @@ export default function ReadingRecordsPage() {
 
     const PLACEHOLDER = {
         titleAndAuthor: '제목/작가에서 검색...',
-        segmentAndComment: '문장/메모에서 검색...',
+        sentenceAndComment: '문장/메모에서 검색...',
     };
 
     // 책 연결 모달/후보/연결용 상태
@@ -88,7 +88,7 @@ export default function ReadingRecordsPage() {
             try {
                 setLoading(true);
                 setError(null);
-                const next = await fetchMyRecords({ page, size, q });
+                const next = await fetchMyRecords({ page, scope, size, q });
                 if (!aborted) setData(next);
             } catch (e: any) {
                 if (!aborted) setError("불러오기 실패");
@@ -190,8 +190,8 @@ export default function ReadingRecordsPage() {
                                 setQ(queryInput.trim());
                             }
                         }}
-                        placeholder={PLACEHOLDER[sort]}
-                        aria-label={PLACEHOLDER[sort]}
+                        placeholder={PLACEHOLDER[scope]}
+                        aria-label={PLACEHOLDER[scope]}
                         className={styles.searchInput}
                     />
                     <button
@@ -207,18 +207,18 @@ export default function ReadingRecordsPage() {
 
                 <div className={styles.segment}>
                     <button
-                        className={`${styles.segBtn} ${sort === "titleAndAuthor" ? styles.isActive : ""}`}
+                        className={`${styles.segBtn} ${scope === "titleAndAuthor" ? styles.isActive : ""}`}
                         onClick={() => {
-                            setSort("titleAndAuthor");
+                            setScope("titleAndAuthor");
                             setPage(0);
                         }}
                     >
                         제목/작가
                     </button>
                     <button
-                        className={`${styles.segBtn} ${sort === "segmentAndComment" ? styles.isActive : ""}`}
+                        className={`${styles.segBtn} ${scope === "sentenceAndComment" ? styles.isActive : ""}`}
                         onClick={() => {
-                            setSort("segmentAndComment");
+                            setScope("sentenceAndComment");
                             setPage(0);
                         }}
                     >

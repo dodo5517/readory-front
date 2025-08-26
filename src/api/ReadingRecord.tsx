@@ -27,13 +27,15 @@ export async function fetchMySummaryRecords(): Promise<SummaryRecord[]> {
 export async function fetchMyRecords(opts: {
     page: number;
     size?: number;
+    scope?: "titleAndAuthor" | "sentenceAndComment";
     q?: string
 }): Promise<PageResult<Record>> {
-    const { page, size, q } = opts;
+    const { page, size, scope, q } = opts;
 
     const params = new URLSearchParams({
         page: String(page),
         size: String(size),
+        sort: String(scope),
     });
     if (q && q.trim()) params.set("q", q.trim());
 
