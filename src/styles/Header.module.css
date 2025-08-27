@@ -87,10 +87,23 @@
     opacity: 0.4;
 }
 
-/* 모바일: hover 없음 → 탭 포커스로도 뜨게 하고, 너무 겹치면 위치 조정 */
+/* 모바일에서 수동 연장 버튼/효과 완전 비활성화 */
 @media (max-width: 768px) {
-    .extendBtn {
-        right: -2px;
+    /* 버튼 자체는 .desktopOnly 규칙으로 숨겨짐 */
+    .desktopOnly { display: none; }
+
+    /* hover/focus로 뱃지가 흐려지는 것도 끔 */
+    .tokenWrap:hover .tokenBadge,
+    .tokenWrap:focus-within .tokenBadge {
+        opacity: 0.9 !important;
+    }
+
+    /* 혹시 남아있을 수 있는 등장 전환도 무력화 */
+    .tokenWrap:hover .extendBtn,
+    .tokenWrap:focus-within .extendBtn {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transform: translateY(-50%) translateX(8px) !important;
     }
 }
 
