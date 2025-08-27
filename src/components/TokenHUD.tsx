@@ -18,7 +18,6 @@ const TokenHUD: React.FC<Props> = ({ onExpire, onExtend, refreshing }) => {
         if (!raw) { setRemainSec(null); return; }
         const diff = Math.max(0, Math.floor((Number(raw) - Date.now()) / 1000));
         setRemainSec(diff);
-        console.log(refreshing);
     }, []);
 
     // 1) 1초 타이머

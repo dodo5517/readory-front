@@ -35,7 +35,7 @@ export async function fetchMyRecords(opts: {
     const params = new URLSearchParams({
         page: String(page),
         size: String(size),
-        sort: String(scope),
+        scope: String(scope),
     });
     if (q && q.trim()) params.set("q", q.trim());
 
