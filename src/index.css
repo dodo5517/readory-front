@@ -43,6 +43,10 @@
   --weekday-text: #555;
   --day-bg: #f9f9f9;
 
+  --shadow-lift: 0 8px 20px rgba(0,0,0,.18), 0 3px 6px rgba(0,0,0,.10);
+  --shadow-press: 0 4px 10px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.08);
+  --hover-brightness: 1.02;
+
   --calendar-intensity-1: rgba(118, 167, 214, 0.45);
   --calendar-intensity-2: rgba(118, 167, 214, 0.65);
   --calendar-intensity-3: rgba(118, 167, 214, 0.85);
@@ -94,6 +98,10 @@
 
   --weekday-text: #aaa;
   --day-bg: #262626;
+
+  --shadow-lift: 0 0 0 1px rgba(255,255,255,.12), 0 10px 24px rgba(0,0,0,.70), 0 4px 10px rgba(0,0,0,.45);
+  --shadow-press: 0 0 0 1px rgba(255,255,255,.08), 0 6px 14px rgba(0,0,0,.60);
+  --hover-brightness: 1.06; /* 다크에선 살짝 더 밝게 */
 
   /*보라 계열*/
   --calendar-intensity-1: rgba(167, 139, 250, 0.35);

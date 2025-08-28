@@ -6,6 +6,7 @@ import {BookCandidate, PageResult} from "../types/books";
 import BookSelectModal from "../components/BookSelectModal";
 import Pagination from "../components/pagination/Pagination";
 import RecordEditModal from "../components/RecordEditModal";
+import {useNavigate} from "react-router-dom";
 
 // 초기 페이지크기: 모바일 6, 데스크탑 10
 const getInitialPageSize = () => {
@@ -24,6 +25,8 @@ export default function ReadingRecordsPage() {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const navigate = useNavigate();
 
     const PLACEHOLDER = {
         titleAndAuthor: '제목/작가에서 검색...',
@@ -242,6 +245,7 @@ export default function ReadingRecordsPage() {
                                             src={record.coverUrl ?? undefined} // null이면 undefined로 변환
                                             alt={`${record.title} 표지`}
                                             className={styles.coverImg}
+                                            onClick={() => navigate(`/bookRecord/${record.bookId}`)}
                                             loading="lazy"
                                     referrerPolicy="no-referrer"
                                 />
