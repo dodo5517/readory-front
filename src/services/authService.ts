@@ -205,3 +205,15 @@ export async function logoutAllDevices() {
         window.location.replace('/login');
     }
 }
+
+// 탈퇴
+export async function deleteUser():Promise<void> {
+    const res = await fetchWithAuth(`/users/delete`, {
+        method: "DELETE",
+        credentials: "include"
+    });
+
+    if (!res.ok) {
+        throw new Error("탈퇴 실패");
+    }
+}

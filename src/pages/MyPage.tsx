@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {useUser} from "../contexts/UserContext";
 import {
-    deleteProfileImage,
+    deleteProfileImage, deleteUser,
     getFullApiKey,
     logoutAllDevices,
     reissueApiKey,
@@ -81,6 +81,7 @@ export default function MyPage() {
         }
     }
 
+    // 프로필 이미지 삭제 핸들러
     const handleDeleteProfileImage = async () => {
         if (!user) return;
 
@@ -98,6 +99,27 @@ export default function MyPage() {
             console.error("이미지 삭제 실패:", err);
             alert("이미지 삭제에 실패했습니다.");
         }
+    }
+
+    // 탈퇴 핸들러
+    const handleDeleteUser = async () => {
+        if(!user) return;
+
+        const confirmed1 = window.confirm("정말 탈퇴하시겠어요?");
+        if (!confirmed1) return;
+
+        const confirmed2 = window.confirm("탈퇴 시 모든 기록이 영구 삭제되며 복구할 수 없습니다. 계속 진행할까요?");
+        if (!confirmed2) return;
+        
+        try {
+            await deleteUser();
+            alert("탈퇴처리되었습니다..");
+            navigate('/login');
+        } catch (err) {
+            console.error("탈퇴 실패:", err);
+            alert("탈퇴에 실패했습니다.");
+        }
+
     }
 
     return (
@@ -158,6 +180,23 @@ export default function MyPage() {
                     <div className={styles.boxLabel}></div>
                     <div className={styles.boxText}>모든 기기에서 로그아웃</div>
                 </div>
+            </div>
+
+            <div className={styles.dangerSection} role="region" aria-label="위험 구역">
+                <div className={styles.dangerInfo}>
+                    <div className={styles.dangerTitle}>계정 삭제</div>
+                    <div className={styles.dangerDesc}>
+                        계정과 모든 기록이 영구 삭제됩니다. 복구할 수 없습니다.
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    className={styles.dangerBtn}
+                    onClick={handleDeleteUser}   // 기존 핸들러에 연결 (오타 그대로 쓰고 있으면 유지)
+                    aria-label="계정 영구 삭제"
+                >
+                    🗑️ 탈퇴하기
+                </button>
             </div>
         </section>
     );

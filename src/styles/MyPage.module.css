@@ -146,6 +146,50 @@
     color: var(--text-main);
 }
 
+/* 위험 구역 래퍼: 카드와 동일 톤, 튀지 않게 */
+.dangerSection{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--copy-border);
+    border-radius: 10px;
+    background: var(--light-bg);
+}
+
+/* 텍스트 영역 */
+.dangerInfo{ display: grid; gap: 4px; }
+.dangerTitle{ font-weight: 700; color: var(--text-main); }
+.dangerDesc{ font-size: .9rem; color: var(--text-muted); }
+
+/* 덜 튀는 파괴 버튼 */
+.dangerBtn{
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #e5a5a5;   /* 연한 붉은기 */
+    background: #faf7f7;         /* 거의 흰색 */
+    color: #b94a4a;              /* 톤다운 레드 */
+    font-size: .95rem;
+}
+.dangerBtn:hover{ background: #f6eaea; }
+.dangerBtn:focus-visible{ outline: 2px solid var(--link-color); }
+
+/* 모바일: 버튼을 전체 폭으로 내려 배치 */
+@media (max-width: 768px){
+    .dangerSection{
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .dangerBtn{
+        width: 100%;
+        padding: 12px 14px;        /* 터치 타깃 확장 */
+        font-size: 1rem;
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 20px;
