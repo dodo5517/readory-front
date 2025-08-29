@@ -5,7 +5,7 @@ import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";
 import BookSelectModal from "../components/BookSelectModal";
 import Pagination from "../components/pagination/Pagination";
-import RecordEditModal from "../components/RecordEditModal";
+import RecordEditModal from "../components/EditRecordModal";
 import {useNavigate} from "react-router-dom";
 
 // 초기 페이지크기: 모바일 6, 데스크탑 10

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "../styles/RecordEditModal.module.css";
+import styles from "../styles/EditRecordModal.module.css";
 import {UpdateRecord} from "../types/records";
 import {fetchUpdateRecord} from "../api/ReadingRecord";
 
