@@ -184,7 +184,7 @@ export default function MyPage() {
 
             <div className={styles.dangerSection} role="region" aria-label="위험 구역">
                 <div className={styles.dangerInfo}>
-                    <div className={styles.dangerTitle}>계정 삭제</div>
+                    <div className={styles.dangerTitle}>계정 영구 삭제</div>
                     <div className={styles.dangerDesc}>
                         계정과 모든 기록이 영구 삭제됩니다. 복구할 수 없습니다.
                     </div>

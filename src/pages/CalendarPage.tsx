@@ -249,7 +249,7 @@ export default function CalendarPage() {
 
     return (
         <section className={styles.container}>
-            <h1 className={styles.title}>My Reading Records</h1>
+            <h1 className={styles.title}>My Reading Calendar</h1>
 
             <div className={styles.recordToolbar}>
                 {/* 검색 + 정렬 툴바 */}

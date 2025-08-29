@@ -3,12 +3,11 @@
     bottom: 24px;
     right: 24px;
     background-color: var(--btn-bg);
-    color: var(--btn-text);
     border: none;
     border-radius: 50%;
     font-size: 1.5rem;
     padding: 12px;
     cursor: pointer;
-    z-index: 999;
+    z-index: 20;
     transition: all 0.3s ease;
 }

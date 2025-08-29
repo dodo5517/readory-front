@@ -7,6 +7,14 @@
     font-family: sans-serif;
 }
 
+@media (max-width: 768px){
+    .container {
+        display: flex;
+        align-items: flex-start;
+        margin-top: 80px;
+    }
+}
+
 .card {
     background-color: var(--card-bg);
     padding: 40px;
