@@ -1,6 +1,9 @@
 # Readory Frontend  
 > 아이폰 단축어로 독서 기록을 남기고, 웹에서 모아보는 **“나만의 독서 일기장”**
 
+> **기간:** 2025.07.28 ~ 2025.08.29  
+> **개인 프로젝트**
+
  **관련 저장소**
 - [Readory Server (Spring Boot)](https://github.com/dodo5517/readory-server)
 
