@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useUser} from "../contexts/UserContext";
 import {
     deleteProfileImage, deleteUser,
@@ -14,12 +14,16 @@ export default function MyPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { user, setUser } = useUser();
+    const [apiKey, setApiKey] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // api_key 전체 복사 핸들러
     const handleCopy = async () => {
-        const res = await getFullApiKey();
-        await navigator.clipboard.writeText(res.apiKey);
+        if (!apiKey) {
+            alert("잠시 후 다시 시도해주세요.");
+            return;
+        }
+        await navigator.clipboard.writeText(apiKey);
         alert('API Key가 클립보드에 복사되었습니다. \n\ \n\API Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
     };
 
@@ -122,6 +126,11 @@ export default function MyPage() {
 
     }
 
+    // 모달 열리자마자 api key 로드 및 저장
+    useEffect(() => {
+        getFullApiKey().then(res => setApiKey(res.apiKey));
+    }, []);
+
     return (
         <section className={styles.container}>
             <div className={styles.avatarWrapper}>
@@ -177,7 +186,6 @@ export default function MyPage() {
             <div className={styles.box} onClick={handleLogoutAllDevices}>
                 <span className={styles.lockIcon}>🔒</span>
                 <div>
-                    <div className={styles.boxLabel}></div>
                     <div className={styles.boxText}>모든 기기에서 로그아웃</div>
                 </div>
             </div>
