@@ -124,7 +124,7 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
                             value={record.comment ?? ""}
                             onChange={(e) => setRecord({...record, comment: e.target.value})}
                             rows={5}
-                            maxLength={2000}
+                            maxLength={1000}
                         />
                         <div className={styles.counter}>{record.comment?.length}/2000</div>
                     </label>

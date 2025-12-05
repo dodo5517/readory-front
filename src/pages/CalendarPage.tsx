@@ -7,7 +7,7 @@ import BookSelectModal from "../components/BookSelectModal";
 import Pagination from "../components/pagination/Pagination";
 import RecordToolbar, {SearchParams} from "../components/RecordToolbar";
 import {fetchMyDay, fetchMyMonth} from "../api/Calendar";
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 // 초기 페이지크기: 모바일 6, 데스크탑 10
 const getInitialPageSize = () => {
@@ -16,6 +16,8 @@ const getInitialPageSize = () => {
 };
 
 export default function CalendarPage() {
+    const navigate = useNavigate();
+
     const [sp, setSearchParams] = useSearchParams();
     const mode  = (sp.get("mode") ?? "month") as "month" | "day";
     const date  = sp.get("date");   // YYYY-MM-DD
@@ -280,6 +282,7 @@ export default function CalendarPage() {
                                     src={record.coverUrl ?? undefined} // null이면 undefined로 변환
                                     alt={`${record.title} 표지`}
                                     className={styles.coverImg}
+                                    onClick={() => navigate(`/bookRecord/${record.bookId}`)}
                                     loading="lazy"
                                     referrerPolicy="no-referrer"
                                 />

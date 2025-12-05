@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
 import styles from '../styles/ReadingList.module.css';
 import { fetchMySummaryRecords } from "../api/ReadingRecord";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {SummaryRecord} from "../types/records";
 
 export default function ReadingList() {
     const [list, setList] = useState<SummaryRecord[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -33,7 +35,10 @@ export default function ReadingList() {
 
             <div className={styles.right}>
                 {list.map((list, index) => (
-                    <div key={index} className={styles.list}>
+                    <div key={index}
+                         className={styles.list}
+                         onClick={() => navigate(`/readingRecords`)}
+                    >
                         <span className={styles.date}>{list.date}</span>
                         <div className={styles.content}>
                             <div className={styles.main}>

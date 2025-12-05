@@ -2,13 +2,14 @@ import React, {useEffect, useRef, useState} from 'react';
 import styles from "../styles/BookCarousel.module.css";
 import {SummaryBook} from "../types/books";
 import {fetchMySummaryBooks} from "../api/ReadingRecord";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function BookCarousel() {
     const [list, setList] = useState<SummaryBook[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const listRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     const scroll = (direction: 'left' | 'right') => {
         if (listRef.current) {
@@ -49,7 +50,10 @@ export default function BookCarousel() {
 
                 <div className={styles.bookList} ref={listRef}>
                     {list.map((book) => (
-                        <div key={book.id} className={styles.bookItem}>
+                        <div key={book.id}
+                             className={styles.bookItem}
+                             onClick={() => navigate(`/bookRecord/${book.id}`)}
+                        >
                             <img src={book.coverUrl} alt={book.title} className={styles.bookImage}/>
                             <div className={styles.bookTitle}>{book.title}</div>
                             <div className={styles.bookAuthor}>{book.author}</div>
