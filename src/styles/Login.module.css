@@ -117,5 +117,31 @@
     height: 100%;
     border-radius: 10%;
     object-fit: cover;         /* 왜곡 방지 */
+    cursor: pointer;
     /*border: 1px solid #ddd;    !* 선택적 테두리 *!*/
+}
+
+.githubLink {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.githubLink a {
+    color: var(--text-sub);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.githubLink a:hover {
+    color: var(--text-main);
+    transform: scale(1.1);
+}
+
+.githubLink svg {
+    pointer-events: none;
 }
