@@ -4,7 +4,7 @@
 > **기간:** 2025.07.28 ~ 2025.08.29  
 > **개인 프로젝트**
 
- **관련 저장소**
+ **서버 레파지토리**
 - [Readory Server (Spring Boot)](https://github.com/dodo5517/readory-server)
 
 ---
@@ -17,6 +17,12 @@
     <td><img width="500" src="https://github.com/user-attachments/assets/05dc03e0-7bb1-4f70-8c75-7e4dbe4bc9b0" /></td>
   </tr>
 </table>
+
+---
+
+## 데모
+
+[데모 바로가기](https://www.kimdohyeon.dev/login)
 
 ---
 
