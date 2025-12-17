@@ -4,6 +4,8 @@ import {useNavigate, Link } from 'react-router-dom';
 import styles from '../styles/Login.module.css';
 import {loginUser} from "../services/authService";
 
+const API_BASE_URL = process.env.API_BASE_URL!;
+
 export default function Login() {
     const navigate = useNavigate();
 
@@ -72,13 +74,13 @@ export default function Login() {
                     Don’t have an account? <Link to="/signUp" className={styles.a}>Sign Up</Link>
                 </div>
                 <div className={styles.socialLogin}>
-                    <button onClick={() => window.location.href = "https://api.kimdohyeon.dev/oauth2/authorization/google"}>
+                    <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/google`}>
                         <img src="/assets/social/google_login.png" alt="Google Login"/>
                     </button>
-                    <button onClick={() => window.location.href = "https://api.kimdohyeon.dev/oauth2/authorization/kakao"}>
+                    <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/kakao`}>
                         <img src="/assets/social/kakao_login.png" alt="Kakao Login"/>
                     </button>
-                    <button onClick={() => window.location.href = "https://api.kimdohyeon.dev/oauth2/authorization/naver"}>
+                    <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/naver`}>
                         <img src="/assets/social/naver_login.png" alt="Naver Login"/>
                     </button>
                 </div>
