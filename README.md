@@ -22,7 +22,7 @@
 
 ## 데모
 
-[데모 바로가기](https://www.kimdohyeon.dev/login)
+[데모 바로가기](https://readory.kimdohyeon.dev/)
 
 ---
 
