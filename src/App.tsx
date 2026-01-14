@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import RootRedirect from "./components/RootRedirect";
 import ThemeToggle from './components/ThemeToggle';
 import Login from "./components/Login";
@@ -11,7 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import { ThemeProvider } from './contexts/ThemeContext';
 import { UserProvider } from './contexts/UserContext';
 import './App.css';
-import Layout from "./components/Layout";
+import Layout from "./layouts/Layout";
 import SignUp from "./components/SignUp";
 import MyPage from "./pages/MyPage";
 import EditNamePage from "./pages/EditNamePage";
@@ -19,6 +19,8 @@ import EditPasswordPage from "./pages/EditPasswordPage";
 import OAuthCallback from "./components/OAuthCallback";
 import BookRecordPage from "./pages/BookRecordPage";
 import CalendarPage from "./pages/CalendarPage";
+import AdminUsersPage from "./pages/AdminUsersPage";
+import AdminLayout from "./layouts/AdminLayout";
 
 function App() {
   return (
@@ -31,6 +33,16 @@ function App() {
                       <Route path={"/login"} element={<Login/>}/>
                       <Route path={"/signUp"} element={<SignUp/>}/>
                       <Route path={"/oauth/callback"} element={<OAuthCallback/>}/>
+
+                      <Route path="/admin" element={<AdminLayout title="Readory Admin" />}>
+                          <Route index element={<Navigate to="/admin/users" replace />} />
+                          <Route path="users" element={<AdminUsersPage />} />
+
+                          {/* 나중에 추가 */}
+                          <Route path="logs/auth" element={<div>인증 로그(준비중)</div>} />
+                          <Route path="books" element={<div>책 관리(준비중)</div>} />
+                          <Route path="records" element={<div>기록 관리(준비중)</div>} />
+                      </Route>
 
                       <Route element={<Layout />}>
                           <Route path={"/main"} element={<PrivateRoute><Main/></PrivateRoute>} />
