@@ -1,0 +1,157 @@
+.section{
+    min-height: 100vh;
+    background: var(--bg, transparent);
+}
+
+/* Header */
+.header{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--main-hr);
+    background: var(--card-bg);
+}
+
+.headerInner{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 40px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    min-width: 0;
+}
+.brandMark{
+    color: var(--link-color);
+    font-size: 1.1rem;
+    line-height: 1;
+}
+.brandText{
+    color: var(--text-main);
+    font-weight: 800;
+    font-size: 1.05rem;
+}
+
+.headerRight{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    min-width: 0;
+}
+.path{
+    color: var(--text-muted);
+    font-size: .85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 360px;
+}
+.rightSlot{ display:flex; align-items:center; gap: 8px; }
+
+/* Body layout */
+.body{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 40px 40px;
+    display:grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 20px;
+}
+
+.sidebar{
+    border: 1px solid var(--main-hr);
+    border-radius: 12px;
+    background: var(--card-bg);
+    padding: 14px;
+    height: fit-content;
+    position: sticky;
+    top: 72px; /* 헤더 높이 근사치 */
+}
+
+.navTitle{
+    color: var(--text-main);
+    font-weight: 700;
+    font-size: .95rem;
+    margin-bottom: 12px;
+}
+
+.nav{
+    display:flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.navGroup{ display:flex; flex-direction: column; gap: 8px; }
+
+.groupLabel{
+    color: var(--text-muted);
+    font-size: .8rem;
+    font-weight: 700;
+}
+
+.groupItems{ display:flex; flex-direction: column; gap: 6px; }
+
+.navItem{
+    text-decoration: none;
+    color: var(--text-main);
+    font-size: .9rem;
+    padding: 10px 10px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+}
+.navItem:hover{
+    background: var(--link-hover);
+    border-color: rgba(0,0,0,0.04);
+}
+.isActive{
+    background: var(--search-btn);
+    color: var(--page-btn);
+    font-weight: 700;
+}
+
+/* Content area */
+.content{
+    min-width: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px){
+    .headerInner{ padding: 14px 20px; }
+    .path{ display:none; }
+
+    .body{
+        padding: 20px;
+        grid-template-columns: 1fr;
+    }
+
+    /* 모바일: 사이드바를 가로 스크롤 가능한 탭바 느낌으로 */
+    .sidebar{
+        position: relative;
+        top: auto;
+        padding: 10px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .sidebar::-webkit-scrollbar{ display:none; }
+
+    .nav{
+        flex-direction: row;
+        gap: 10px;
+    }
+    .navGroup{
+        min-width: 240px;
+        flex: 0 0 auto;
+        border: 1px solid var(--main-hr);
+        border-radius: 12px;
+        padding: 10px;
+        background: var(--card-bg);
+    }
+}
