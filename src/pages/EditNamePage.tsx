@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from '../styles/EditNamePage.module.css';
 import {useNavigate} from "react-router-dom";
 import {useUser} from "../contexts/UserContext";
-import {updateUsername} from "../services/authService";
+import {updateUsername} from "../api/Auth";
 
 export default function EditNamePage() {
     const navigate = useNavigate();

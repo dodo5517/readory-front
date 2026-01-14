@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createSearchParams, Link, useNavigate} from "react-router-dom";
 import { useUser } from '../contexts/UserContext';
-import {logoutUser, reissueAccessToken} from "../services/authService";
+import {logoutUser, reissueAccessToken} from "../api/Auth";
 import TokenHUD from "./TokenHUD";
 import styles from '../styles/Header.module.css';
 

@@ -6,7 +6,7 @@ import {
     logoutAllDevices,
     reissueApiKey,
     uploadProfileImage
-} from "../services/authService";
+} from "../api/Auth";
 import styles from '../styles/MyPage.module.css';
 import {Link, useNavigate} from "react-router-dom";
 

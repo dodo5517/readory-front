@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import styles from "../styles/BookSelectModal.module.css";
-import {BookCandidate} from "../types/books";
+import styles from "../../styles/BookSelectModal.module.css";
+import {BookCandidate} from "../../types/books";
 
 type Props = {
     open: boolean;

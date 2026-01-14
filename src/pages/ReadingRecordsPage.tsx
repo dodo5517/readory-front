@@ -3,9 +3,9 @@ import styles from '../styles/ReadingRecordsPage.module.css';
 import {fetchCandidates, fetchDeleteRecord, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
 import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";
-import BookSelectModal from "../components/BookSelectModal";
+import BookSelectModal from "../components/modal/BookSelectModal";
 import Pagination from "../components/pagination/Pagination";
-import RecordEditModal from "../components/EditRecordModal";
+import RecordEditModal from "../components/modal/EditRecordModal";
 import {useNavigate} from "react-router-dom";
 
 // 초기 페이지크기: 모바일 6, 데스크탑 10

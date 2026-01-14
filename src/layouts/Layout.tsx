@@ -1,7 +1,7 @@
-import Header from './Header';
+import Header from '../components/Header';
 import { Outlet, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fetchCurrentUser } from '../services/authService';
+import { fetchCurrentUser } from '../api/Auth';
 import { useUser } from '../contexts/UserContext';
 
 const Layout = () => {

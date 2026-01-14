@@ -148,7 +148,7 @@ export async function uploadProfileImage(userId: number, file: File): Promise<st
     const formData = new FormData();
     formData.append("image", file);
 
-    const res = await fetchWithAuth(`/users/${userId}/profile-image`, {
+    const res = await fetchWithAuth(`/users/me/profile-image`, {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -163,7 +163,7 @@ export async function uploadProfileImage(userId: number, file: File): Promise<st
 
 // 프로필 이미지 삭제
 export async function deleteProfileImage(userId: number): Promise<void> {
-    const res = await fetchWithAuth(`/users/${userId}/profile-image`, {
+    const res = await fetchWithAuth(`/users/me/profile-image`, {
         method: "DELETE",
         credentials: "include"
     });

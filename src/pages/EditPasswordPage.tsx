@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/EditPasswordPage.module.css';
 import {useNavigate} from "react-router-dom";
-import {updatePassword, updateUsername} from "../services/authService";
+import {updatePassword, updateUsername} from "../api/Auth";
 
 export default function EditPasswordPage() {
     const navigate = useNavigate();

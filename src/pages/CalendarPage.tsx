@@ -3,7 +3,7 @@ import styles from '../styles/ReadingRecordsPage.module.css';
 import {fetchCandidates, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
 import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";
-import BookSelectModal from "../components/BookSelectModal";
+import BookSelectModal from "../components/modal/BookSelectModal";
 import Pagination from "../components/pagination/Pagination";
 import RecordToolbar, {SearchParams} from "../components/RecordToolbar";
 import {fetchMyDay, fetchMyMonth} from "../api/Calendar";
