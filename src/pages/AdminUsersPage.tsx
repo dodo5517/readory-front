@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/AdminUsersPage.module.css";
 import * as adminUser from "../api/AdminUser";
 import {PageResponse} from "../types/books";
@@ -21,7 +21,6 @@ export default function AdminUsersPage() {
     const [error, setError] = useState<string | null>(null);
 
     const [selectedId, setSelectedId] = useState<number | null>(null);
-    const [selectedUser, setSelectedUser] = useState<AdminPageUserResponse | null>(null);
 
     const [openDetail, setOpenDetail] = useState(false);
 

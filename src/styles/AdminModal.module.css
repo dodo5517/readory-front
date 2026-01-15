@@ -132,6 +132,18 @@
     background: var(--bg, #fafafa);
 }
 
+.clickableUser {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.infoRowClickable {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .infoRow {
     display: flex;
     align-items: center;
@@ -143,6 +155,18 @@
     font-size: 0.85rem;
     color: var(--text-muted, #888);
     font-weight: 500;
+}
+
+.valueClickable {
+    cursor: pointer;
+    text-decoration: underline;
+    flex: 1;
+    font-size: 0.9rem;
+    color: var(--text-main, #222);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-wrap: anywhere;
 }
 
 .value {
@@ -374,6 +398,13 @@
     .body {
         padding: 16px;
         gap: 16px;
+    }
+
+    .infoRowClickable {
+        cursor: pointer;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
     }
 
     .infoRow {
