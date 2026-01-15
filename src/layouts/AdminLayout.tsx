@@ -9,14 +9,14 @@ const NAV: AdminNavItem[] = [
         label: "유저 관리",
         children: [
             { key: "users-list", label: "유저 리스트", to: "/admin/users" },
+            { key: "users-refreshToken", label: "유저 토큰", to: "/admin/refreshTokens" },
         ],
     },
     {
         key: "logs",
         label: "로그",
         children: [
-            { key: "logs-auth", label: "인증 로그", to: "/admin/logs/auth" },
-            { key: "logs-user", label: "유저 활동 로그", to: "/admin/logs/user" },
+            { key: "logs-user", label: "로그", to: "/admin/logs" },
         ],
     },
     {

@@ -21,6 +21,8 @@ import BookRecordPage from "./pages/BookRecordPage";
 import CalendarPage from "./pages/CalendarPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminLayout from "./layouts/AdminLayout";
+import AdminGuard from "./layouts/AdminGuard"
+import AdminLogPage from "./pages/AdminLogPage";
 
 function App() {
   return (
@@ -34,14 +36,15 @@ function App() {
                       <Route path={"/signUp"} element={<SignUp/>}/>
                       <Route path={"/oauth/callback"} element={<OAuthCallback/>}/>
 
-                      <Route path="/admin" element={<AdminLayout title="Readory Admin" />}>
-                          <Route index element={<Navigate to="/admin/users" replace />} />
-                          <Route path="users" element={<AdminUsersPage />} />
-
-                          {/* 나중에 추가 */}
-                          <Route path="logs/auth" element={<div>인증 로그(준비중)</div>} />
-                          <Route path="books" element={<div>책 관리(준비중)</div>} />
-                          <Route path="records" element={<div>기록 관리(준비중)</div>} />
+                      <Route element={<AdminGuard />}>
+                          <Route path="/admin" element={<AdminLayout title="Readory Admin" />}>
+                              <Route index element={<Navigate to="/admin/users" replace />} />
+                              <Route path="users" element={<AdminUsersPage />} />
+                              <Route path="logs" element={<AdminLogPage/>} />
+                              <Route path="refreshTokens" element={<div>토큰 관리(준비중)</div>} />
+                              <Route path="books" element={<div>책 관리(준비중)</div>} />
+                              <Route path="records" element={<div>기록 관리(준비중)</div>} />
+                          </Route>
                       </Route>
 
                       <Route element={<Layout />}>
