@@ -10,10 +10,10 @@ interface Props {
     isOpen: boolean;
     userId: number | null;
     onClose: () => void;
-    onRefreshList: () => Promise<void> | void;
+    onRefreshList?: () => Promise<void> | void;
 }
 
-export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList }: Props) {
+export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList = () => {} }: Props) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [user, setUser] = useState<AdminPageUserResponse | null>(null);
