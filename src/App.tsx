@@ -19,10 +19,10 @@ import EditPasswordPage from "./pages/EditPasswordPage";
 import OAuthCallback from "./components/OAuthCallback";
 import BookRecordPage from "./pages/BookRecordPage";
 import CalendarPage from "./pages/CalendarPage";
-import AdminUsersPage from "./pages/AdminUsersPage";
+import AdminUserPage from "./pages/AdminUserPage";
 import AdminNav from "./layouts/AdminNav";
 import AdminLayout from "./layouts/AdminLayout"
-import AdminLogPage from "./pages/AdminLogPage";
+import AdminLogPage from "./pages/AdminAuthLogPage";
 
 function App() {
   return (
@@ -39,7 +39,7 @@ function App() {
                       <Route element={<AdminLayout />}>
                           <Route path="/admin" element={<AdminNav title="Readory Admin" />}>
                               <Route index element={<Navigate to="/admin/users" replace />} />
-                              <Route path="users" element={<AdminUsersPage />} />
+                              <Route path="users" element={<AdminUserPage />} />
                               <Route path="logs" element={<AdminLogPage/>} />
                               <Route path="refreshTokens" element={<div>토큰 관리(준비중)</div>} />
                               <Route path="books" element={<div>책 관리(준비중)</div>} />

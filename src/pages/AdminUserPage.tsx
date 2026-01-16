@@ -6,7 +6,7 @@ import {AdminPageUserResponse} from "../types/adminUser";
 import {useSearchParams} from "react-router-dom";
 import UserDetailModal from "../components/modal/admin/UserDetailModal";
 
-export default function AdminUsersPage() {
+export default function AdminUserPage() {
     const [sp, setSearchParams] = useSearchParams();
 
     const [keyword, setKeyword] = useState("");
