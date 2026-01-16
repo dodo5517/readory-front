@@ -20,8 +20,8 @@ import OAuthCallback from "./components/OAuthCallback";
 import BookRecordPage from "./pages/BookRecordPage";
 import CalendarPage from "./pages/CalendarPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
-import AdminLayout from "./layouts/AdminLayout";
-import AdminGuard from "./layouts/AdminGuard"
+import AdminNav from "./layouts/AdminNav";
+import AdminLayout from "./layouts/AdminLayout"
 import AdminLogPage from "./pages/AdminLogPage";
 
 function App() {
@@ -36,8 +36,8 @@ function App() {
                       <Route path={"/signUp"} element={<SignUp/>}/>
                       <Route path={"/oauth/callback"} element={<OAuthCallback/>}/>
 
-                      <Route element={<AdminGuard />}>
-                          <Route path="/admin" element={<AdminLayout title="Readory Admin" />}>
+                      <Route element={<AdminLayout />}>
+                          <Route path="/admin" element={<AdminNav title="Readory Admin" />}>
                               <Route index element={<Navigate to="/admin/users" replace />} />
                               <Route path="users" element={<AdminUsersPage />} />
                               <Route path="logs" element={<AdminLogPage/>} />

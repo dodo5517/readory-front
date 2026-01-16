@@ -1,98 +1,39 @@
-import React from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
-import styles from "../styles/AdminLayout.module.css";
-import type { AdminNavItem } from "../types/adminNav";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useUser } from "../contexts/UserContext";
+import { fetchCurrentUser } from "../api/Auth";
 
-const NAV: AdminNavItem[] = [
-    {
-        key: "users",
-        label: "유저 관리",
-        children: [
-            { key: "users-list", label: "유저 리스트", to: "/admin/users" },
-            { key: "users-refreshToken", label: "유저 토큰", to: "/admin/refreshTokens" },
-        ],
-    },
-    {
-        key: "logs",
-        label: "로그",
-        children: [
-            { key: "logs-user", label: "로그", to: "/admin/logs" },
-        ],
-    },
-    {
-        key: "books",
-        label: "책 관리",
-        children: [
-            { key: "books-list", label: "책 목록", to: "/admin/books" },
-            { key: "books-match", label: "매칭/정리", to: "/admin/books/match" },
-        ],
-    },
-    {
-        key: "records",
-        label: "기록 관리",
-        children: [
-            { key: "records-list", label: "기록 목록", to: "/admin/records" },
-            { key: "records-reports", label: "신고/검수", to: "/admin/records/reports" },
-        ],
-    },
-];
+export default function AdminLayout() {
+    const navigate = useNavigate();
+    const [checking, setChecking] = useState(true);
+    const { setUser } = useUser();
 
-type Props = {
-    title?: string;
-    rightSlot?: React.ReactNode; // 헤더 우측(관리자 표시/로그아웃 버튼 등)
-};
+    useEffect(() => {
+        const accessToken = localStorage.getItem("accessToken");
 
-export default function AdminLayout({ title = "Admin", rightSlot }: Props) {
-    const location = useLocation();
+        if (!accessToken) {
+            navigate("/login", { replace: true });
+            return;
+        }
 
-    return (
-        <section className={styles.section}>
-            <header className={styles.header}>
-                <div className={styles.headerInner}>
-                    <div className={styles.brand}>
-                        <span className={styles.brandMark}>●</span>
-                        <span className={styles.brandText}>{title}</span>
-                    </div>
+        fetchCurrentUser()
+            .then((u) => {
+                setUser(u);
 
-                    <div className={styles.headerRight}>
-                        <span className={styles.path}>{location.pathname}</span>
-                        {rightSlot ? <div className={styles.rightSlot}>{rightSlot}</div> : null}
-                    </div>
-                </div>
-            </header>
+                const isAdmin = u?.role === "ADMIN";
+                if (!isAdmin) {
+                    navigate("/", { replace: true });
+                    return;
+                }
 
-            <div className={styles.body}>
-                <aside className={styles.sidebar}>
-                    <div className={styles.navTitle}>관리 메뉴</div>
+                setChecking(false);
+            })
+            .catch(() => {
+                localStorage.removeItem("accessToken");
+                navigate("/login", { replace: true });
+            });
+    }, [navigate, setUser]);
 
-                    <nav className={styles.nav}>
-                        {NAV.map((group) => (
-                            <div key={group.key} className={styles.navGroup}>
-                                <div className={styles.groupLabel}>{group.label}</div>
-
-                                <div className={styles.groupItems}>
-                                    {group.children?.map((item) => (
-                                        <NavLink
-                                            key={item.key}
-                                            to={item.to ?? "#"}
-                                            className={({ isActive }) =>
-                                                `${styles.navItem} ${isActive ? styles.isActive : ""}`
-                                            }
-                                        >
-                                            {item.label}
-                                        </NavLink>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </nav>
-                </aside>
-
-                <main className={styles.content}>
-                    {/* 각 페이지는 기존 카드/툴바 스타일 그대로 */}
-                    <Outlet />
-                </main>
-            </div>
-        </section>
-    );
+    if (checking) return null; // 또는 로딩 UI
+    return <Outlet />;
 }
