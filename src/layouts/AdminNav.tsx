@@ -16,7 +16,8 @@ const NAV: AdminNavItem[] = [
         key: "logs",
         label: "로그",
         children: [
-            { key: "logs-user", label: "로그", to: "/admin/logs" },
+            { key: "logs-auth", label: "인증 로그", to: "/admin/auth/logs" },
+            { key: "logs-api", label: "API 로그", to: "/admin/api/logs" },
         ],
     },
     {

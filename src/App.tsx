@@ -23,6 +23,7 @@ import AdminUserPage from "./pages/AdminUserPage";
 import AdminNav from "./layouts/AdminNav";
 import AdminLayout from "./layouts/AdminLayout"
 import AdminLogPage from "./pages/AdminAuthLogPage";
+import AdminApiLogsPage from "./pages/AdminApiLogPage";
 
 function App() {
   return (
@@ -40,7 +41,8 @@ function App() {
                           <Route path="/admin" element={<AdminNav title="Readory Admin" />}>
                               <Route index element={<Navigate to="/admin/users" replace />} />
                               <Route path="users" element={<AdminUserPage />} />
-                              <Route path="logs" element={<AdminLogPage/>} />
+                              <Route path="auth/logs" element={<AdminLogPage/>} />
+                              <Route path="api/logs" element={<AdminApiLogsPage/>} />
                               <Route path="refreshTokens" element={<div>토큰 관리(준비중)</div>} />
                               <Route path="books" element={<div>책 관리(준비중)</div>} />
                               <Route path="records" element={<div>기록 관리(준비중)</div>} />
