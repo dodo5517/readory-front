@@ -58,7 +58,7 @@ export async function getApiLogs(params: GetApiLogsParams = {}): Promise<PageRes
     if (params.size !== undefined) query.append("size", String(params.size));
     if (params.sort) query.append("sort", params.sort);
 
-    const response = await fetchWithAuth(`/admin/logs?${query.toString()}`, {
+    const response = await fetchWithAuth(`/admin/api/logs?${query.toString()}`, {
         method: "GET",
         credentials: "include",
     });
@@ -72,7 +72,7 @@ export async function getApiLogs(params: GetApiLogsParams = {}): Promise<PageRes
 
 // 특정 API 로그 상세 조회
 export async function getApiLogDetail(id: number): Promise<ApiLogDetailResponse> {
-    const response = await fetchWithAuth(`/admin/logs/${id}`, {
+    const response = await fetchWithAuth(`/admin/api/logs/${id}`, {
         method: "GET",
         credentials: "include",
     });
