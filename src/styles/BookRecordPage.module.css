@@ -106,12 +106,14 @@
     margin: 0 0 10px;
     color: var(--record-quote);
     font-size: 0.95rem;
+    white-space: pre-line;
     line-height: 1.7;
 }
 .comment{
     font-size: 0.85rem;
     margin: 0;
     color: var(--placeholder);
+    white-space: pre-line;
     line-height: 1.65;
 }
 
