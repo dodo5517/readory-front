@@ -27,6 +27,7 @@ import AdminApiLogsPage from "./pages/AdminApiLogPage";
 import AdminBookPage from "./pages/AdminBookPage";
 import GuidePage from "./pages/GuidePage ";
 import FaqPage from "./pages/FaqPage";
+import AdminRecordPage from "./pages/AdminRecordPage";
 
 function App() {
   return (
@@ -50,7 +51,7 @@ function App() {
                               <Route path="api/logs" element={<AdminApiLogsPage/>} />
                               <Route path="refreshTokens" element={<div>토큰 관리(준비중)</div>} />
                               <Route path="books" element={<AdminBookPage/>} />
-                              <Route path="records" element={<div>기록 관리(준비중)</div>} />
+                              <Route path="records" element={<AdminRecordPage/>} />
                           </Route>
                       </Route>
 
