@@ -79,3 +79,36 @@ export interface GetApiLogsParams {
     size?: number;
     sort?: string;
 }
+
+
+// 책 목록용 응답
+export interface BookListResponse {
+    id: number;
+    title: string;
+    author: string;
+    publisher: string;
+    coverUrl: string | null;
+    createdAt: string;
+}
+
+// 책 상세용 응답
+export interface BookDetailResponse {
+    id: number;
+    title: string;
+    author: string;
+    publisher: string;
+    isbn10: string | null;
+    isbn13: string | null;
+    publishedDate: string | null;
+    coverUrl: string | null;
+    createdAt: string;
+    updatedAt: string | null;
+    deletedAt: string | null;
+}
+export interface GetBooksParams {
+    keyword?: string;
+    includeDeleted?: boolean;
+    page?: number;
+    size?: number;
+    sort?: string;
+}
