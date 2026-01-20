@@ -1,0 +1,385 @@
+.container {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: var(--bg, #f5f5f5);
+}
+
+.card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--card-bg, #fff);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px var(--copy-border);
+    overflow: hidden;
+}
+
+/* ========================
+   Hero 섹션 (서비스 소개)
+   ======================== */
+.heroSection {
+    padding: 50px 30px 40px;
+    text-align: center;
+    background: var(--bg, #fafafa);
+    border-bottom: 1px solid var(--main-hr, #eee);
+}
+
+.logoArea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.logoIcon {
+    font-size: 2.5rem;
+}
+
+.logoText {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-main, #222);
+    margin: 0;
+}
+
+.tagline {
+    font-size: 1rem;
+    color: var(--calendar-intensity-4);
+    font-weight: 500;
+    margin: 0 0 16px;
+}
+
+.heroDescription {
+    font-size: 1.05rem;
+    color: var(--text-muted, #666);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ========================
+   섹션 공통
+   ======================== */
+.featuresSection,
+.quickLinksSection,
+.usageSection,
+.noteSection {
+    padding: 30px;
+    border-bottom: 1px solid var(--main-hr, #eee);
+}
+
+.noteSection {
+    border-bottom: none;
+}
+
+.sectionTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main, #222);
+    margin: 0 0 20px;
+}
+
+/* ========================
+   핵심 기능 섹션
+   ======================== */
+.featureList {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.featureItem {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg, #fafafa);
+    border: 1px solid var(--main-hr, #eee);
+    border-radius: 12px;
+}
+
+.featureIcon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    background: var(--card-bg, #fff);
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.featureContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.featureTitle {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-main, #222);
+    margin: 0 0 8px;
+}
+
+.featureDescription {
+    font-size: 0.9rem;
+    color: var(--text-muted, #666);
+    margin: 0 0 12px;
+    line-height: 1.5;
+}
+
+.featureDetails {
+    margin: 0;
+    padding: 0 0 0 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.featureDetails li {
+    font-size: 0.85rem;
+    color: var(--text-main, #444);
+    line-height: 1.5;
+}
+
+.featureDetails li::marker {
+    color: var(--calendar-intensity-4);
+}
+
+/* ========================
+   빠른 링크 섹션
+   ======================== */
+.linkButtons {
+    display: flex;
+    gap: 12px;
+}
+
+.linkButton,
+.linkButtonPrimary {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.linkButton {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--input-border, #ddd);
+    color: var(--text-main, #222);
+}
+
+.linkButton:hover {
+    background: var(--link-hover, #f5f5f5);
+    border-color: var(--text-muted, #999);
+}
+
+.linkButtonPrimary {
+    background: var(--link-color, #1976d2);
+    border: 1px solid var(--link-color, #1976d2);
+    color: #fff;
+}
+
+.linkButtonPrimary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.linkIcon {
+    font-size: 1.2rem;
+}
+
+.linkText {
+    white-space: nowrap;
+}
+
+/* ========================
+   사용법 섹션
+   ======================== */
+.stepList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.stepItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: var(--bg, #fafafa);
+    border: 1px solid var(--main-hr, #eee);
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+
+.stepItem:hover {
+    border-color: var(--link-color, #1976d2);
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
+}
+
+.stepNumber {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--link-color, #1976d2);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: 50%;
+}
+
+.stepContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.stepTitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-main, #222);
+    margin: 0 0 4px;
+}
+
+.stepDescription {
+    font-size: 0.85rem;
+    color: var(--text-muted, #666);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* ========================
+   안내 메시지 섹션
+   ======================== */
+.noteBox {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 10px;
+}
+
+.noteIcon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.noteText {
+    font-size: 0.9rem;
+    color: #5d4037;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* ========================
+   푸터
+   ======================== */
+.footer {
+    padding: 24px 30px;
+    display: flex;
+    justify-content: center;
+    background: var(--bg, #fafafa);
+}
+
+.backBtn {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--input-border, #ddd);
+    color: var(--text-main, #222);
+    transition: all 0.2s;
+}
+
+.backBtn:hover {
+    background: var(--link-hover, #f5f5f5);
+}
+
+/* ========================
+   모바일 반응형
+   ======================== */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 16px;
+    }
+
+    .heroSection {
+        padding: 36px 20px 30px;
+    }
+
+    .logoIcon {
+        font-size: 2rem;
+    }
+
+    .logoText {
+        font-size: 1.6rem;
+    }
+
+    .heroDescription {
+        font-size: 0.95rem;
+    }
+
+    .featuresSection,
+    .quickLinksSection,
+    .usageSection,
+    .noteSection {
+        padding: 24px 20px;
+    }
+
+    .sectionTitle {
+        font-size: 1.1rem;
+    }
+
+    .featureItem {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .featureIcon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+
+    .linkButtons {
+        flex-direction: column;
+    }
+
+    .stepList {
+        grid-template-columns: 1fr;
+    }
+
+    .stepItem {
+        padding: 14px;
+    }
+
+    .stepNumber {
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
+    }
+
+    .noteBox {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .footer {
+        padding: 20px;
+    }
+}
