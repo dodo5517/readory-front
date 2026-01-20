@@ -1,0 +1,565 @@
+.section {
+    padding: 20px 40px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+.pageTitle {
+    color: var(--text-main);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0 0 14px;
+}
+
+/* 툴바 */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0 12px;
+}
+
+.searchGroup {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+}
+
+.searchInput {
+    flex: 1;
+    height: var(--ctl-h);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 0.95rem;
+    background: var(--card-bg);
+    color: var(--text-main);
+}
+
+.searchInput::placeholder {
+    color: var(--placeholder);
+}
+
+.searchInput:focus {
+    outline: none;
+}
+
+.searchBtn {
+    height: var(--ctl-h);
+    padding: 0 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    font-size: 0.95rem;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+.searchBtn:hover {
+    background: var(--search-btn);
+}
+
+.segment {
+    display: inline-flex;
+    gap: 6px;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    padding: 4px;
+}
+
+.segBtn {
+    height: 40px;
+    padding: 0 12px;
+    border: 0;
+    background: transparent;
+    color: var(--placeholder);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.isActive {
+    background: var(--search-btn);
+    color: var(--page-btn);
+    font-weight: 600;
+}
+
+/* 필터 */
+.filters {
+    display: flex;
+    gap: 10px;
+    margin: 0 0 14px;
+}
+
+.select {
+    height: var(--ctl-h);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    padding: 0 12px;
+    background: var(--card-bg);
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.userIdInput {
+    width: 120px;
+    height: var(--ctl-h);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 0.95rem;
+    background: var(--card-bg);
+    color: var(--text-main);
+}
+
+.userIdInput::placeholder {
+    color: var(--placeholder);
+}
+
+.userIdInput:focus {
+    outline: none;
+}
+
+.error {
+    margin: 10px 0;
+    padding: 10px 12px;
+    border: 1px solid var(--danger-border);
+    background: var(--danger-bg);
+    color: var(--danger-color);
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+/* 리스트 */
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card {
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--main-hr);
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.card:hover {
+    background: var(--link-hover);
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cardId {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* 매칭 상태 뱃지 */
+.statusBadge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+.statusMatched {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.statusUnmatched {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.statusPending {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.statusFailed {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bookInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.bookTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.bookAuthor {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.sentence {
+    font-size: 0.9rem;
+    color: var(--text-main);
+    font-style: italic;
+    margin: 0;
+    padding: 10px 14px;
+    background: var(--bg, #fafafa);
+    border-radius: 8px;
+    border-left: 3px solid var(--link-color, #1976d2);
+    line-height: 1.5;
+}
+
+.cardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid var(--main-hr);
+}
+
+.username {
+    font-size: 0.85rem;
+    color: var(--link-color, #1976d2);
+    font-weight: 500;
+}
+
+.date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.empty {
+    padding: 30px 0;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.pageBtn {
+    height: 38px;
+    padding: 0 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+.pageBtn:hover {
+    background: var(--search-btn);
+}
+
+.pageBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.pageInfo {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    min-width: 90px;
+    text-align: center;
+}
+
+/* ========================
+   모달 상세 스타일
+   ======================== */
+
+.detailHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg, #fafafa);
+    border-radius: 10px;
+}
+
+.detailId {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.statusBadgeLg {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 8px;
+}
+
+/* 섹션 라벨 */
+.sectionLabel {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+/* 유저 섹션 */
+.userSection {
+    padding: 14px;
+    background: var(--bg, #fafafa);
+    border: 1px solid var(--main-hr);
+    border-radius: 10px;
+}
+
+.userInfo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.userName {
+    font-weight: 600;
+    color: var(--link-color, #1976d2);
+    font-size: 0.95rem;
+}
+
+.userEmail {
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.userId {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* 매칭된 책 섹션 */
+.matchedBookSection {
+    padding: 14px;
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    border-radius: 10px;
+}
+
+.matchedBook {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.bookCover {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.noCover {
+    width: 50px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--main-hr);
+    border-radius: 6px;
+    font-size: 1.5rem;
+}
+
+.matchedBookInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.matchedBookTitle {
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.matchedBookAuthor {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.matchedBookId {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* 내용 섹션 */
+.contentSection {
+    padding: 14px;
+    background: var(--bg, #fafafa);
+    border: 1px solid var(--main-hr);
+    border-radius: 10px;
+}
+
+.sentenceBlock {
+    margin: 0;
+    padding: 12px 16px;
+    background: var(--card-bg, #fff);
+    border-left: 3px solid var(--link-color, #1976d2);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.commentBlock {
+    margin: 0;
+    padding: 12px;
+    background: var(--card-bg, #fff);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* 액션 섹션 */
+.actionSection {
+    display: flex;
+    gap: 10px;
+    padding-top: 8px;
+}
+
+.editBtn,
+.deleteBtn {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editBtn {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--input-border, #ddd);
+    color: var(--text-main);
+}
+
+.editBtn:hover {
+    background: var(--link-hover, #f5f5f5);
+}
+
+.deleteBtn {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--danger-border, #ffcdd2);
+    color: var(--danger-color, #d32f2f);
+}
+
+.deleteBtn:hover {
+    background: var(--danger-bg, #fff5f5);
+}
+
+/* 수정 폼 textarea */
+.textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--input-border, #ddd);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background: var(--card-bg, #fff);
+    color: var(--text-main);
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+.textarea::placeholder {
+    color: var(--placeholder, #aaa);
+}
+
+.textarea:focus {
+    outline: none;
+    border-color: var(--link-color, #1976d2);
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+    .section {
+        padding: 20px;
+    }
+
+    .container {
+        padding: 20px 0;
+    }
+
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .segment {
+        width: 100%;
+    }
+
+    .segBtn {
+        flex: 1 1 50%;
+        padding: 0;
+        text-align: center;
+    }
+
+    .filters {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .userIdInput {
+        width: 100%;
+    }
+
+    .userInfo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .matchedBook {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .actionSection {
+        flex-direction: column;
+    }
+}

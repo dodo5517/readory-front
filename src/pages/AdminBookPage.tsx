@@ -6,7 +6,7 @@ import BookDetailModal from "../components/modal/admin/BookDetailModal";
 import {PageResponse} from "../types/books";
 import {BookDetailResponse, BookListResponse} from "../types/adminLog";
 
-export default function AdminBooksPage() {
+export default function AdminBookPage() {
     const [sp, setSearchParams] = useSearchParams();
 
     const [keyword, setKeyword] = useState("");
