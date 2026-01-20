@@ -24,6 +24,7 @@ import AdminNav from "./layouts/AdminNav";
 import AdminLayout from "./layouts/AdminLayout"
 import AdminLogPage from "./pages/AdminAuthLogPage";
 import AdminApiLogsPage from "./pages/AdminApiLogPage";
+import AdminBookPage from "./pages/AdminBookPage";
 import GuidePage from "./pages/GuidePage ";
 import FaqPage from "./pages/FaqPage";
 
@@ -48,7 +49,7 @@ function App() {
                               <Route path="auth/logs" element={<AdminLogPage/>} />
                               <Route path="api/logs" element={<AdminApiLogsPage/>} />
                               <Route path="refreshTokens" element={<div>토큰 관리(준비중)</div>} />
-                              <Route path="books" element={<div>책 관리(준비중)</div>} />
+                              <Route path="books" element={<AdminBookPage/>} />
                               <Route path="records" element={<div>기록 관리(준비중)</div>} />
                           </Route>
                       </Route>

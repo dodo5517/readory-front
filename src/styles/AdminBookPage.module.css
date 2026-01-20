@@ -1,0 +1,526 @@
+.section {
+    padding: 20px 40px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+.pageTitle {
+    color: var(--text-main);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0 0 14px;
+}
+
+/* 툴바 */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0 12px;
+}
+
+.searchGroup {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+}
+
+.searchInput {
+    flex: 1;
+    height: var(--ctl-h);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 0.95rem;
+    background: var(--card-bg);
+    color: var(--text-main);
+}
+
+.searchInput::placeholder {
+    color: var(--placeholder);
+}
+
+.searchInput:focus {
+    outline: none;
+}
+
+.searchBtn {
+    height: var(--ctl-h);
+    padding: 0 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    font-size: 0.95rem;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+.searchBtn:hover {
+    background: var(--search-btn);
+}
+
+.segment {
+    display: inline-flex;
+    gap: 6px;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    padding: 4px;
+}
+
+.segBtn {
+    height: 40px;
+    padding: 0 12px;
+    border: 0;
+    background: transparent;
+    color: var(--placeholder);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.isActive {
+    background: var(--search-btn);
+    color: var(--page-btn);
+    font-weight: 600;
+}
+
+/* 필터 */
+.filters {
+    display: flex;
+    gap: 10px;
+    margin: 0 0 14px;
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    cursor: pointer;
+    padding: 8px 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background: var(--card-bg);
+    transition: all 0.2s;
+}
+
+.checkboxLabel:hover {
+    background: var(--link-hover);
+}
+
+.checkboxLabel input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.error {
+    margin: 10px 0;
+    padding: 10px 12px;
+    border: 1px solid var(--danger-border);
+    background: var(--danger-bg);
+    color: var(--danger-color);
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+/* 리스트 */
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card {
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--main-hr);
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr) 100px;
+    gap: 12px;
+    align-items: center;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.card:hover {
+    background: var(--link-hover);
+}
+
+/* 표지 영역 */
+.coverArea {
+    width: 60px;
+}
+
+.cover {
+    width: 60px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #f3f3f3;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.noCover {
+    width: 60px;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg, #f5f5f5);
+    border: 1px solid var(--main-hr);
+    border-radius: 6px;
+    font-size: 1.5rem;
+}
+
+/* 메타 정보 */
+.meta {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.topRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.title {
+    color: var(--text-main);
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.author {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.subRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.muted {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.dot {
+    color: var(--text-muted);
+}
+
+/* 날짜 영역 */
+.dateCol {
+    min-width: 0;
+    justify-self: end;
+    text-align: right;
+}
+
+.dateLabel {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+}
+
+.dateValue {
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.empty {
+    padding: 30px 0;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.pageBtn {
+    height: 38px;
+    padding: 0 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+.pageBtn:hover {
+    background: var(--search-btn);
+}
+
+.pageBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.pageInfo {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    min-width: 90px;
+    text-align: center;
+}
+
+/* ========================
+   모달 상세 스타일
+   ======================== */
+
+/* 삭제된 책 배너 */
+.deletedBanner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--danger-bg, #fff5f5);
+    border: 1px solid var(--danger-border, #ffcdd2);
+    border-radius: 10px;
+    color: var(--danger-color, #d32f2f);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.deletedIcon {
+    font-size: 1.2rem;
+}
+
+/* 상세 헤더 */
+.detailHeader {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg, #fafafa);
+    border-radius: 10px;
+}
+
+.detailCoverArea {
+    flex-shrink: 0;
+}
+
+.detailCover {
+    width: 80px;
+    height: 115px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.detailNoCover {
+    width: 80px;
+    height: 115px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--main-hr);
+    border-radius: 8px;
+    font-size: 2rem;
+}
+
+.detailInfo {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+}
+
+.detailTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+    word-break: break-word;
+}
+
+.detailAuthor {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.detailPublisher {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ISBN 코드 */
+.isbnCode {
+    font-family: monospace;
+    font-size: 0.9rem;
+    background: var(--bg, #f5f5f5);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* URL 섹션 */
+.urlSection {
+    border: 1px solid var(--main-hr);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.urlLabel {
+    display: block;
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--bg, #fafafa);
+    border-bottom: 1px solid var(--main-hr);
+}
+
+.urlContent {
+    padding: 12px 14px;
+    background: var(--card-bg);
+}
+
+.urlLink {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--link-color, #1976d2);
+    word-break: break-all;
+    text-decoration: none;
+}
+
+.urlLink:hover {
+    text-decoration: underline;
+}
+
+/* 액션 섹션 */
+.actionSection {
+    display: flex;
+    gap: 10px;
+    padding-top: 8px;
+}
+
+.softDeleteBtn,
+.hardDeleteBtn,
+.restoreBtn {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.softDeleteBtn {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--danger-border, #ffcdd2);
+    color: var(--danger-color, #d32f2f);
+}
+
+.softDeleteBtn:hover {
+    background: var(--danger-bg, #fff5f5);
+}
+
+.hardDeleteBtn {
+    background: var(--danger-color, #d32f2f);
+    border: 1px solid var(--danger-color, #d32f2f);
+    color: #fff;
+}
+
+.hardDeleteBtn:hover {
+    opacity: 0.9;
+}
+
+.restoreBtn {
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: #2e7d32;
+}
+
+.restoreBtn:hover {
+    background: #c8e6c9;
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+    .section {
+        padding: 20px;
+    }
+
+    .container {
+        padding: 20px 0;
+    }
+
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .segment {
+        width: 100%;
+    }
+
+    .segBtn {
+        flex: 1 1 50%;
+        padding: 0;
+        text-align: center;
+    }
+
+    .card {
+        grid-template-columns: 50px 1fr;
+    }
+
+    .coverArea {
+        width: 50px;
+    }
+
+    .cover {
+        width: 50px;
+        height: 70px;
+    }
+
+    .noCover {
+        width: 50px;
+        height: 70px;
+        font-size: 1.2rem;
+    }
+
+    .dateCol {
+        grid-column: 1 / -1;
+        justify-self: start;
+        text-align: left;
+    }
+
+    .detailHeader {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .actionSection {
+        flex-direction: column;
+    }
+}
