@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/AdminModal.module.css";
 import recordStyles from "../../../styles/AdminRecordPage.module.css";
+import * as adminRecord from "../../../api/AdminRecord";
 import {AdminRecordDetailResponse} from "../../../types/adminRecord";
 
 interface Props {
     isOpen: boolean;
-    record: AdminRecordDetailResponse | null;
+    recordId: number | null;
+    initialData: AdminRecordDetailResponse | null;
     onClose: () => void;
-    onSubmit: (data: {
-        rawTitle: string;
-        rawAuthor: string;
-        sentence: string;
-        comment: string;
-    }) => Promise<void>;
+    onUpdated: (updated: AdminRecordDetailResponse) => void;
 }
 
-export default function RecordEditModal({ isOpen, record, onClose, onSubmit }: Props) {
+export default function RecordEditModal({
+                                            isOpen,
+                                            recordId,
+                                            initialData,
+                                            onClose,
+                                            onUpdated,
+                                        }: Props) {
     const [rawTitle, setRawTitle] = useState("");
     const [rawAuthor, setRawAuthor] = useState("");
     const [sentence, setSentence] = useState("");
@@ -24,14 +27,14 @@ export default function RecordEditModal({ isOpen, record, onClose, onSubmit }: P
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (isOpen && record) {
-            setRawTitle(record.rawTitle ?? "");
-            setRawAuthor(record.rawAuthor ?? "");
-            setSentence(record.sentence ?? "");
-            setComment(record.comment ?? "");
+        if (isOpen && initialData) {
+            setRawTitle(initialData.rawTitle ?? "");
+            setRawAuthor(initialData.rawAuthor ?? "");
+            setSentence(initialData.sentence ?? "");
+            setComment(initialData.comment ?? "");
             setError(null);
         }
-    }, [isOpen, record]);
+    }, [isOpen, initialData]);
 
     if (!isOpen) return null;
 
@@ -42,6 +45,8 @@ export default function RecordEditModal({ isOpen, record, onClose, onSubmit }: P
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        if (!recordId) return;
+
         if (!rawTitle.trim()) {
             setError("제목을 입력해주세요.");
             return;
@@ -50,12 +55,15 @@ export default function RecordEditModal({ isOpen, record, onClose, onSubmit }: P
         try {
             setLoading(true);
             setError(null);
-            await onSubmit({
+
+            const updated = await adminRecord.updateRecord(recordId, {
                 rawTitle: rawTitle.trim(),
                 rawAuthor: rawAuthor.trim(),
                 sentence: sentence.trim(),
                 comment: comment.trim(),
             });
+
+            onUpdated(updated);
         } catch (err) {
             setError(err instanceof Error ? err.message : "수정 실패");
         } finally {

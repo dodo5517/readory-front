@@ -3,8 +3,7 @@ import styles from "../styles/AdminRecordPage.module.css";
 import * as adminRecord from "../api/AdminRecord";
 import { useSearchParams } from "react-router-dom";
 import RecordDetailModal from "../components/modal/admin/RecordDetailModal";
-import RecordEditModal from "../components/modal/admin/RecordEditModal";
-import {AdminRecordDetailResponse, AdminRecordListResponse, MatchStatus} from "../types/adminRecord";
+import {AdminRecordListResponse, MatchStatus} from "../types/adminRecord";
 import {PageResponse} from "../types/books";
 
 // 매칭 상태 라벨
@@ -25,8 +24,7 @@ const MATCH_STATUS_OPTIONS: { value: string; label: string }[] = [
     { value: "NO_CANDIDATE", label: "후보 없음" },
     { value: "MULTIPLE_CANDIDATES", label: "다중 후보" },
 ];
-
-export default function AdminRecordPage() {
+export default function AdminRecordsPage() {
     const [sp, setSearchParams] = useSearchParams();
 
     const [keyword, setKeyword] = useState("");
@@ -42,12 +40,7 @@ export default function AdminRecordPage() {
 
     // 상세 모달 관련
     const [selectedRecordId, setSelectedRecordId] = useState<number | null>(null);
-    const [recordDetail, setRecordDetail] = useState<AdminRecordDetailResponse | null>(null);
-    const [detailLoading, setDetailLoading] = useState(false);
     const [openDetail, setOpenDetail] = useState(false);
-
-    // 수정 모달 관련
-    const [openEdit, setOpenEdit] = useState(false);
 
     // 기록 목록 조회
     const fetchList = async () => {
@@ -71,65 +64,15 @@ export default function AdminRecordPage() {
         }
     };
 
-    // 기록 상세 조회
-    const openRecordDetail = async (id: number) => {
-        try {
-            setSelectedRecordId(id);
-            setOpenDetail(true);
-            setRecordDetail(null);
-            setDetailLoading(true);
-            const detail = await adminRecord.getRecord(id);
-            setRecordDetail(detail);
-        } catch (e) {
-            setError(e instanceof Error ? e.message : "기록 상세 조회 실패");
-        } finally {
-            setDetailLoading(false);
-        }
+    // 기록 상세 열기
+    const openRecordDetail = (id: number) => {
+        setSelectedRecordId(id);
+        setOpenDetail(true);
     };
 
     const closeDetail = () => {
         setOpenDetail(false);
         setSelectedRecordId(null);
-        setRecordDetail(null);
-    };
-
-    // 수정 모달 열기
-    const handleOpenEdit = () => {
-        setOpenEdit(true);
-    };
-
-    // 수정 완료
-    const handleUpdateRecord = async (updateData: {
-        rawTitle: string;
-        rawAuthor: string;
-        sentence: string;
-        comment: string;
-    }) => {
-        if (!selectedRecordId) return;
-
-        try {
-            const updated = await adminRecord.updateRecord(selectedRecordId, updateData);
-            setRecordDetail(updated);
-            setOpenEdit(false);
-            await fetchList();
-        } catch (e) {
-            throw e;
-        }
-    };
-
-    // 삭제
-    const handleDelete = async () => {
-        if (!selectedRecordId) return;
-        if (!window.confirm("이 기록을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) return;
-
-        try {
-            await adminRecord.deleteRecord(selectedRecordId);
-            alert("삭제되었습니다.");
-            closeDetail();
-            await fetchList();
-        } catch (e) {
-            alert(e instanceof Error ? e.message : "삭제 실패");
-        }
     };
 
     useEffect(() => {
@@ -316,18 +259,10 @@ export default function AdminRecordPage() {
 
                 <RecordDetailModal
                     isOpen={openDetail}
-                    record={recordDetail}
-                    loading={detailLoading}
+                    recordId={selectedRecordId}
                     onClose={closeDetail}
-                    onEdit={handleOpenEdit}
-                    onDelete={handleDelete}
-                />
-
-                <RecordEditModal
-                    isOpen={openEdit}
-                    record={recordDetail}
-                    onClose={() => setOpenEdit(false)}
-                    onSubmit={handleUpdateRecord}
+                    onDeleted={fetchList}
+                    onUpdated={fetchList}
                 />
             </div>
         </section>
