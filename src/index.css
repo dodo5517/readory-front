@@ -14,6 +14,7 @@
   --text-hover: #222222;
   --text-normal: #555555;
   --text-muted: #888;
+  --nav-muted: #868e96;
   --light-bg: #f5f5f5;
   --white: #fff;
   --copy-border: #ccc;
@@ -69,6 +70,7 @@
   --text-hover: #ffffff;
   --text-normal: #aaaaaa;
   --text-muted: #bbbbbb;
+  --nav-muted: #8f96a3;
   --border-color: #444;
   --light-bg: #2a2a2a;
   --white: #1e1e1e;

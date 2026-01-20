@@ -73,6 +73,19 @@ export default function Login() {
                 <div className={styles.footer}>
                     Don’t have an account? <Link to="/signUp" className={styles.a}>Sign Up</Link>
                 </div>
+                {/* 사용법 링크 */}
+                <div className={styles.helpLinks}>
+                    <Link to="/guide" className={styles.helpLink}>❓ Readory란?</Link>
+                    <a
+                        href={"https://hill-snarl-f10.notion.site/Readory-2b7276b3090780a298f5c3c3f8d3a3d0?pvs=74"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.helpLink}
+                    >
+                        📖 사용법
+                    </a>
+                </div>
+
                 <div className={styles.socialLogin}>
                     <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/google`}>
                         <img src="/assets/social/google_login.png" alt="Google Login"/>

@@ -132,12 +132,15 @@ export default function Header(){
                 <Link to="/" role="menuitem" className={`${styles.desktopOnly}`}>Home</Link>
                 <Link to="/readingRecords" role="menuitem">Recent Records</Link>
                 <a href="/bookshelf" role="menuitem">My Shelf</a>
-                <Link to={{ pathname: "/calendar", search }} role="menuitem">
-                    Reading Calendar
-                </Link>
+                <Link to={{ pathname: "/calendar", search }} role="menuitem">Reading Calendar</Link>
+
                 {/*모바일일 때는 보임*/}
                 <Link to="/myPage" className={`${styles.mobileOnly}`}>My Page</Link>
                 <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
+                {/* 구분선 */}
+                <span className={`${styles.divider}`}></span>
+                {/* 사용법 & 공지사항 */}
+                <Link to="/notice" role="menuitem" className={`${styles.navFaq}`}>FAQ</Link>
             </nav>
         </header>
     );

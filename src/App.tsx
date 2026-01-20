@@ -24,6 +24,8 @@ import AdminNav from "./layouts/AdminNav";
 import AdminLayout from "./layouts/AdminLayout"
 import AdminLogPage from "./pages/AdminAuthLogPage";
 import AdminApiLogsPage from "./pages/AdminApiLogPage";
+import GuidePage from "./pages/GuidePage ";
+import FaqPage from "./pages/FaqPage";
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
                       <Route path={"/login"} element={<Login/>}/>
                       <Route path={"/signUp"} element={<SignUp/>}/>
                       <Route path={"/oauth/callback"} element={<OAuthCallback/>}/>
+                      <Route path="/guide" element={<GuidePage />} />
+                      <Route path="/notice" element={<FaqPage />} />
 
                       <Route element={<AdminLayout />}>
                           <Route path="/admin" element={<AdminNav title="Readory Admin" />}>
