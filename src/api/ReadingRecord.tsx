@@ -1,7 +1,27 @@
 import { fetchWithAuth } from "../utils/fetchWithAuth";
-import {BookRecord, BookRecordsPage, Record, SummaryRecord, UpdateRecord} from "../types/records";
+import {BookRecord, BookRecordsPage, CreateRecordRequest, Record, SummaryRecord, UpdateRecord} from "../types/records";
 import { formatYMDhm } from "../utils/datetime";
 import {BookCandidate, BookMeta, PageResponse, PageResult, SummaryBook} from "../types/books";
+
+
+// 웹에서 독서 메모 추가
+export async function createReadingRecord(req: CreateRecordRequest ) {
+    const response = await fetchWithAuth("/records/web", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(req),
+    });
+
+    if (!response.ok) {
+        throw new Error("독서 기록 생성 실패");
+    }
+
+    return null;
+}
+
 
 // 메인에 쓸 최근 3개의 메모 조회
 export async function fetchMySummaryRecords(): Promise<SummaryRecord[]> {

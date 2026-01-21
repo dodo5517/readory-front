@@ -25,6 +25,14 @@ export interface UpdateRecord {
     comment: string | null;
 }
 
+export interface CreateRecordRequest {
+    rawTitle?: string | null;
+    rawAuthor?: string | null;
+    sentence?: string | null;
+    comment?: string | null;
+}
+
+
 export interface BookRecord {
     id: number;
     recordedAt: string;
