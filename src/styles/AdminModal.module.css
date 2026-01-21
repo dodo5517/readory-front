@@ -258,12 +258,15 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    flex-wrap: nowrap; /* 추가 */
 }
 
 .dangerLabel {
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--danger-color, #d32f2f);
+    white-space: nowrap; /* 추가 */
+    flex-shrink: 0; /* 추가: 라벨이 줄어들지 않도록 */
 }
 
 .dangerBtn {
@@ -274,6 +277,7 @@
     background: var(--danger-bg, #fff5f5);
     color: var(--danger-color, #d32f2f);
     cursor: pointer;
+    white-space: nowrap; /* 추가: 버튼 텍스트 줄바꿈 방지 */
 }
 
 .dangerBtn:hover {

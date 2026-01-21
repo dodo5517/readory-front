@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import styles from "../../../styles/AdminModal.module.css";
-import * as adminUserService from "../../../api/AdminUser";
+import * as adminUser from "../../../api/AdminUser";
 import {AdminPageUserResponse} from "../../../types/adminUser";
 import UpdateUsernameModal from "./UpdateUsernameModal";
 import UpdatePasswordModal from "./UpdatePasswordModal";
@@ -28,7 +28,7 @@ export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList
         setLoading(true);
         setError(null);
         try {
-            const u = await adminUserService.getUser(userId);
+            const u = await adminUser.getUser(userId);
             setUser(u);
         } catch (e) {
             setError(e instanceof Error ? e.message : "유저 조회 실패");
@@ -55,55 +55,65 @@ export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList
     const handleLogoutAll = async () => {
         if (!userId) return;
         if (!window.confirm("해당 유저의 모든 기기에서 로그아웃 하시겠습니까?")) return;
-        await adminUserService.logoutAllDevices(userId);
+        await adminUser.logoutAllDevices(userId);
         alert("로그아웃 완료");
     };
 
     const handleReissueApiKey = async () => {
         if (!userId) return;
         if (!window.confirm("API Key를 재발급 하시겠습니까?")) return;
-        const res = await adminUserService.reissueApiKey(userId);
+        const res = await adminUser.reissueApiKey(userId);
         alert(`${res.message}\n${res.maskedApiKey}`);
         await refreshAll();
     };
 
     const handleGetRawApiKey = async () => {
         if (!userId) return;
-        const res = await adminUserService.getRawApiKey(userId);
+        const res = await adminUser.getRawApiKey(userId);
         alert(`${res.message}\n${res.apiKey}`);
+    };
+
+    const handleResetUser = async () => {
+        if (!userId) return;
+        const ok = window.confirm("정말 초기화 할까요? 이 작업은 되돌릴 수 없습니다.");
+        if (!ok) return;
+        const newPwd = await adminUser.resetUser(userId);
+        console.log(newPwd);
+        prompt("초기화된 비밀번호입니다. 복사하세요.", newPwd);
+        await refreshAll();
     };
 
     const handleDeleteUser = async () => {
         if (!userId) return;
         const ok = window.confirm("정말 유저를 삭제할까요? 이 작업은 되돌릴 수 없습니다.");
         if (!ok) return;
-        await adminUserService.deleteUser(userId);
+        await adminUser.deleteUser(userId);
         onClose();
         await onRefreshList();
     };
 
     const handleChangeStatus = async (status: string) => {
         if (!userId) return;
-        await adminUserService.changeUserStatus(userId, { status });
+        await adminUser.changeUserStatus(userId, { status });
         await refreshAll();
     };
 
     const handleChangeRole = async (role: string) => {
         if (!userId) return;
-        await adminUserService.changeUserRole(userId, role);
+        await adminUser.changeUserRole(userId, role);
         await refreshAll();
     };
 
     const handleUploadProfileImage = async (file: File) => {
         if (!userId) return;
-        await adminUserService.uploadProfileImage(userId, file);
+        await adminUser.uploadProfileImage(userId, file);
         await refreshAll();
     };
 
     const handleDeleteProfileImage = async () => {
         if (!userId) return;
         if (!window.confirm("프로필 이미지를 삭제하시겠습니까?")) return;
-        await adminUserService.deleteProfileImage(userId);
+        await adminUser.deleteProfileImage(userId);
         await refreshAll();
     };
 
@@ -260,6 +270,9 @@ export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList
                         {/* 위험 영역 */}
                         <div className={styles.dangerZone}>
                             <span className={styles.dangerLabel}>위험 영역</span>
+                            <button className={styles.dangerBtn} onClick={handleResetUser}>
+                                유저 인증 초기화(로그아웃, 비밀번호/api 재발급)
+                            </button>
                             <button className={styles.dangerBtn} onClick={handleDeleteUser}>
                                 유저 삭제
                             </button>

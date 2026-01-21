@@ -133,6 +133,23 @@ export async function getRawApiKey(id: number): Promise<ApiKeyResponse> {
     return await response.json();
 }
 
+// 유저 초기화
+export async function resetUser(id: number): Promise<string> {
+    const response = await fetchWithAuth(`/admin/users/${id}/reset`, {
+        method: "POST",
+        credentials: "include",
+    });
+
+    if (!response.ok) {
+        throw new Error("유저 초기화 실패");
+    }
+    const newPwd = await response.text(); // json() 말고 text()
+    console.log("response:", newPwd);
+
+    return newPwd
+}
+
+
 // 유저 삭제
 export async function deleteUser(id: number): Promise<boolean> {
     const response = await fetchWithAuth(`/admin/users/${id}/delete`, {

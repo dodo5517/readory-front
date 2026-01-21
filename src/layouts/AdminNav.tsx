@@ -1,7 +1,8 @@
 import React from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import {Link, NavLink, Outlet, useLocation} from "react-router-dom";
 import styles from "../styles/AdminLayout.module.css";
 import type { AdminNavItem } from "../types/adminNav";
+import { useUser } from '../contexts/UserContext';
 
 const NAV: AdminNavItem[] = [
     {
@@ -9,7 +10,7 @@ const NAV: AdminNavItem[] = [
         label: "유저 관리",
         children: [
             { key: "users-list", label: "유저 리스트", to: "/admin/users" },
-            { key: "users-refreshToken", label: "유저 토큰", to: "/admin/refreshTokens" },
+            // { key: "users-refreshToken", label: "유저 토큰", to: "/admin/refreshTokens" },
         ],
     },
     {
@@ -25,7 +26,7 @@ const NAV: AdminNavItem[] = [
         label: "책 관리",
         children: [
             { key: "books-list", label: "책 목록", to: "/admin/books" },
-            { key: "books-match", label: "매칭/정리", to: "/admin/books/match" },
+            // { key: "books-match", label: "매칭/정리", to: "/admin/books/match" },
         ],
     },
     {
@@ -33,18 +34,20 @@ const NAV: AdminNavItem[] = [
         label: "기록 관리",
         children: [
             { key: "records-list", label: "기록 목록", to: "/admin/records" },
-            { key: "records-reports", label: "신고/검수", to: "/admin/records/reports" },
+            // { key: "records-reports", label: "신고/검수", to: "/admin/records/reports" },
         ],
     },
 ];
 
+
+
 type Props = {
     title?: string;
-    rightSlot?: React.ReactNode; // 헤더 우측(관리자 표시/로그아웃 버튼 등)
 };
 
-export default function AdminNav({ title = "Admin", rightSlot }: Props) {
+export default function AdminNav({ title = "Admin"}: Props) {
     const location = useLocation();
+    const { user, setUser } = useUser();
 
     return (
         <section className={styles.section}>
@@ -56,8 +59,13 @@ export default function AdminNav({ title = "Admin", rightSlot }: Props) {
                     </div>
 
                     <div className={styles.headerRight}>
-                        <span className={styles.path}>{location.pathname}</span>
-                        {rightSlot ? <div className={styles.rightSlot}>{rightSlot}</div> : null}
+                        {user ?
+                            <div>
+                                <span className={styles.userName}>{user.username}</span>
+                                &nbsp;&nbsp;
+                                <Link to="/" className={styles.homeLink}>메인으로</Link>
+                            </div>
+                            : null}
                     </div>
                 </div>
             </header>
