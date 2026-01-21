@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import styles from '../styles/ReadingRecordsPage.module.css';
+import styles from '../styles/ReadingRecordPage.module.css';
 import {fetchCandidates, fetchDeleteRecord, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
 import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";
 import BookSelectModal from "../components/modal/BookSelectModal";
 import Pagination from "../components/pagination/Pagination";
 import RecordEditModal from "../components/modal/EditRecordModal";
+import CreateRecordModal from "../components/modal/CreateRecordModal";
 import {useNavigate} from "react-router-dom";
 
 // 초기 페이지크기: 모바일 6, 데스크탑 10
@@ -14,7 +15,7 @@ const getInitialPageSize = () => {
     return window.matchMedia("(max-width: 768px)").matches ? 6 : 10;
 };
 
-export default function ReadingRecordsPage() {
+export default function ReadingRecordPage() {
     const [data, setData] = useState<PageResult<Record>| null>(null);
     const items = data?.items ?? [];
     const [page, setPage] = useState(0);
@@ -47,9 +48,26 @@ export default function ReadingRecordsPage() {
         setEditOpen(true);
     };
 
+    // 기록 생성 모달 상태
+    const [createOpen, setCreateOpen] = useState(false);
+
     // 모달 검색 제어 상태
     const [modalKeyword, setModalKeyword] = useState("");
     const [modalSortKey, setModalSortKey] = useState<'title' | 'author'>('title');
+
+    // 목록 새로고침
+    const refreshList = async () => {
+        try {
+            setLoading(true);
+            const updated = await fetchMyRecords({ page: 0, size, q });
+            setData(updated);
+            setPage(0);
+        } catch (e: any) {
+            setError(e?.message ?? "목록 조회 실패");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // 기록 삭제 핸들러
     const handleDeleteRecord = async (record:Record) => {
@@ -180,6 +198,16 @@ export default function ReadingRecordsPage() {
         <section className={styles.container}>
             <h1 className={styles.title}>My Reading Records</h1>
 
+            {/* 기록 생성 버튼 */}
+            <div className={styles.recordToolbar}>
+                <button
+                    className={styles.createBtn}
+                    onClick={() => setCreateOpen(true)}
+                >
+                    ✏️ 새 기록 추가
+                </button>
+            </div>
+
             {/* 검색 + 정렬 툴바 */}
             <div className={styles.toolbar}>
                 <div style={{display: "flex", gap: "8px", flex: 1}}>
@@ -242,84 +270,85 @@ export default function ReadingRecordsPage() {
                                 <div className={styles.coverArea}>
                                     {record.bookId ? (
                                         <img
-                                            src={record.coverUrl ?? undefined} // null이면 undefined로 변환
+                                            src={record.coverUrl ?? undefined}
                                             alt={`${record.title} 표지`}
                                             className={styles.coverImg}
                                             onClick={() => navigate(`/bookRecord/${record.bookId}`)}
                                             loading="lazy"
-                                    referrerPolicy="no-referrer"
-                                />
-                            ) : (
-                                <></>
-                            )}
-                        </div>
-                        <div className={styles.meta}>
-                            <div className={styles.date}>{record.recordedAt}</div>
-                            <div className={styles.info}>
-                                <h3 className={styles.bookTitle}>{record.title}</h3>
-                                <div className={styles.author}>{record.author?.length ? record.author + "(작가)" : ""}</div>
+                                            referrerPolicy="no-referrer"
+                                        />
+                                    ) : (
+                                        <></>
+                                    )}
+                                </div>
+                                <div className={styles.meta}>
+                                    <div className={styles.date}>{record.recordedAt}</div>
+                                    <div className={styles.info}>
+                                        <h3 className={styles.bookTitle}>{record.title}</h3>
+                                        <div className={styles.author}>{record.author?.length ? record.author + "(작가)" : ""}</div>
 
-                                <div className={styles.sentence}>{record.sentence}</div>
-                                <div className={styles.comment}>{record.comment}</div>
-                                {record.bookId && <span className={styles.badgeLinked}>연결됨</span>}
+                                        <div className={styles.sentence}>{record.sentence}</div>
+                                        <div className={styles.comment}>{record.comment}</div>
+                                        {record.bookId && <span className={styles.badgeLinked}>연결됨</span>}
+                                    </div>
+                                </div>
+                                <div className={styles.actions}>
+                                    <button
+                                        type="button"
+                                        className={styles.editBtn}
+                                        onClick={() => openEditModal(record)}
+                                        aria-label="기록 수정"
+                                        title="기록 수정"
+                                    >
+                                        ✏️ 수정
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className={styles.linkBtn}
+                                        onClick={() => openSelectModal(record)}
+                                    >
+                                        {record.bookId ? "책 다시 연결" : "책 연결"}
+                                    </button>
+                                    {record.bookId && (
+                                        <button
+                                            type="button"
+                                            className={styles.linkBtn}
+                                            onClick={() => handleRemoveMatch(record.id)}
+                                        >
+                                            책 연결 끊기
+                                        </button>
+                                    )}
+
+                                    <button
+                                        type="button"
+                                        className={styles.dangerBtn}
+                                        onClick={() => handleDeleteRecord(record)}
+                                        aria-label="기록 삭제"
+                                        title="기록 삭제"
+                                    >
+                                        🗑️ 삭제
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.actions}>
-                            <button
-                                type="button"
-                                className={styles.editBtn}
-                                onClick={() => openEditModal(record)}
-                                aria-label="기록 수정"
-                                title="기록 수정"
-                            >
-                                ✏️ 수정
-                            </button>
-
-                            <button
-                                type="button"
-                                className={styles.linkBtn}
-                                onClick={() => openSelectModal(record)}
-                            >
-                                {record.bookId ? "책 다시 연결" : "책 연결"}
-                            </button>
-                            {record.bookId && (<button
-                                    type="button"
-                                    className={styles.linkBtn}
-                                    onClick={() => handleRemoveMatch(record.id)}
-                                >
-                                    책 연결 끊기
-                                </button>
-                            )}
-
-                            <button
-                                type="button"
-                                className={styles.dangerBtn}
-                                onClick={() => handleDeleteRecord(record)}
-                                aria-label="기록 삭제"
-                                title="기록 삭제"
-                            >
-                                🗑️ 삭제
-                            </button>
-                        </div>
+                        ))}
                     </div>
-                ))}
-            </div>
 
-            <Pagination
-                page={data?.page ?? page}
-                totalPages={data?.totalPages ?? 0}
-                hasPrev={data?.hasPrev}
-                hasNext={data?.hasNext}
-                onChange={(next) => {
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                    setPage(next);
-                }}
-                pageSize={size}
-                onChangePageSize={(s) => { setPage(0); setSize(s); }}
-                disabled={loading}
-                windowSize={5}
-            />
-            </>
+                    <Pagination
+                        page={data?.page ?? page}
+                        totalPages={data?.totalPages ?? 0}
+                        hasPrev={data?.hasPrev}
+                        hasNext={data?.hasNext}
+                        onChange={(next) => {
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                            setPage(next);
+                        }}
+                        pageSize={size}
+                        onChangePageSize={(s) => { setPage(0); setSize(s); }}
+                        disabled={loading}
+                        windowSize={5}
+                    />
+                </>
             )}
 
             {/* 책 후보 선택 모달 */}
@@ -330,14 +359,14 @@ export default function ReadingRecordsPage() {
                 onClose={() => setModalOpen(false)}
                 loading={candidatesLoading}
 
-                keyword={modalKeyword}               // 모달 상단 검색창과 동기화(제목 기준)
+                keyword={modalKeyword}
                 onKeywordChange={setModalKeyword}
                 sortKey={modalSortKey}
                 onSortKeyChange={setModalSortKey}
                 onSubmitSearch={handleModalSearch}
             />
 
-            {/*책 수정 모달*/}
+            {/* 책 수정 모달 */}
             {editing && editOpen && (
                 <RecordEditModal
                     open={editOpen}
@@ -357,6 +386,13 @@ export default function ReadingRecordsPage() {
                     onClose={() => setEditOpen(false)}
                 />
             )}
+
+            {/* 기록 생성 모달 */}
+            <CreateRecordModal
+                open={createOpen}
+                onClose={() => setCreateOpen(false)}
+                onCreated={refreshList}
+            />
         </section>
     );
 }

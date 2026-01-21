@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import styles from '../styles/ReadingRecordsPage.module.css';
+import styles from '../styles/ReadingRecordPage.module.css';
 import {fetchCandidates, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
 import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";

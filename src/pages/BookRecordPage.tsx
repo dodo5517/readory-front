@@ -4,6 +4,7 @@ import {BookMeta} from "../types/books";
 import {BookRecord} from "../types/records";
 import {fetchBookRecords} from "../api/ReadingRecord";
 import {useParams} from "react-router-dom";
+import CreateRecordModal from "../components/modal/CreateRecordModal";
 
 export default function BookRecordPage() {
     const { bookId } = useParams<{ bookId: string }>();
@@ -15,8 +16,11 @@ export default function BookRecordPage() {
     const [hasMore, setHasMore] = useState<boolean>(true);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [loadingMore, setLoadingMore] = useState<boolean>(false); // 추가 로드
+    const [loadingMore, setLoadingMore] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+
+    // 기록 생성 모달 상태
+    const [createOpen, setCreateOpen] = useState(false);
 
     const PAGE_SIZE = 10;
     const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -63,7 +67,7 @@ export default function BookRecordPage() {
     function mergeUniqueById<T extends { id: string | number }>(prev: T[], next: T[]) {
         const map = new Map<string | number, T>();
         for (const it of prev) map.set(it.id, it);
-        for (const it of next) map.set(it.id, it); // 이미 있으면 덮어서 1개만 유지
+        for (const it of next) map.set(it.id, it);
         return Array.from(map.values());
     }
 
@@ -77,7 +81,7 @@ export default function BookRecordPage() {
         loadNext(true);
     }, [bookId]);
 
-    // 다음 페이지 로더(중복 방지 포함)
+    // 다음 페이지 로드(중복 방지 포함)
     const loadNext = async (isInitial = false) => {
         const usedCursor = cursor ?? null;
 
@@ -86,7 +90,7 @@ export default function BookRecordPage() {
         if (!hasMore && !isInitial) return;
         if (!isInitial && usedCursor === lastRequestedCursorRef.current) return;
 
-        lastRequestedCursorRef.current = usedCursor; // 이번에 실제 사용한 커서 기록
+        lastRequestedCursorRef.current = usedCursor;
 
         lockRef.current = true;
         lastRequestedCursorRef.current = usedCursor;
@@ -108,11 +112,19 @@ export default function BookRecordPage() {
         }
     };
 
+    // 기록 생성 후 새로고침
+    const handleRecordCreated = () => {
+        setRecords([]);
+        setCursor(null);
+        setHasMore(true);
+        loadNext(true);
+    };
+
     // IntersectionObserver로 센티널 진입 시 다음 페이지 로드
     useEffect(() => {
         const target = sentinelRef.current;
         if (!target) return;
-        if (loading) return; // 초기 로딩 중엔 붙이지 않음
+        if (loading) return;
 
         const io = new IntersectionObserver(
             (entries) => {
@@ -120,27 +132,25 @@ export default function BookRecordPage() {
                 if (!entry.isIntersecting) return;
                 if (lockRef.current || loading || loadingMore || !hasMore) return;
 
-                // 관찰 해제 후 로드 → 완료되면 다시 관찰
                 io.unobserve(entry.target);
                 loadNext(false)
                     .catch(() => {})
                     .finally(() => {
                         if (sentinelRef.current && hasMore) {
-                            // nextTick에 재-observe (레이아웃 반영 후)
                             setTimeout(() => io.observe(sentinelRef.current as Element), 0);
                         }
                     });
             },
             {
-                root: null,            // 윈도우 스크롤 기준
-                rootMargin: "200px",   // 200px 남았을 때 미리 로드
+                root: null,
+                rootMargin: "200px",
                 threshold: 0,
             }
         );
 
         io.observe(target);
         return () => io.disconnect();
-    }, [loading, loadingMore, hasMore, cursor, bookId]); // 페이지 진행/상태 변화에 맞춰 재설치
+    }, [loading, loadingMore, hasMore, cursor, bookId]);
 
     return (
         <section className={styles.wrap} aria-label="책 기록 상세">
@@ -154,22 +164,32 @@ export default function BookRecordPage() {
                     )}
                 </div>
 
-                <div className={styles.book}>
-                    <h1 className={styles.title}>{book?.title ?? "제목 없음"}</h1>
-                    {!!book?.author && <div className={styles.author}>{book.author}</div>}
-                    <div className={styles.subMeta}>
-                        {!!book?.publisher && <span>{book.publisher}</span>}
-                        {!!book?.publishedDate && <span>· {book.publishedDate}</span>}
+                <div className={styles.bookInfo}>
+                    <div className={styles.book}>
+                        <h1 className={styles.title}>{book?.title ?? "제목 없음"}</h1>
+                        {!!book?.author && <div className={styles.author}>{book.author}</div>}
+                        <div className={styles.subMeta}>
+                            {!!book?.publisher && <span>{book.publisher}</span>}
+                            {!!book?.publishedDate && <span>· {book.publishedDate}</span>}
+                        </div>
+
+                        {book?.periodStart || book?.periodEnd ? (
+                            <div className={styles.periodCard}>
+                                <div className={styles.periodLabel}>기록한 기간</div>
+                                <div className={styles.periodValue}>
+                                    {formatYMD(book?.periodStart) ?? "—"} ~ {formatYMD(book?.periodEnd) ?? "—"}
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
 
-                    {book?.periodStart || book?.periodEnd ? (
-                        <div className={styles.periodCard}>
-                            <div className={styles.periodLabel}>기록한 기간</div>
-                            <div className={styles.periodValue}>
-                                {formatYMD(book?.periodStart) ?? "—"} ~ {formatYMD(book?.periodEnd) ?? "—"}
-                            </div>
-                        </div>
-                    ) : null}
+                    {/* 기록 추가 버튼 */}
+                    <button
+                        className={styles.addRecordBtn}
+                        onClick={() => setCreateOpen(true)}
+                    >
+                        ✏️ 기록 추가
+                    </button>
                 </div>
             </header>
 
@@ -217,6 +237,15 @@ export default function BookRecordPage() {
                     </div>
                 </div>
             )}
+
+            {/* 기록 생성 모달 */}
+            <CreateRecordModal
+                open={createOpen}
+                onClose={() => setCreateOpen(false)}
+                onCreated={handleRecordCreated}
+                initialTitle={book?.title}
+                initialAuthor={book?.author}
+            />
         </section>
     );
 }

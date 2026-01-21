@@ -279,3 +279,36 @@
         flex-direction: row;
     }
 }
+
+/* 기록 생성 버튼 - 세그먼트/검색 버튼과 동일한 스타일 */
+.createBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 16px;
+    height: var(--ctl-h);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--card-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-main);
+}
+
+.createBtn:hover {
+    background: var(--search-btn);
+}
+
+.createBtn:focus-visible {
+    outline: 2px solid var(--link-color);
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+    .createBtn {
+        width: 100%;
+        height: 44px;
+    }
+}
