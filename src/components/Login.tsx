@@ -84,6 +84,7 @@ export default function Login() {
                     >
                         📖 사용법
                     </a>
+                    <Link to="/privacy" className={styles.helpLink}>🔒 개인정보처리방침</Link>
                 </div>
 
                 <div className={styles.socialLogin}>

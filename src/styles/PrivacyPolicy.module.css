@@ -1,0 +1,236 @@
+.container {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: var(--bg, #f5f5f5);
+}
+
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--card-bg, #fff);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px var(--copy-border, rgba(0, 0, 0, 0.1));
+    overflow: hidden;
+}
+
+/* ========================
+   Hero 섹션 (제목)
+   ======================== */
+.header {
+    padding: 50px 30px 40px;
+    text-align: center;
+    background: var(--bg, #fafafa);
+    border-bottom: 1px solid var(--main-hr, #eee);
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-main, #222);
+    margin: 0 0 8px;
+}
+
+.date {
+    font-size: 0.95rem;
+    color: var(--text-muted, #666);
+    margin: 0;
+}
+
+/* ========================
+   소개 섹션
+   ======================== */
+.introSection {
+    padding: 30px;
+    border-bottom: 1px solid var(--main-hr, #eee);
+}
+
+.intro {
+    font-size: 1rem;
+    color: var(--text-muted, #666);
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* ========================
+   섹션 공통
+   ======================== */
+.section {
+    padding: 30px;
+    border-bottom: 1px solid var(--main-hr, #eee);
+}
+
+.section:last-of-type {
+    border-bottom: none;
+}
+
+.section h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main, #222);
+    margin: 0 0 16px;
+    padding-left: 12px;
+    border-left: 4px solid var(--link-color, #1976d2);
+}
+
+.section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main, #222);
+    margin: 20px 0 10px;
+}
+
+.section p {
+    font-size: 0.95rem;
+    color: var(--text-muted, #666);
+    line-height: 1.8;
+    margin: 0 0 12px;
+}
+
+.section ul {
+    margin: 12px 0 16px 20px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.section ul li {
+    font-size: 0.9rem;
+    color: var(--text-main, #444);
+    line-height: 1.6;
+}
+
+.section ul li::marker {
+    color: var(--link-color, #1976d2);
+}
+
+/* ========================
+   테이블 스타일
+   ======================== */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--main-hr, #eee);
+}
+
+.table th,
+.table td {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.table th {
+    background: var(--bg, #fafafa);
+    font-weight: 600;
+    color: var(--text-main, #333);
+    border-bottom: 1px solid var(--main-hr, #eee);
+}
+
+.table td {
+    color: var(--text-muted, #666);
+    background: var(--card-bg, #fff);
+}
+
+.table tr:not(:last-child) td {
+    border-bottom: 1px solid var(--main-hr, #eee);
+}
+
+/* ========================
+   연락처 리스트
+   ======================== */
+.contactList {
+    list-style: none;
+    margin: 12px 0 16px 0 !important;
+    padding: 16px 20px !important;
+    background: var(--bg, #fafafa);
+    border: 1px solid var(--main-hr, #eee);
+    border-radius: 10px;
+}
+
+.contactList li {
+    margin-bottom: 8px;
+}
+
+.contactList li:last-child {
+    margin-bottom: 0;
+}
+
+.contactList a {
+    color: var(--link-color, #1976d2);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.contactList a:hover {
+    text-decoration: underline;
+}
+
+/* ========================
+   푸터
+   ======================== */
+.footer {
+    padding: 24px 30px;
+    display: flex;
+    justify-content: center;
+    background: var(--bg, #fafafa);
+}
+
+.backLink {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--input-border, #ddd);
+    color: var(--text-main, #222);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.backLink:hover {
+    background: var(--link-hover, #f5f5f5);
+}
+
+/* ========================
+   모바일 반응형
+   ======================== */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 16px;
+    }
+
+    .header {
+        padding: 36px 20px 30px;
+    }
+
+    .title {
+        font-size: 1.6rem;
+    }
+
+    .introSection,
+    .section {
+        padding: 24px 20px;
+    }
+
+    .section h2 {
+        font-size: 1.1rem;
+    }
+
+    .section h3 {
+        font-size: 0.95rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px;
+        font-size: 0.85rem;
+    }
+
+    .footer {
+        padding: 20px;
+    }
+}

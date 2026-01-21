@@ -28,6 +28,7 @@ import AdminBookPage from "./pages/AdminBookPage";
 import GuidePage from "./pages/GuidePage ";
 import FaqPage from "./pages/FaqPage";
 import AdminRecordPage from "./pages/AdminRecordPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                       <Route path={"/oauth/callback"} element={<OAuthCallback/>}/>
                       <Route path="/guide" element={<GuidePage />} />
                       <Route path="/notice" element={<FaqPage />} />
+                      <Route path="/privacy" element={<PrivacyPolicy />} />
 
                       <Route element={<AdminLayout />}>
                           <Route path="/admin" element={<AdminNav title="Readory Admin" />}>
