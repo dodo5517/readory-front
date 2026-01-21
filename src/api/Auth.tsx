@@ -1,15 +1,17 @@
 import {fetchWithAuth} from "../utils/fetchWithAuth";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL!;
 
 // 일반 회원가입(POST)
 export async function registerUser(email: string, username: string, password: string) {
     console.log('RegisterUser');
 
-    const response = await fetchWithAuth(`/users`, {
+    const response = await fetch(`${API_BASE_URL}/users`, {  // 일반 fetch
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, username, password }),
+        credentials: 'include',
     });
-    
+
     if (!response.ok) {
         throw new Error("회원가입 실패");
     }
@@ -21,10 +23,11 @@ export async function registerUser(email: string, username: string, password: st
 export async function loginUser(email: string, password: string) {
     console.log("loginUser")
 
-    const response = await fetchWithAuth(`/auth/login`, {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {  // 일반 fetch
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        credentials: 'include',
     });
 
     if (!response.ok) {
@@ -37,17 +40,13 @@ export async function loginUser(email: string, password: string) {
 // 현재 로그인한 유저 정보 조희
 export async function fetchCurrentUser(){
     console.log("fetchCurrentUser")
-
-    const accessToken = localStorage.getItem("accessToken");
-    const response = await fetchWithAuth(`/users/me`, {
-        headers: { 'Authorization': `Bearer ${accessToken}`
-        },
-        credentials: 'include',
-    });
+    const response = await fetchWithAuth(`/users/me`);
 
     if (!response.ok) {
+        console.log("유저 정보 조회 실패");
         throw new Error("유저 정보 조회 실패");
     }
+    console.log("response", response);
 
     return await response.json();
 }
