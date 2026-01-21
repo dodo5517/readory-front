@@ -128,6 +128,11 @@ export default function Header(){
                  ref={navRef}
                 onClick={handleNavClick}
             >
+                {/*관리자 페이지 링크*/}
+                {user?.role == "ADMIN" ?
+                    <Link to="/admin" role="menuitem">Admin</Link>
+                    : null
+                }
                 {/*데스크탑일 때는 보임*/}
                 <Link to="/" role="menuitem" className={`${styles.desktopOnly}`}>Home</Link>
                 <Link to="/readingRecords" role="menuitem">Recent Records</Link>
@@ -139,6 +144,7 @@ export default function Header(){
                 <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
                 {/* 구분선 */}
                 <span className={`${styles.divider}`}></span>
+
                 {/* 사용법 & 공지사항 */}
                 <Link to="/notice" role="menuitem" className={`${styles.navFaq}`}>FAQ</Link>
             </nav>
