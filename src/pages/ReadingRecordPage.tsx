@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styles from '../styles/ReadingRecordPage.module.css';
-import {fetchCandidates, fetchDeleteRecord, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
+import {fetchCandidatesLocal, fetchCandidatesExternal, fetchDeleteRecord, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
 import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";
 import BookSelectModal from "../components/modal/BookSelectModal";
@@ -138,7 +138,7 @@ export default function ReadingRecordPage() {
         setCandidatesLoading(true);
         setModalOpen(true); // UX상 먼저 열고 "불러오는 중…" 보여줌
         try {
-            const list = await fetchCandidates(rawTitle, rawAuthor);
+            const list = await fetchCandidatesLocal(rawTitle, rawAuthor); // 로컬로 검색(없으면 외부 호출함)
             setCandidates(list);
             console.log("fetchCandidates candidates: ", candidates);
         } catch (e: any) {
@@ -163,13 +163,30 @@ export default function ReadingRecordPage() {
         }
     };
 
-    // 모달에서 검색 시 호출
-    const handleModalSearch = async () => {
+    // 모달에서 검색 시 호출(로컬 검색)
+    const handleModalSearchLocal = async () => {
         setCandidatesLoading(true);
         try {
             const title = modalSortKey === 'title' ? modalKeyword : "";
             const author = modalSortKey === 'author' ? modalKeyword : "";
-            const list = await fetchCandidates(title, author);
+            const list = await fetchCandidatesLocal(title, author);
+            setCandidates(list);
+            console.log("searched candidates: ", list);
+        } catch (e) {
+            console.error(e);
+            setCandidates([]);
+        } finally {
+            setCandidatesLoading(false);
+        }
+    };
+
+    // 모달에서 검색 시 호출(외부 검색)
+    const handleModalSearchExternal = async () => {
+        setCandidatesLoading(true);
+        try {
+            const title = modalSortKey === 'title' ? modalKeyword : "";
+            const author = modalSortKey === 'author' ? modalKeyword : "";
+            const list = await fetchCandidatesExternal(title, author);
             setCandidates(list);
             console.log("searched candidates: ", list);
         } catch (e) {
@@ -363,7 +380,8 @@ export default function ReadingRecordPage() {
                 onKeywordChange={setModalKeyword}
                 sortKey={modalSortKey}
                 onSortKeyChange={setModalSortKey}
-                onSubmitSearch={handleModalSearch}
+                onSubmitSearch={handleModalSearchLocal} // 로컬 검색
+                onAddExternalSearch={handleModalSearchExternal} // 외부에서 검색
             />
 
             {/* 책 수정 모달 */}

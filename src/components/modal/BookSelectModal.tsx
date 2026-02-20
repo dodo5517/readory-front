@@ -15,14 +15,17 @@ type Props = {
     onSortKeyChange?: (k: 'title' | 'author') => void;
 
     onSubmitSearch?: () => void; // 검색 클릭 시 호출
+    onAddExternalSearch?: () => void;
 };
 
 export default function BookSelectModal({open, candidates, onSelect, onClose,
                                             loading = false, keyword = "", onKeywordChange,
                                             sortKey = 'title', onSortKeyChange,
-                                            onSubmitSearch,}: Props) {
+                                            onSubmitSearch, onAddExternalSearch}: Props) {
     const overlayRef = useRef<HTMLDivElement>(null);
     const [focused, setFocused] = useState<number>(-1);
+    // 로컬 검색인지 외부 검색인지 확인
+    const isLocal = candidates?.[0]?.source === "LOCAL";
 
     // 접근성: 열릴 때 포커스
     useEffect(() => {
@@ -59,7 +62,7 @@ export default function BookSelectModal({open, candidates, onSelect, onClose,
                 </header>
                 <form className={styles.toolbar} onSubmit={(e) => {
                     e.preventDefault();
-                    onSubmitSearch?.();
+                    onSubmitSearch?.(); // 로컬로 검색(없으면 외부 호출함)
                 }}>
                     {/* 세그먼트: 버튼 2개 */}
                     <div className={styles.segment}>
@@ -171,6 +174,7 @@ export default function BookSelectModal({open, candidates, onSelect, onClose,
                 </div>
 
                 <footer className={styles.footer}>
+                    {isLocal && <button className={styles.secondaryBtn} onClick={onAddExternalSearch}>더 많은 결과 검색</button>}
                     <button className={styles.secondaryBtn} onClick={onClose}>취소</button>
                 </footer>
             </section>

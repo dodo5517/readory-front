@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styles from '../styles/ReadingRecordPage.module.css';
-import {fetchCandidates, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
+import {fetchCandidatesLocal, fetchCandidatesExternal, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
 import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";
 import BookSelectModal from "../components/modal/BookSelectModal";
@@ -161,7 +161,8 @@ export default function CalendarPage() {
         setCandidatesLoading(true);
         setModalOpen(true); // UX상 먼저 열고 "불러오는 중…" 보여줌
         try {
-            const list = await fetchCandidates(rawTitle, rawAuthor);
+            // 처음엔 로컬로 후보 검색
+            const list = await fetchCandidatesLocal(rawTitle, rawAuthor);
             setCandidates(list);
             console.log("fetchCandidates candidates: ", candidates);
         } catch (e: any) {
@@ -186,13 +187,30 @@ export default function CalendarPage() {
         }
     };
 
-    // 모달에서 검색 시 호출
-    const handleModalSearch = async () => {
+    // 모달에서 검색 시 호출(로컬 검색)
+    const handleModalSearchLocal = async () => {
         setCandidatesLoading(true);
         try {
             const title = modalSortKey === 'title' ? modalKeyword : "";
             const author = modalSortKey === 'author' ? modalKeyword : "";
-            const list = await fetchCandidates(title, author);
+            const list = await fetchCandidatesLocal(title, author);
+            setCandidates(list);
+            console.log("searched candidates: ", list);
+        } catch (e) {
+            console.error(e);
+            setCandidates([]);
+        } finally {
+            setCandidatesLoading(false);
+        }
+    };
+
+    // 모달에서 검색 시 호출(외부 검색)
+    const handleModalSearchExternal = async () => {
+        setCandidatesLoading(true);
+        try {
+            const title = modalSortKey === 'title' ? modalKeyword : "";
+            const author = modalSortKey === 'author' ? modalKeyword : "";
+            const list = await fetchCandidatesExternal(title, author);
             setCandidates(list);
             console.log("searched candidates: ", list);
         } catch (e) {
@@ -351,7 +369,8 @@ export default function CalendarPage() {
                 onKeywordChange={setModalKeyword}
                 sortKey={modalSortKey}
                 onSortKeyChange={setModalSortKey}
-                onSubmitSearch={handleModalSearch}
+                onSubmitSearch={handleModalSearchLocal} // 로컬 검색
+                onAddExternalSearch={handleModalSearchExternal} // 외부에서 검색
             />
         </section>
     );
