@@ -1,5 +1,5 @@
 export type BookCandidate = {
-    source: "KAKAO" | "NAVER" | "GOOGLE" | string;
+    source: "KAKAO" | "NAVER" | "GOOGLE" | "LOCAL" | string;
     externalId?: string; // 상세 링크
     title: string;
     author?: string;
