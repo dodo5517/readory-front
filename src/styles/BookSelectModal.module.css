@@ -232,7 +232,7 @@
     border-radius: 6px;
     cursor: pointer;
 }
-.secondaryBtn:hover { background: var(--img-hover); }
+.secondaryBtn:hover { background: var(--img-hover); color: var(--white);}
 
 @media (max-width: 768px) {
     .modal { padding: 20px; } /* 모바일 패딩 20 */
