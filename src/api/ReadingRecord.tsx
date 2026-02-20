@@ -153,14 +153,14 @@ export async function fetchMyBooks(opts: {
     };
 }
 
-// 책 후보 요청
-export async function fetchCandidates(rawTitle : string, rawAuthor: string): Promise<BookCandidate[]> {
+// 로컬에서 책 후보 요청(없으면 외부에서 찾아옴.)
+export async function fetchCandidatesLocal(rawTitle : string, rawAuthor: string): Promise<BookCandidate[]> {
     const params = new URLSearchParams({
         rawTitle,
         rawAuthor,
     }).toString();
 
-    const response = await fetchWithAuth(`/books/candidates?${params}`, { method: "GET" });
+    const response = await fetchWithAuth(`/books/candidates/local?${params}`, { method: "GET" });
 
     if (!response.ok) {
         throw new Error("책 후보 요청 실패");
@@ -171,6 +171,26 @@ export async function fetchCandidates(rawTitle : string, rawAuthor: string): Pro
 
     return bookCandidates;
 }
+
+// 외부에서 책 후보 요청
+export async function fetchCandidatesExternal(rawTitle : string, rawAuthor: string): Promise<BookCandidate[]> {
+    const params = new URLSearchParams({
+        rawTitle,
+        rawAuthor,
+    }).toString();
+
+    const response = await fetchWithAuth(`/books/candidates/external?${params}`, { method: "GET" });
+
+    if (!response.ok) {
+        throw new Error("책 후보 요청 실패");
+    }
+
+    const bookCandidates = await response.json() as BookCandidate[];
+    console.log(bookCandidates);
+
+    return bookCandidates;
+}
+
 
 // 기록-책 연결
 export async function linkRecord(recordId: number, book: BookCandidate):Promise<void> {
