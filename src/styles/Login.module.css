@@ -11,13 +11,13 @@
     .container {
         display: flex;
         align-items: flex-start;
-        margin-top: 80px;
+        margin-top: 60px;
     }
 }
 
 .card {
     background-color: var(--card-bg);
-    padding: 40px;
+    padding: 28px 40px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     max-width: 400px;
@@ -29,24 +29,24 @@
 .title {
     font-size: 1.8rem;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     color: var(--text-main);
 }
 
 .subtitle {
     font-size: 0.95rem;
     color: var(--text-sub);
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
 }
 
 .input {
-    padding: 12px;
+    padding: 11px 12px;
     border: 1px solid var(--input-border);
     border-radius: 6px;
     font-size: 1rem;
@@ -61,7 +61,7 @@
 }
 
 .button {
-    padding: 12px;
+    padding: 11px;
     background-color: var(--btn-bg);
     color: white;
     font-weight: bold;
@@ -76,98 +76,104 @@
 }
 
 .footer {
-    margin-top: 20px;
+    margin-top: 12px;
     font-size: 0.85rem;
     color: var(--text-sub);
 }
 
-.footer a {
+.a {
     color: var(--link);
     text-decoration: none;
     font-weight: 500;
 }
 
-.footer a:hover {
+.a:hover {
     text-decoration: underline;
 }
 
 .socialLogin {
     display: flex;
     flex-direction: row;
-    justify-content: center;   /* 가로 가운데 정렬 */
-    align-items: center;       /* 세로 가운데 정렬 */
-    gap: 16px;                 /* 아이콘 사이 간격 */
-    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
 }
 
 .socialLogin button {
     background: none;
-    border: none;
+    border: 1px solid var(--input-border, #ddd);
     padding: 0;
     cursor: pointer;
-    width: 50px;               /* 버튼 크기 고정 */
-    height: 50px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.socialLogin button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-color: var(--input-focus, #5e92c6);
 }
 
 .socialLogin img {
-    width: 100%;               /* 버튼 안에 꽉 차게 */
-    height: 100%;
-    border-radius: 10%;
-    object-fit: cover;         /* 왜곡 방지 */
-    cursor: pointer;
-    /*border: 1px solid #ddd;    !* 선택적 테두리 *!*/
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-.githubLink {
-    margin-top: 30px;
+/* helpLinks + github 한 줄 */
+.bottomRow {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--main-hr, #eee);
 }
 
-.githubLink a {
-    color: var(--text-sub);
-    transition: all 0.2s ease;
+.helpLinks {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 8px;
-    cursor: pointer;
-}
-
-.githubLink a:hover {
-    color: var(--text-main);
-    transform: scale(1.1);
-}
-
-.githubLink svg {
-    pointer-events: none;
-}
-
-/* 사용법/공지사항 링크 영역 */
-css.helpLinks {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 16px 0;
-    padding: 12px 0;
-    border-top: 1px solid var(--main-hr, #eee);
-    border-bottom: 1px solid var(--main-hr, #eee);
+    gap: 1px;
 }
 
 .helpLink {
-    color: var(--text-muted, #666);
+    color: var(--text-muted, #888);
     text-decoration: none;
-    font-size: 0.75rem;
-    padding: 6px 8px;
-    border-radius: 8px;
-    transition: all 0.2s;
+    font-size: 0.72rem;
+    padding: 4px 6px;
+    border-radius: 5px;
+    transition: color 0.18s, background 0.18s;
     white-space: nowrap;
 }
 
 .helpLink:hover {
     color: var(--text-main, #222);
-    background: var(--link-hover, #f5f5f5);
+    background: var(--link-hover, #f0f0f0);
+}
+
+.githubIcon {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 50%;
+    transition: color 0.18s ease, transform 0.18s ease;
+    flex-shrink: 0;
+}
+
+.githubIcon:hover {
+    color: var(--text-main);
+    transform: scale(1.15);
+}
+
+.githubIcon svg {
+    pointer-events: none;
+    display: block;
 }
