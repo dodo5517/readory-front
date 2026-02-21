@@ -24,15 +24,20 @@
 }
 
 .title {
-    font-size: 2rem;
+    font-size: 1.9rem;
     font-weight: 800;
     color: var(--text-main, #222);
-    margin: 0 0 8px;
+    margin: 0 0 10px;
 }
 
 .date {
-    font-size: 0.95rem;
-    color: var(--text-muted, #666);
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--text-muted, #888);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--main-hr, #e0e0e0);
+    border-radius: 20px;
+    padding: 4px 14px;
     margin: 0;
 }
 
@@ -45,9 +50,9 @@
 }
 
 .intro {
-    font-size: 1rem;
-    color: var(--text-muted, #666);
-    line-height: 1.8;
+    font-size: 0.97rem;
+    color: var(--text-muted, #555);
+    line-height: 1.85;
     margin: 0;
 }
 
@@ -73,16 +78,20 @@
 }
 
 .section h3 {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    color: var(--text-main, #222);
-    margin: 20px 0 10px;
+    color: var(--text-main, #333);
+    margin: 20px 0 8px;
+    padding: 6px 10px;
+    background: var(--bg, #f7f7f7);
+    border-radius: 6px;
+    border-left: 3px solid var(--main-hr, #ddd);
 }
 
 .section p {
     font-size: 0.95rem;
-    color: var(--text-muted, #666);
-    line-height: 1.8;
+    color: var(--text-muted, #555);
+    line-height: 1.85;
     margin: 0 0 12px;
 }
 
@@ -95,9 +104,9 @@
 }
 
 .section ul li {
-    font-size: 0.9rem;
+    font-size: 0.93rem;
     color: var(--text-main, #444);
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
 .section ul li::marker {

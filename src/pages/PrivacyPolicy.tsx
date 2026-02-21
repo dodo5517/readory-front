@@ -119,7 +119,7 @@ export default function PrivacyPolicy() {
                     <h2>7. 개인정보 보호책임자</h2>
                     <ul className={styles.contactList}>
                         <li><strong>담당자:</strong> 개인 개발자 (김도현)</li>
-                        <li><strong>이메일:</strong> <a href="mailto:readory@kimdohyeon.dev">readory@kimdohyeon.dev</a></li>
+                        <li><strong>이메일:</strong> <a href="mailto:me@kimdohyeon.dev">me@kimdohyeon.dev</a></li>
                     </ul>
                     <p>
                         개인정보 관련 문의사항은 위 이메일로 연락해 주시면 신속하게 답변드리겠습니다.

@@ -35,7 +35,7 @@ const FAQS: FAQItem[] = [
     },
 ];
 
-const CONTACT_EMAIL = "readory@kimdohyeon.dev";
+const CONTACT_EMAIL = "me@kimdohyeon.dev";
 
 function FAQLinkView({ link }: { link: FAQLink }) {
     if (link.kind === "external") {
