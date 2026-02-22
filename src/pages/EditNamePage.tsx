@@ -3,6 +3,7 @@ import styles from '../styles/EditNamePage.module.css';
 import {useNavigate} from "react-router-dom";
 import {useUser} from "../contexts/UserContext";
 import {updateUsername} from "../api/Auth";
+import { XIcon } from '@phosphor-icons/react';
 
 export default function EditNamePage() {
     const navigate = useNavigate();
@@ -65,7 +66,7 @@ export default function EditNamePage() {
                     value={newUsername}
                     onChange={(e) => setNewUsername(e.target.value)}
                 />
-                {user?.username && <button className={styles.clearBtn} onClick={handleClear}>×</button>}
+                {user?.username && <button className={styles.clearBtn} onClick={handleClear}><XIcon /></button>}
             </div>
             <button type="submit" className={styles.saveBtn}>저장</button>
         </form>

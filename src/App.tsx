@@ -6,7 +6,7 @@ import Login from "./components/Login";
 // import Footer from './components/Footer';
 import Main from './pages/Main';
 import ReadingRecordPage from "./pages/ReadingRecordPage";
-import BookshelfPage from "./pages/BookshelfPage";
+import BookShelfPage from "./pages/BookShelfPage";
 import PrivateRoute from "./components/PrivateRoute";
 import { ThemeProvider } from './contexts/ThemeContext';
 import { UserProvider } from './contexts/UserContext';
@@ -63,7 +63,7 @@ function App() {
                           <Route path={"/myPage/edit-name"} element={<PrivateRoute><EditNamePage/></PrivateRoute>} />
                           <Route path={"/myPage/edit-password"} element={<PrivateRoute><EditPasswordPage/></PrivateRoute>} />
                           <Route path={"/readingRecords"} element={<PrivateRoute><ReadingRecordPage/></PrivateRoute>}/>
-                          <Route path={"/bookshelf"} element={<PrivateRoute><BookshelfPage /></PrivateRoute>} />
+                          <Route path={"/bookshelf"} element={<PrivateRoute><BookShelfPage /></PrivateRoute>} />
                           <Route path={"/bookRecord/:bookId"} element={<PrivateRoute><BookRecordPage /></PrivateRoute>} />
                           <Route path={"/calendar"} element={<PrivateRoute><CalendarPage /></PrivateRoute>} />
                       </Route>

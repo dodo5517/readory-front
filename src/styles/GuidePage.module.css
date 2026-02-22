@@ -1,112 +1,101 @@
+/* ═══════════════════════════════════════════════
+   GuidePage
+   ═══════════════════════════════════════════════ */
 .container {
     min-height: 100vh;
-    padding: 40px 20px;
-    background: var(--bg, #f5f5f5);
+    padding: 48px 20px 60px;
+    background: var(--bg);
 }
 
 .card {
-    max-width: 800px;
+    max-width: 720px;
     margin: 0 auto;
-    background: var(--card-bg, #fff);
-    border-radius: 16px;
-    box-shadow: 0 2px 12px var(--copy-border);
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
     overflow: hidden;
 }
 
-/* ========================
-   Hero 섹션 (서비스 소개)
-   ======================== */
+/* ── Hero ── */
 .heroSection {
-    padding: 50px 30px 40px;
+    padding: 48px 36px 40px;
     text-align: center;
-    background: var(--bg, #fafafa);
-    border-bottom: 1px solid var(--main-hr, #eee);
+    background: var(--light-bg);
+    border-bottom: 1px solid var(--main-hr);
 }
 
 .logoArea {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin-bottom: 8px;
+    gap: 10px;
+    margin-bottom: 6px;
 }
 
-.logoIcon {
-    font-size: 2.5rem;
-}
+.logoIcon { font-size: 2rem; }
 
 .logoText {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 800;
-    color: var(--text-main, #222);
+    letter-spacing: -0.03em;
+    color: var(--text-main);
     margin: 0;
+    font-family: 'Georgia', serif;
 }
 
 .tagline {
-    font-size: 1rem;
-    color: var(--calendar-intensity-4);
-    font-weight: 500;
-    margin: 0 0 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--btn-bg);
+    margin: 0 0 14px;
 }
 
 .heroDescription {
-    font-size: 1.05rem;
-    color: var(--text-muted, #666);
-    line-height: 1.7;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.75;
     margin: 0;
 }
 
-/* ========================
-   섹션 공통
-   ======================== */
-.featuresSection,
-.quickLinksSection,
-.usageSection,
-.noteSection {
-    padding: 30px;
-    border-bottom: 1px solid var(--main-hr, #eee);
+/* ── Features section ── */
+.featuresSection {
+    padding: 28px 36px;
+    border-bottom: 1px solid var(--main-hr);
 }
 
-.noteSection {
-    border-bottom: none;
-}
-
-.sectionTitle {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-main, #222);
-    margin: 0 0 20px;
-}
-
-/* ========================
-   핵심 기능 섹션
-   ======================== */
 .featureList {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 12px;
 }
 
 .featureItem {
     display: flex;
     gap: 16px;
-    padding: 20px;
-    background: var(--bg, #fafafa);
-    border: 1px solid var(--main-hr, #eee);
-    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    transition: box-shadow 0.15s;
+}
+
+.featureItem:hover {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
 }
 
 .featureIcon {
     flex-shrink: 0;
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
-    background: var(--card-bg, #fff);
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    font-size: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
 }
 
 .featureContent {
@@ -115,271 +104,69 @@
 }
 
 .featureTitle {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--text-main, #222);
-    margin: 0 0 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 5px;
 }
 
 .featureDescription {
-    font-size: 0.9rem;
-    color: var(--text-muted, #666);
-    margin: 0 0 12px;
-    line-height: 1.5;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0 0 8px;
+    line-height: 1.55;
 }
 
 .featureDetails {
     margin: 0;
-    padding: 0 0 0 18px;
+    padding: 0 0 0 16px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 3px;
 }
 
 .featureDetails li {
-    font-size: 0.85rem;
-    color: var(--text-main, #444);
+    font-size: 0.82rem;
+    color: var(--text-muted);
     line-height: 1.5;
 }
 
 .featureDetails li::marker {
-    color: var(--calendar-intensity-4);
+    color: var(--btn-bg);
 }
 
-/* ========================
-   빠른 링크 섹션
-   ======================== */
-.linkButtons {
-    display: flex;
-    gap: 12px;
-}
-
-.linkButton,
-.linkButtonPrimary {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 16px 20px;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-}
-
-.linkButton {
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--input-border, #ddd);
-    color: var(--text-main, #222);
-}
-
-.linkButton:hover {
-    background: var(--link-hover, #f5f5f5);
-    border-color: var(--text-muted, #999);
-}
-
-.linkButtonPrimary {
-    background: var(--link-color, #1976d2);
-    border: 1px solid var(--link-color, #1976d2);
-    color: #fff;
-}
-
-.linkButtonPrimary:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
-
-.linkIcon {
-    font-size: 1.2rem;
-}
-
-.linkText {
-    white-space: nowrap;
-}
-
-/* ========================
-   사용법 섹션
-   ======================== */
-.stepList {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-
-.stepItem {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 16px;
-    background: var(--bg, #fafafa);
-    border: 1px solid var(--main-hr, #eee);
-    border-radius: 10px;
-    transition: all 0.2s;
-}
-
-.stepItem:hover {
-    border-color: var(--link-color, #1976d2);
-    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
-}
-
-.stepNumber {
-    flex-shrink: 0;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--link-color, #1976d2);
-    color: #fff;
-    font-weight: 700;
-    font-size: 0.85rem;
-    border-radius: 50%;
-}
-
-.stepContent {
-    flex: 1;
-    min-width: 0;
-}
-
-.stepTitle {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text-main, #222);
-    margin: 0 0 4px;
-}
-
-.stepDescription {
-    font-size: 0.85rem;
-    color: var(--text-muted, #666);
-    margin: 0;
-    line-height: 1.4;
-}
-
-/* ========================
-   안내 메시지 섹션
-   ======================== */
-.noteBox {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 16px 20px;
-    background: #fff8e1;
-    border: 1px solid #ffe082;
-    border-radius: 10px;
-}
-
-.noteIcon {
-    font-size: 1.4rem;
-    flex-shrink: 0;
-}
-
-.noteText {
-    font-size: 0.9rem;
-    color: #5d4037;
-    margin: 0;
-    line-height: 1.6;
-}
-
-/* ========================
-   푸터
-   ======================== */
+/* ── Footer ── */
 .footer {
-    padding: 24px 30px;
+    padding: 22px 36px;
     display: flex;
     justify-content: center;
-    background: var(--bg, #fafafa);
+    background: var(--light-bg);
+    border-top: 1px solid var(--border-color);
 }
 
 .backBtn {
-    padding: 12px 24px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: 10px;
+    padding: 8px 18px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    border-radius: 8px;
     cursor: pointer;
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--input-border, #ddd);
-    color: var(--text-main, #222);
-    transition: all 0.2s;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    transition: background 0.15s;
 }
+.backBtn:hover { background: var(--light-bg); }
 
-.backBtn:hover {
-    background: var(--link-hover, #f5f5f5);
-}
-
-/* ========================
-   모바일 반응형
-   ======================== */
+/* ══════════════════════════════
+   Mobile
+   ══════════════════════════════ */
 @media (max-width: 768px) {
-    .container {
-        padding: 20px 16px;
-    }
-
-    .heroSection {
-        padding: 36px 20px 30px;
-    }
-
-    .logoIcon {
-        font-size: 2rem;
-    }
-
-    .logoText {
-        font-size: 1.6rem;
-    }
-
-    .heroDescription {
-        font-size: 0.95rem;
-    }
-
-    .featuresSection,
-    .quickLinksSection,
-    .usageSection,
-    .noteSection {
-        padding: 24px 20px;
-    }
-
-    .sectionTitle {
-        font-size: 1.1rem;
-    }
-
-    .featureItem {
-        flex-direction: column;
-        gap: 12px;
-        padding: 16px;
-    }
-
-    .featureIcon {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-    }
-
-    .linkButtons {
-        flex-direction: column;
-    }
-
-    .stepList {
-        grid-template-columns: 1fr;
-    }
-
-    .stepItem {
-        padding: 14px;
-    }
-
-    .stepNumber {
-        width: 26px;
-        height: 26px;
-        font-size: 0.8rem;
-    }
-
-    .noteBox {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-    }
-
-    .footer {
-        padding: 20px;
-    }
+    .container { padding: 24px 16px 48px; }
+    .heroSection { padding: 32px 20px 28px; }
+    .logoText { font-size: 1.5rem; }
+    .heroDescription { font-size: 0.9rem; }
+    .featuresSection { padding: 22px 20px; }
+    .featureItem { flex-direction: column; gap: 12px; padding: 14px 16px; }
+    .featureIcon { width: 38px; height: 38px; font-size: 1.3rem; }
+    .footer { padding: 18px 20px; }
 }

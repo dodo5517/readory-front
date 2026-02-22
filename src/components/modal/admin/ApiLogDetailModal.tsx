@@ -3,6 +3,7 @@ import styles from "../../../styles/AdminModal.module.css";
 import logStyles from "../../../styles/AdminApiLogPage.module.css";
 import {ApiLogDetailResponse} from "../../../types/adminLog";
 import UserDetailModal from "./UserDetailModal";
+import { XIcon } from '@phosphor-icons/react';
 
 interface Props {
     isOpen: boolean;
@@ -78,7 +79,7 @@ export default function ApiLogDetailModal({ isOpen, log, loading, onClose }: Pro
                 <div className={styles.header}>
                     <h2 className={styles.title}>API 로그 상세</h2>
                     <button className={styles.closeBtn} onClick={onClose}>
-                        ✕
+                        <XIcon />
                     </button>
                 </div>
 

@@ -37,6 +37,7 @@ export default function BookRecordPage() {
         const mi = String(d.getMinutes()).padStart(2, "0");
         return { day: `${yyyy}.${mm}.${dd}`, time: `${hh}:${mi}` };
     }
+
     function formatYMD(iso: string): string {
         const d = new Date(iso);
         const yyyy = d.getFullYear();
@@ -44,6 +45,7 @@ export default function BookRecordPage() {
         const dd = String(d.getDate());
         return `${yyyy}.${MM}.${dd}`;
     }
+
     function groupByDay(items: BookRecord[]) {
         const map = new Map<string, BookRecord[]>();
         for (const r of items) {
@@ -51,16 +53,15 @@ export default function BookRecordPage() {
             if (!map.has(day)) map.set(day, []);
             map.get(day)!.push(r);
         }
-
         // 날짜 그룹 내림차순
         const groups = Array.from(map.entries()).sort((a, b) => (a[0] < b[0] ? 1 : -1));
-
         // 각 그룹 내부를 미리 정렬(시간 내림차순)
         for (const [, arr] of groups) {
             arr.sort((a, b) => (a.recordedAt < b.recordedAt ? 1 : -1));
         }
         return groups;
     }
+
     const grouped = useMemo(() => groupByDay(records), [records]);
 
     // 레코드 합치기
@@ -84,14 +85,12 @@ export default function BookRecordPage() {
     // 다음 페이지 로드(중복 방지 포함)
     const loadNext = async (isInitial = false) => {
         const usedCursor = cursor ?? null;
-
         if (lockRef.current) return;
         if (loading || loadingMore) return;
         if (!hasMore && !isInitial) return;
         if (!isInitial && usedCursor === lastRequestedCursorRef.current) return;
 
         lastRequestedCursorRef.current = usedCursor;
-
         lockRef.current = true;
         lastRequestedCursorRef.current = usedCursor;
         isInitial ? setLoading(true) : setLoadingMore(true);
@@ -99,12 +98,11 @@ export default function BookRecordPage() {
 
         try {
             const data = await fetchBookRecords(id, usedCursor, PAGE_SIZE);
-
             setBook(prev => prev ?? data.book);
             setRecords(prev => mergeUniqueById(prev, data.content));
             setCursor(data.nextCursor ?? null);
             setHasMore(Boolean(data.hasMore));
-        } catch (e:any) {
+        } catch (e: any) {
             setError(e?.message ?? "불러오기 실패");
         } finally {
             isInitial ? setLoading(false) : setLoadingMore(false);
@@ -131,7 +129,6 @@ export default function BookRecordPage() {
                 const entry = entries[0];
                 if (!entry.isIntersecting) return;
                 if (lockRef.current || loading || loadingMore || !hasMore) return;
-
                 io.unobserve(entry.target);
                 loadNext(false)
                     .catch(() => {})
@@ -141,11 +138,7 @@ export default function BookRecordPage() {
                         }
                     });
             },
-            {
-                root: null,
-                rootMargin: "200px",
-                threshold: 0,
-            }
+            { root: null, rootMargin: "200px", threshold: 0 }
         );
 
         io.observe(target);
@@ -158,7 +151,7 @@ export default function BookRecordPage() {
             <header className={styles.header}>
                 <div className={styles.coverBox}>
                     {book?.coverUrl ? (
-                        <img src={book.coverUrl} alt={`${book.title} 표지`} className={styles.cover} loading="lazy"/>
+                        <img src={book.coverUrl} alt={`${book.title} 표지`} className={styles.cover} loading="lazy" />
                     ) : (
                         <div className={styles.coverPlaceholder}>No Image</div>
                     )}
@@ -188,12 +181,12 @@ export default function BookRecordPage() {
                         className={styles.addRecordBtn}
                         onClick={() => setCreateOpen(true)}
                     >
-                        ✏️ 기록 추가
+                        기록 추가
                     </button>
                 </div>
             </header>
 
-            <hr className={styles.divider}/>
+            <hr className={styles.divider} />
 
             {/* 리스트 영역 */}
             {loading && <div className={styles.helper}>불러오는 중…</div>}
@@ -207,13 +200,12 @@ export default function BookRecordPage() {
                                 <h2 className={styles.dayHeading}>{day}</h2>
                                 <ul className={styles.recordUl}>
                                     {recs.map((r) => {
-                                        const {time} = formatDateTime(r.recordedAt);
+                                        const { time } = formatDateTime(r.recordedAt);
                                         return (
                                             <li key={r.id} className={styles.recordItem}>
                                                 <time className={styles.time}>{time}</time>
                                                 <div className={styles.recordCard} data-time={time}>
-                                                    {r.sentence && <blockquote
-                                                        className={styles.quote}>{r.sentence}</blockquote>}
+                                                    {r.sentence && <blockquote className={styles.quote}>{r.sentence}</blockquote>}
                                                     {r.comment && <p className={styles.comment}>{r.comment}</p>}
                                                 </div>
                                             </li>
@@ -223,13 +215,8 @@ export default function BookRecordPage() {
                             </section>
                         ))}
 
-                        {/* 무한 스크롤 센티널 */}
-                        <div
-                            ref={sentinelRef}
-                            className={styles.sentinel}
-                            aria-hidden
-                            style={{ height: 1 }}
-                        />
+                        {/* 무한 스크롤 */}
+                        <div ref={sentinelRef} className={styles.sentinel} aria-hidden style={{ height: 1 }} />
                         {loadingMore && <div className={styles.helper}>더 불러오는 중…</div>}
                         {!hasMore && records.length > 0 && (
                             <div className={styles.helper}>마지막 기록까지 다 봤어요.</div>

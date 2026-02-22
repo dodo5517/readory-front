@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import styles from "../styles/BookshelfPage.module.css";
+import styles from "../styles/BookShelfPage.module.css";
 import {PageResult, SummaryBook} from "../types/books";
 import {fetchMyBooks} from "../api/ReadingRecord";
 import {useNavigate} from "react-router-dom";
 import Pagination from "../components/pagination/Pagination";
+import { MagnifyingGlassIcon } from '@phosphor-icons/react';
 
-export default function BookshelfPage() {
+export default function BookShelfPage() {
     const [data, setData] = useState<PageResult<SummaryBook >| null>(null);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10); // 데스크탑(10), 모바일(6)
@@ -82,7 +83,7 @@ export default function BookshelfPage() {
                             setPage(0); /* 검색 실행 */
                         }}
                     >
-                        🔍
+                        <MagnifyingGlassIcon />
                     </button>
                 </div>
 

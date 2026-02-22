@@ -1,80 +1,80 @@
+/* ═══════════════════════════════════════════════
+   Header
+   ═══════════════════════════════════════════════ */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 35px 60px 0;
+    padding: 20px 48px;
     background-color: var(--bg);
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     flex-wrap: wrap;
+    border-bottom: 1px solid var(--main-hr);
 }
 
+/* ── Left ── */
 .left {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
+
 .desktopOnly { display: inline; }
-.mobileOnly  { display: none; }
-
-
-.logo {
-    height: 24px;
-    margin-right: 8px;
-}
+.mobileOnly  { display: none;   }
 
 .username {
     text-decoration: none;
-    margin-top: 5px;
-    font-size: 1.2rem;
-    font-weight: bold;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
     color: var(--text-strong);
+    transition: color 0.15s;
 }
 
 .username:hover {
-    color: var(--text-hover);
+    color: var(--btn-bg);
 }
 
-/* 토큰 뱃지 + 연장 버튼 래핑 */
+/* ── Token HUD ── */
 .tokenWrap {
     position: relative;
     display: inline-flex;
     align-items: center;
-    margin-left: 10px;
+    margin-left: 4px;
 }
 
-/* 남은 시간 뱃지 */
 .tokenBadge {
-    padding: 2px 8px;
+    padding: 3px 8px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1;
-    background: var(--white);
+    background: var(--light-bg);
     color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em;
     opacity: 0.9;
-    transition: opacity .2s ease, filter .2s ease, transform .2s ease;
+    transition: opacity 0.2s;
 }
 
-/* 연장 버튼 (처음엔 숨김) */
 .extendBtn {
     position: absolute;
-    right: -6px;         /* 살짝 겹쳐보이게 */
+    right: -6px;
     top: 50%;
-    transform: translateY(-50%) translateX(8px); /* 살짝 오른쪽 밖에서 들어오게 */
-    padding: 2px 8px;
-    font-size: 12px;
+    transform: translateY(-50%) translateX(8px);
+    padding: 3px 9px;
+    font-size: 11px;
     line-height: 1.2;
     border-radius: 999px;
-    border: 1px solid var(--white);
-    background: var(--white);
-    color: var(--text-muted);
-    box-shadow: var(--text-muted);
+    border: 1px solid var(--btn-bg);
+    background: var(--btn-bg);
+    color: #fff;
     cursor: pointer;
-
     opacity: 0;
     pointer-events: none;
-    transition: opacity .15s ease, transform .15s ease;
+    transition: opacity 0.15s, transform 0.15s;
 }
 
-/* 호버/포커스 시 버튼 등장 & 뱃지 살짝 희미하게 */
 .tokenWrap:hover .extendBtn,
 .tokenWrap:focus-within .extendBtn {
     opacity: 1;
@@ -84,129 +84,131 @@
 
 .tokenWrap:hover .tokenBadge,
 .tokenWrap:focus-within .tokenBadge {
-    opacity: 0.4;
+    opacity: 0.3;
 }
 
-/* 모바일에서 수동 연장 버튼/효과 완전 비활성화 */
-@media (max-width: 768px) {
-    /* 버튼 자체는 .desktopOnly 규칙으로 숨겨짐 */
-    .desktopOnly { display: none; }
-
-    /* hover/focus로 뱃지가 흐려지는 것도 끔 */
-    .tokenWrap:hover .tokenBadge,
-    .tokenWrap:focus-within .tokenBadge {
-        opacity: 0.9 !important;
-    }
-
-    /* 혹시 남아있을 수 있는 등장 전환도 무력화 */
-    .tokenWrap:hover .extendBtn,
-    .tokenWrap:focus-within .extendBtn {
-        opacity: 0 !important;
-        pointer-events: none !important;
-        transform: translateY(-50%) translateX(8px) !important;
-    }
-}
-
+/* ── Hamburger ── */
 .menuButton {
     display: none;
-    font-size: 24px;
+    font-size: 20px;
     background: none;
-    border: none;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
     cursor: pointer;
     margin-left: auto;
     color: var(--text-main);
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
 }
 
-/* 메뉴 */
+.menuButton:hover {
+    background: var(--light-bg);
+}
+
+/* ── Nav ── */
 .nav {
     display: flex;
-    gap: 30px;
+    align-items: center;
+    gap: 24px;
 }
 
 .nav a {
     text-decoration: none;
-    color: var(--text-normal);
+    font-size: 0.88rem;
     font-weight: 500;
-    transition: color 0.2s;
+    color: var(--text-normal);
+    transition: color 0.15s;
+    white-space: nowrap;
 }
 
 .nav a:hover {
     color: var(--text-hover);
 }
 
-.nav .navFaq {
-    color: var(--nav-muted);
-    font-weight: 500;
+.navFaq {
+    color: var(--nav-muted) !important;
+    font-size: 0.82rem !important;
 }
 
-.nav .navFaq:hover {
-    color: var(--text-hover);
+.navFaq:hover {
+    color: var(--text-hover) !important;
 }
 
-/* 오른쪽 버튼 */
-.right {
-}
-
+/* ── Logout ── */
 .logoutButton {
     all: unset;
     cursor: pointer;
-    color: var(--text-normal);
+    font-size: 0.88rem;
     font-weight: 500;
-    transition: color 0.2s;
-    text-decoration: none;
+    color: var(--text-normal);
+    transition: color 0.15s;
+    white-space: nowrap;
 }
 
 .logoutButton:hover {
-    color: var(--text-hover);
+    color: var(--danger-color);
 }
 
-/* 사용법/공지사항 링크 영역 */
-/* 메뉴 구분선 */
+/* ── Divider ── */
 .divider {
-    display: block;
-    height: 1px;
-    background: var(--main-hr);
-    margin: 0;
+    display: inline-block;
+    width: 1px;
+    height: 13px;
+    background: var(--border-color);
+    margin: 0 2px;
+    vertical-align: middle;
+    opacity: 0.7;
 }
 
-/* 데스크탑에서는 세로 구분선 */
-@media (min-width: 769px) {
-    .divider {
-        display: inline-block;
-        width: 1px;
-        height: 16px;
-        margin: 0 8px;
-        vertical-align: middle;
-    }
-}
-
-/* 반응형 설정 */
+/* ══════════════════════════════
+   Mobile
+   ══════════════════════════════ */
 @media (max-width: 768px) {
-    .desktopOnly { display: none; }   /* 데스크탑 전용 숨김 */
-    .mobileOnly  { display: inline; } /* 모바일 전용 표시 */
+    .desktopOnly { display: none;   }
+    .mobileOnly  { display: inline; }
+
+    /* 모바일에선 tokenBadge / extendBtn hover 동작 비활성 */
+    .tokenWrap:hover .tokenBadge,
+    .tokenWrap:focus-within .tokenBadge { opacity: 0.9 !important; }
+    .tokenWrap:hover .extendBtn,
+    .tokenWrap:focus-within .extendBtn {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transform: translateY(-50%) translateX(8px) !important;
+    }
+
+    .header {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 30;
+        padding: 14px 18px;
+        align-items: center;
+        height: auto;
+        flex-wrap: wrap;
+    }
 
     .menuButton {
-        display: block;
+        display: flex;
     }
 
+    /* Collapsed nav */
     .nav {
-        display: flex;
         width: 100%;
         flex-direction: column;
-        gap: 16px;
-        margin-top: 10px;
-
-        /* 애니메이션 초기 상태(접힘) */
+        align-items: flex-start;
+        gap: 0;
         overflow: hidden;
         max-height: 0;
         opacity: 0;
         transform: translateY(-6px);
         pointer-events: none;
-
-        /* 배경/테두리 선택적으로 */
-        background: var(--bg);
-        border-radius: 8px;
-
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        /*margin-top: 8px;*/
         transition:
                 max-height 260ms ease,
                 opacity 200ms ease,
@@ -214,27 +216,28 @@
     }
 
     .show {
-        max-height: 320px; /* 메뉴 개수에 맞춰 넉넉히 */
+        max-height: 400px;
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
-        padding: 5px 20px 15px;
+        padding: 8px 0;
     }
 
-    .header {
-        position: fixed;     /* 화면에 고정 */
-        top: 0;              /* 맨 위 */
-        height: 93px;        /* 원하는 높이 */
-        z-index: 30;       /* 다른 요소보다 위에 오도록 */
-        left: 0;
-        right: 0;
-        align-items: flex-start;
-        padding: 20px 20px 10px 21px;
-        height: 70px;
+    .nav a,
+    .logoutButton {
+        display: block;
+        width: 100%;
+        padding: 11px 20px;
+        font-size: 0.92rem;
+        box-sizing: border-box;
+        border-radius: 0;
     }
 
-    .right {
-        margin-top: 10px;
-        align-self: flex-end;
+    .divider {
+        display: block;
+        width: auto;
+        height: 1px;
+        margin: 4px 20px;
+        opacity: 1;
     }
 }

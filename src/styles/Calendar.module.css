@@ -1,124 +1,202 @@
+/* ─── Calendar Module ─────────────────────────────────────────── */
 .hr {
-    margin:  0 100px;
+    margin: 0 80px;
+    border: none;
     border-top: 1px solid var(--main-hr);
-    border-bottom: 1px solid var(--main-hr);
 }
 
 .calendar {
-    padding: 40px 20px;
+    padding: 48px 24px 60px;
     min-height: 600px;
-    max-width: 600px;
+    max-width: 560px;
     margin: 0 auto;
-    font-family: sans-serif;
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
-.main{
-    text-align: center;
-    cursor: pointer;
-}
-.month{
-    display: inline-flex;           /* 클릭 영역을 덩어리로 */
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 4px 8px;
-    border-radius: 8px;
-    cursor: pointer;                /* ⬅ 마우스 포인터 */
-    user-select: none;
-    transition: background .15s ease, color .15s ease, transform .02s ease;
-}
-.month:hover{
-    background: var(--link-hover);  /* ⬅ 호버 시 시각적 피드백 */
-}
-
-.subheading {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: var(--text-muted);
-}
-
+/* ─── Header ──────────────────────────────────────────────────── */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
-}
-
-.header h2 {
-    color: var(--text-main);
-    font-size: 1.25rem;
+    margin-bottom: 32px;
 }
 
 .header button {
     background: none;
-    border: none;
-    font-size: 1.5rem;
+    border: 1px solid var(--cal-nav-border);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.1rem;
     cursor: pointer;
     color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.1s;
+    line-height: 1;
 }
 
+.header button:hover {
+    background: var(--cal-nav-hover-bg);
+    border-color: var(--cal-nav-hover-border);
+    transform: scale(1.08);
+}
+
+/* ─── Month Title ─────────────────────────────────────────────── */
+.main {
+    text-align: center;
+    cursor: pointer;
+    padding: 6px 16px;
+    border-radius: 10px;
+    transition: background 0.15s;
+    user-select: none;
+}
+
+.main:hover {
+    background: var(--link-hover);
+}
+
+.month {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    font-variant-numeric: tabular-nums;
+}
+
+.subheading {
+    margin: 3px 0 0;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ─── Weekdays ────────────────────────────────────────────────── */
 .weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid var(--main-hr);
+    padding-bottom: 8px;
     margin-bottom: 8px;
-    font-weight: bold;
-    color: var(--weekday-text);
-    text-align: center;
 }
 
 .weekday {
-    padding: 8px 0;
+    padding: 4px 0;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--weekday-text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+/* ─── Grid ────────────────────────────────────────────────────── */
 .grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
+    gap: 3px;
 }
 
+/* ─── Day Cell ────────────────────────────────────────────────── */
 .day {
-    height: 60px;
-    text-align: center;
+    position: relative;
+    height: 58px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     padding-top: 10px;
-    border: 1px solid var(--border-color);
-    /*border-radius: 6px;*/
-    background-color: var(--day-bg);
-    font-size: 0.95rem;
+    font-size: 0.88rem;
+    font-family: 'Georgia', serif;
     color: var(--text-main);
+    background-color: var(--day-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    cursor: default;
 }
 
+.day:not(.active):hover {
+    background: var(--cal-day-hover);
+    border-color: var(--cal-day-hover-border);
+}
+
+/* ─── Active (has record) ─────────────────────────────────────── */
 .active {
-    background-color: #76a7d6;
-    color: white;
-    font-weight: bold;
-}
-/* 배지 */
-.badge {
-    position: absolute;
-    right: 6px;
-    bottom: 6px;
-    font-size: 0.75rem;
-    padding: 2px 6px;
-    border-radius: 999px;
-    background: rgba(0,0,0,0.1);
-    color: currentColor;
+    background-color: var(--calendar-intensity-2);
+    border-color: transparent;
+    color: var(--cal-active-text);
+    font-weight: 600;
+    cursor: pointer;
 }
 
-/* --- 히트맵 강도: 기존 .active 배경 위를 부드럽게 덮어쓰기 --- */
-/* 0은 기록 없음 => 덮어쓰기 없음(클래스 안 붙음) */
+.active:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--cal-active-shadow);
+    filter: brightness(1.06);
+}
+
+.active:active {
+    transform: translateY(0);
+}
+
+/* ─── Intensity Levels ────────────────────────────────────────── */
 .intensity-1 { background-color: var(--calendar-intensity-1); }
 .intensity-2 { background-color: var(--calendar-intensity-2); }
 .intensity-3 { background-color: var(--calendar-intensity-3); }
 .intensity-4 { background-color: var(--calendar-intensity-4); }
+
+/* ─── Badge ───────────────────────────────────────────────────── */
+.badge {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    font-size: 0.62rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 700;
+    line-height: 1;
+    padding: 2px 5px;
+    border-radius: 999px;
+    background: var(--cal-badge-bg);
+    color: var(--cal-badge-text);
+}
+
+/* ─── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .hr {
-        margin: 0;
-    }
+    .hr { margin: 0; }
+
     .calendar {
-        min-height: 550px;
+        padding: 32px 12px 48px;
+        min-height: 520px;
     }
+
+    .month { font-size: 1.25rem; }
+
     .day {
-        height: 55px;
-        padding-top: 5px;
+        height: 50px;
+        padding-top: 8px;
+        font-size: 0.82rem;
+        border-radius: 3px;
+    }
+
+    .badge {
+        right: 3px;
+        bottom: 3px;
+        font-size: 0.55rem;
+        padding: 1px 4px;
+    }
+}
+
+@media (max-width: 400px) {
+    .grid { gap: 2px; }
+    .day {
+        height: 44px;
+        padding-top: 6px;
     }
 }

@@ -1,13 +1,32 @@
+/* ═══════════════════════════════════════════════
+   ThemeToggle
+   ═══════════════════════════════════════════════ */
 .toggleButton {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background-color: var(--btn-bg);
-    border: none;
+    width: 46px;
+    height: 46px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 50%;
-    font-size: 1.5rem;
-    padding: 12px;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    z-index: 20;
-    transition: all 0.3s ease;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    line-height: 1;
+}
+
+.toggleButton:hover {
+    background-color: var(--light-bg);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+    transform: scale(1.08);
+}
+
+.toggleButton:active {
+    transform: scale(0.96);
 }

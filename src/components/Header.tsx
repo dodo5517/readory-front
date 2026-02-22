@@ -4,6 +4,7 @@ import { useUser } from '../contexts/UserContext';
 import {logoutUser, reissueAccessToken} from "../api/Auth";
 import TokenHUD from "./TokenHUD";
 import styles from '../styles/Header.module.css';
+import { ListIcon } from '@phosphor-icons/react';
 
 export default function Header(){
     const navigate = useNavigate();
@@ -118,7 +119,7 @@ export default function Header(){
                 className={styles.menuButton}
                 onClick={toggleMenu}
             >
-                ☰
+                <ListIcon />
             </button>
 
             {/*메뉴 네비게이션 영역*/}

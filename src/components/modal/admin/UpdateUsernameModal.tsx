@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../../../styles/AdminModal.module.css";
 import * as adminUser from "../../../api/AdminUser";
 import {AdminPageUserResponse} from "../../../types/adminUser";
+import { XIcon } from '@phosphor-icons/react';
 
 interface Props {
     isOpen: boolean;
@@ -52,7 +53,7 @@ export default function UpdateUsernameModal({ isOpen, userId, initialUsername, o
                 <div className={styles.header}>
                     <h2 className={styles.title}>이름 수정</h2>
                     <button className={styles.closeBtn} onClick={onClose}>
-                        ✕
+                        <XIcon />
                     </button>
                 </div>
 

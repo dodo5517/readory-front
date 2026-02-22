@@ -9,6 +9,7 @@ import {
 } from "../api/Auth";
 import styles from '../styles/MyPage.module.css';
 import {Link, useNavigate} from "react-router-dom";
+import { PlusIcon, XIcon, LockIcon, TrashIcon } from '@phosphor-icons/react';
 
 export default function MyPage() {
     const navigate = useNavigate();
@@ -147,11 +148,11 @@ export default function MyPage() {
                     style={{display: "none"}}
                 />
                 <button className={styles.avatarAddBtn} onClick={handleUploadClick}>
-                    <span>＋</span>
+                    <PlusIcon />
                 </button>
                 {user?.profileImageUrl && (
                     <button className={styles.avatarDeleteBtn} onClick={handleDeleteProfileImage}>
-                        ✕
+                        <XIcon />
                     </button>
                 )}
             </div>
@@ -184,7 +185,7 @@ export default function MyPage() {
             </ul>
 
             <div className={styles.box} onClick={handleLogoutAllDevices}>
-                <span className={styles.lockIcon}>🔒</span>
+                <span className={styles.lockIcon}><LockIcon /></span>
                 <div>
                     <div className={styles.boxText}>모든 기기에서 로그아웃</div>
                 </div>
@@ -203,7 +204,7 @@ export default function MyPage() {
                     onClick={handleDeleteUser}   // 기존 핸들러에 연결 (오타 그대로 쓰고 있으면 유지)
                     aria-label="계정 영구 삭제"
                 >
-                    🗑️ 탈퇴하기
+                    <TrashIcon /> 탈퇴하기
                 </button>
             </div>
         </section>

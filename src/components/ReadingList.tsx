@@ -3,6 +3,7 @@ import styles from '../styles/ReadingList.module.css';
 import { fetchMySummaryRecords } from "../api/ReadingRecord";
 import {Link, useNavigate} from "react-router-dom";
 import {SummaryRecord} from "../types/records";
+import { ChatIcon } from '@phosphor-icons/react';
 
 export default function ReadingList() {
     const [list, setList] = useState<SummaryRecord[]>([]);
@@ -46,7 +47,7 @@ export default function ReadingList() {
                                 <div className={styles.sentence}>{list.sentence}</div>
                             </div>
                             <div className={styles.comments}>
-                                <span className={styles.commentIcon}>💬</span>
+                                <span className={styles.commentIcon}><ChatIcon /></span>
                                 <span className={styles.commentText}>{list.comment}</span>
                             </div>
                         </div>

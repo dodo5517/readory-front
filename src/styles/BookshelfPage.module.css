@@ -1,209 +1,201 @@
-/* 레이아웃 기본값은 기존 container/title과 톤 통일 */
+/* ═══════════════════════════════════════════════
+   BookShelfPage
+   ═══════════════════════════════════════════════ */
 .container {
-    padding: 40px 20px;
-    max-width: 1000px;      /* 책장은 넓게 */
+    padding: 40px 24px 60px;
+    max-width: 1000px;
     margin: 0 auto;
-    font-family: sans-serif;
 }
+
 .title {
     text-align: center;
-    font-size: 1.6rem;
-    margin-bottom: 16px;
-    font-weight: bold;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    color: var(--text-main);
+    font-family: 'Georgia', serif;
 }
 
-/* 툴바 */
-.toolbar{
+/* ── Toolbar ── */
+.toolbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    margin: 8px 0 16px;
+    gap: 8px;
+    margin: 8px 0 20px;
 }
-/* 검색창 */
-.searchInput{
-    flex:1;
+
+.searchInput {
+    flex: 1;
     height: 40px;
     border: 1px solid var(--input-border);
-    border-radius: 10px;
-    padding: 0 12px;
-    font-size: .95rem;
+    border-radius: 8px;
+    padding: 0 14px;
+    font-size: 0.9rem;
     background: var(--card-bg);
-    color: var(--placeholder);
+    color: var(--text-main);
+    transition: border-color 0.15s;
 }
-.searchInput::placeholder{ color: var(--placeholder); }
-.searchInput:focus{
-    outline:none;
+.searchInput::placeholder { color: var(--placeholder); }
+.searchInput:focus {
+    outline: none;
+    border-color: var(--input-focus);
 }
 
-/* 검색 버튼 */
-.searchBtn{
+.searchBtn {
     height: 40px;
     padding: 0 14px;
-    border:  1px solid var(--input-border);
-    border-radius: 10px;
-    background: var(--card-bg);
-    color: var(--page-btn);
-    font-size: .95rem;
-    cursor: pointer;
-    display: inline-flex; align-items: center; gap: 6px;
-}
-.searchBtn:hover{ background: var(--search-btn); }
-.searchBtn:focus-visible{ outline:none; }
-.filterBtn{
     border: 1px solid var(--input-border);
+    border-radius: 8px;
     background: var(--card-bg);
-    color: var(--page-btn);
-    border-radius: 10px;
-    padding: 8px 10px;
-    font-size: 0.95rem;
-    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--text-main);
+    font-size: 0.9rem;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+    flex-shrink: 0;
 }
-.filterBtn:hover{ background: var(--search-btn); }
-.caret{ font-size: 0.9rem; color: var(--placeholder); }
+.searchBtn:hover { background: var(--light-bg); }
 
-/* 정렬 세그먼트(모바일 50:50) */
-.segment{
-    display:inline-flex; gap:6px;
+.segment {
+    display: inline-flex;
+    gap: 4px;
     border: 1px solid var(--input-border);
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--card-bg);
     padding: 4px;
+    flex-shrink: 0;
 }
-.segBtn{
-    height: 40px;
-    padding: 0 12px;
+
+.segBtn {
+    height: 32px;
+    padding: 0 14px;
     border: 0;
     background: transparent;
-    color: var(--placeholder);
-    border-radius: 8px;
+    color: var(--text-muted);
+    border-radius: 6px;
     cursor: pointer;
-    font-size: .95rem;
-}
-.segBtn:focus-visible{ outline:2px solid var(--link-color); }
-.isActive{
-    background: var(--search-btn);
-    color: var(--page-btn);
-    font-weight:600;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+    font-size: 0.88rem;
+    transition: background 0.15s, color 0.15s;
 }
 
-/* 데스크탑: 세그먼트가 왼쪽, 검색 영역이 오른쪽으로 */
-@media (min-width: 768px){
-    .toolbar{
-        justify-content: flex-start;  /* space-between 대신 왼쪽 정렬 */
-        gap: 10px;                    /* 아이템 간 간격 유지 */
-    }
-
-    /* 세그먼트 블록을 왼쪽(먼저) */
-    .segment{ order: 1; }
-
-    /* 첫 번째 자식(검색 입력+버튼 묶음)을 오른쪽(나중) */
-    .toolbar > :first-child{
-        order: 2;
-        /* 이미 inline-style로 flex:1 이 있으니 없어도 되지만,
-           혹시를 위해 한 번 더 명시해도 무방 */
-        flex: 1;
-    }
+.isActive {
+    background: var(--light-bg);
+    color: var(--text-main);
+    font-weight: 600;
 }
 
-/* 모바일: 세그먼트 버튼 반반 가로폭 */
-@media (max-width: 768px){
-    .toolbar{
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .segment{ width: 100%; }
-    .segBtn{
-        flex: 1 1 50%;
-        padding: 0;
-        text-align: center;
-    }
+/* Desktop: segment left, search right */
+@media (min-width: 769px) {
+    .segment { order: 1; }
+    .toolbar > :first-child { order: 2; flex: 1; }
 }
 
-/* 그리드: 화면에 맞춰 자동으로 열 수 증가 */
-.grid{
-    display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 14px 12px;
+/* ── Grid ── */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 16px 14px;
     list-style: none;
     padding: 0;
-    margin: 6px 0 0;
-}
-@media (min-width: 768px){
-    .grid{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-}
-@media (min-width: 1024px){
-    .grid{ grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    margin: 0;
 }
 
-/* 카드 */
-.card{}
-.cardBtn{
+@media (min-width: 769px) {
+    .grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+    .grid { grid-template-columns: repeat(auto-fill, minmax(162px, 1fr)); }
+}
+
+/* ── Card ── */
+.card {}
+
+.cardBtn {
     width: 100%;
     text-align: left;
     background: var(--card-bg);
-    border: 1px solid var(--input-border);
-    /*border: none;*/
-    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
     padding: 10px;
     cursor: pointer;
     display: block;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    transition: box-shadow 0.15s, background 0.15s, transform 0.15s;
 }
-.cardBtn:hover{ background: var(--search-btn); }
-.cardBtn:focus-visible{ outline: 2px solid var(--link-color); }
 
-/* 표지 3:4 비율 고정 */
-.coverWrap{
+.cardBtn:hover {
+    background: var(--light-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* ── Cover ── */
+.coverWrap {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 4;
-    border: 1px solid var(--input-border);
-    border-radius: 10px;
+    aspect-ratio: 2 / 3;
+    border-radius: 6px;
     overflow: hidden;
-    background: var(--avatar-bg);
-    display: grid; place-items: center;
-    margin-bottom: 8px;
-}
-.cover{ width:100%; height:100%; object-fit: cover; }
-.coverPlaceholder{ color: var(--placeholder); font-size: 0.8rem; }
-
-/* 진행률(옵션) */
-.progress{
-    position:absolute; left:0; right:0; bottom:0;
-    height: 6px; background: rgba(0,0,0,0.07);
-}
-.progress > span{
-    display:block; height:100%; background: var(--link-color);
+    background: var(--light-bg);
+    display: grid;
+    place-items: center;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.09);
 }
 
-/* 뱃지(옵션) */
-.badgeCrown{
-    position:absolute; left:6px; top:6px;
-    font-size: 16px;
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+.cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-/* 텍스트 */
-.bookTitle{
-    font-weight: 600; color: var(--page-btn);
-    font-size: .95rem; line-height: 1.3;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-    min-height: 2.5em; /* 2줄 공간 확보 */
-}
-.author{
+.coverPlaceholder {
     color: var(--placeholder);
-    font-size: .85rem;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font-size: 0.78rem;
 }
 
-/* 아주 좁은 화면 미세 조정 */
-@media (max-width: 768px){
-    .bookTitle{ font-size: .92rem; }
-    .author{ font-size: .82rem; }
-    .container{ padding: 5px 10px}
-    .title{ margin-bottom: 20px;}
-    .searchInput{ font-size: 1rem; }
+/* ── Text ── */
+.bookTitle {
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.88rem;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.3em;
+    font-family: 'Georgia', serif;
+}
+
+.author {
+    margin-top: 3px;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ══════════════════════════════
+   Mobile
+   ══════════════════════════════ */
+@media (max-width: 768px) {
+    .container { padding: 8px 12px 40px; }
+    .title { margin-bottom: 16px; }
+
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .segment { width: 100%; }
+    .segBtn { flex: 1; text-align: center; padding: 0; }
+    .searchInput { font-size: 1rem; }
+
+    .bookTitle { font-size: 0.84rem; }
+    .author { font-size: 0.76rem; }
 }

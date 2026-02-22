@@ -1,67 +1,68 @@
+/* ═══════════════════════════════════════════════
+   PrivacyPolicy
+   ═══════════════════════════════════════════════ */
 .container {
     min-height: 100vh;
-    padding: 40px 20px;
-    background: var(--bg, #f5f5f5);
+    padding: 48px 20px 60px;
+    background: var(--bg);
 }
 
 .content {
-    max-width: 800px;
+    max-width: 720px;
     margin: 0 auto;
-    background: var(--card-bg, #fff);
-    border-radius: 16px;
-    box-shadow: 0 2px 12px var(--copy-border, rgba(0, 0, 0, 0.1));
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
     overflow: hidden;
 }
 
-/* ========================
-   Hero 섹션 (제목)
-   ======================== */
+/* ── Header ── */
 .header {
-    padding: 50px 30px 40px;
+    padding: 44px 36px 36px;
     text-align: center;
-    background: var(--bg, #fafafa);
-    border-bottom: 1px solid var(--main-hr, #eee);
+    background: var(--light-bg);
+    border-bottom: 1px solid var(--main-hr);
 }
 
 .title {
-    font-size: 1.9rem;
+    font-size: 1.6rem;
     font-weight: 800;
-    color: var(--text-main, #222);
+    letter-spacing: -0.02em;
+    color: var(--text-main);
     margin: 0 0 10px;
+    font-family: 'Georgia', serif;
 }
 
 .date {
     display: inline-block;
-    font-size: 0.85rem;
-    color: var(--text-muted, #888);
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--main-hr, #e0e0e0);
-    border-radius: 20px;
-    padding: 4px 14px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 3px 12px;
+    letter-spacing: 0.03em;
     margin: 0;
+    font-variant-numeric: tabular-nums;
 }
 
-/* ========================
-   소개 섹션
-   ======================== */
+/* ── Intro ── */
 .introSection {
-    padding: 30px;
-    border-bottom: 1px solid var(--main-hr, #eee);
+    padding: 26px 36px;
+    border-bottom: 1px solid var(--main-hr);
 }
 
 .intro {
-    font-size: 0.97rem;
-    color: var(--text-muted, #555);
+    font-size: 0.9rem;
+    color: var(--text-muted);
     line-height: 1.85;
     margin: 0;
 }
 
-/* ========================
-   섹션 공통
-   ======================== */
+/* ── Sections ── */
 .section {
-    padding: 30px;
-    border-bottom: 1px solid var(--main-hr, #eee);
+    padding: 26px 36px;
+    border-bottom: 1px solid var(--main-hr);
 }
 
 .section:last-of-type {
@@ -69,177 +70,141 @@
 }
 
 .section h2 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
-    color: var(--text-main, #222);
-    margin: 0 0 16px;
+    color: var(--text-main);
+    margin: 0 0 12px;
     padding-left: 12px;
-    border-left: 4px solid var(--link-color, #1976d2);
+    border-left: 3px solid var(--btn-bg);
+    line-height: 1.4;
 }
 
 .section h3 {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    color: var(--text-main, #333);
-    margin: 20px 0 8px;
-    padding: 6px 10px;
-    background: var(--bg, #f7f7f7);
+    color: var(--text-main);
+    margin: 16px 0 8px;
+    padding: 5px 10px;
+    background: var(--light-bg);
     border-radius: 6px;
-    border-left: 3px solid var(--main-hr, #ddd);
+    border-left: 3px solid var(--border-color);
 }
 
 .section p {
-    font-size: 0.95rem;
-    color: var(--text-muted, #555);
-    line-height: 1.85;
-    margin: 0 0 12px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin: 0 0 10px;
 }
 
 .section ul {
-    margin: 12px 0 16px 20px;
+    margin: 8px 0 12px 18px;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
 }
 
 .section ul li {
-    font-size: 0.93rem;
-    color: var(--text-main, #444);
+    font-size: 0.9rem;
+    color: var(--text-muted);
     line-height: 1.65;
 }
 
 .section ul li::marker {
-    color: var(--link-color, #1976d2);
+    color: var(--btn-bg);
 }
 
-/* ========================
-   테이블 스타일
-   ======================== */
+/* ── Table ── */
 .table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 16px;
+    margin-top: 12px;
     border-radius: 8px;
     overflow: hidden;
-    border: 1px solid var(--main-hr, #eee);
+    border: 1px solid var(--border-color);
+    font-size: 0.88rem;
 }
 
 .table th,
 .table td {
-    padding: 14px 16px;
+    padding: 11px 16px;
     text-align: left;
-    font-size: 0.9rem;
 }
 
 .table th {
-    background: var(--bg, #fafafa);
+    background: var(--light-bg);
     font-weight: 600;
-    color: var(--text-main, #333);
-    border-bottom: 1px solid var(--main-hr, #eee);
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .table td {
-    color: var(--text-muted, #666);
-    background: var(--card-bg, #fff);
+    color: var(--text-muted);
+    background: var(--card-bg);
 }
 
 .table tr:not(:last-child) td {
-    border-bottom: 1px solid var(--main-hr, #eee);
+    border-bottom: 1px solid var(--border-color);
 }
 
-/* ========================
-   연락처 리스트
-   ======================== */
+/* ── Contact list ── */
 .contactList {
-    list-style: none;
-    margin: 12px 0 16px 0 !important;
-    padding: 16px 20px !important;
-    background: var(--bg, #fafafa);
-    border: 1px solid var(--main-hr, #eee);
-    border-radius: 10px;
+    list-style: none !important;
+    margin: 10px 0 12px !important;
+    padding: 12px 18px !important;
+    background: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex !important;
+    flex-direction: column;
+    gap: 5px !important;
 }
 
 .contactList li {
-    margin-bottom: 8px;
-}
-
-.contactList li:last-child {
-    margin-bottom: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
 }
 
 .contactList a {
-    color: var(--link-color, #1976d2);
+    color: var(--btn-bg);
     text-decoration: none;
     font-weight: 500;
 }
+.contactList a:hover { text-decoration: underline; }
 
-.contactList a:hover {
-    text-decoration: underline;
-}
-
-/* ========================
-   푸터
-   ======================== */
+/* ── Footer ── */
 .footer {
-    padding: 24px 30px;
+    padding: 22px 36px;
     display: flex;
     justify-content: center;
-    background: var(--bg, #fafafa);
+    background: var(--light-bg);
+    border-top: 1px solid var(--border-color);
 }
 
 .backLink {
-    padding: 12px 24px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: 10px;
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--input-border, #ddd);
-    color: var(--text-main, #222);
+    padding: 8px 18px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    border-radius: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
     text-decoration: none;
-    transition: all 0.2s;
+    transition: background 0.15s;
 }
+.backLink:hover { background: var(--light-bg); }
 
-.backLink:hover {
-    background: var(--link-hover, #f5f5f5);
-}
-
-/* ========================
-   모바일 반응형
-   ======================== */
+/* ══════════════════════════════
+   Mobile
+   ══════════════════════════════ */
 @media (max-width: 768px) {
-    .container {
-        padding: 20px 16px;
-    }
-
-    .header {
-        padding: 36px 20px 30px;
-    }
-
-    .title {
-        font-size: 1.6rem;
-    }
-
-    .introSection,
-    .section {
-        padding: 24px 20px;
-    }
-
-    .section h2 {
-        font-size: 1.1rem;
-    }
-
-    .section h3 {
-        font-size: 0.95rem;
-    }
-
-    .table th,
-    .table td {
-        padding: 12px;
-        font-size: 0.85rem;
-    }
-
-    .footer {
-        padding: 20px;
-    }
+    .container { padding: 24px 16px 48px; }
+    .header { padding: 30px 20px 26px; }
+    .title { font-size: 1.35rem; }
+    .introSection, .section { padding: 20px; }
+    .section h2 { font-size: 0.95rem; }
+    .table th, .table td { padding: 9px 12px; font-size: 0.82rem; }
+    .footer { padding: 18px 20px; }
 }

@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styles from '../styles/ReadingRecordPage.module.css';
+import styles_shelf from '../styles/BookShelfPage.module.css';
 import {fetchCandidatesLocal, fetchCandidatesExternal, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
 import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";
@@ -269,7 +270,7 @@ export default function CalendarPage() {
 
     return (
         <section className={styles.container}>
-            <h1 className={styles.title}>My Reading Calendar</h1>
+            <h1 className={styles_shelf.title}>My Reading Calendar</h1>
 
             <div className={styles.recordToolbar}>
                 {/* 검색 + 정렬 툴바 */}

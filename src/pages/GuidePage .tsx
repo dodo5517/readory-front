@@ -1,12 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/GuidePage.module.css";
+import { BooksIcon, LightningIcon, BookOpenIcon } from '@phosphor-icons/react';
 
 // 핵심 기능 데이터
 const FEATURES = [
     {
         id: 1,
-        icon: "📚",
+        icon: <BooksIcon size={32} />,
         title: "여러 전자책 앱 메모를 한 곳에서",
         description: "교보, 밀리, 알라딘... 여기저기 흩어져 있는 메모를 한곳에서 관리하세요.",
         details: [
@@ -17,7 +18,7 @@ const FEATURES = [
     },
     {
         id: 2,
-        icon: "⚡",
+        icon: <LightningIcon size={32} />,
         title: "읽는 흐름을 끊지 않고 바로 기록",
         description: "전자책 읽다가 앱을 벗어나지 않고 iOS 단축어로 바로 기록할 수 있어요.",
         details: [
@@ -28,7 +29,7 @@ const FEATURES = [
     },
     {
         id: 3,
-        icon: "📖",
+        icon: <BookOpenIcon size={32} />,
         title: "종이책도 디지털 기록",
         description: "종이책 문장을 실제 책에 연결된 기록으로 남길 수 있어요.",
         details: [
@@ -53,7 +54,7 @@ export default function GuidePage() {
                 {/* 서비스 소개 섹션 */}
                 <header className={styles.heroSection}>
                     <div className={styles.logoArea}>
-                        <span className={styles.logoIcon}>📚</span>
+                        <span className={styles.logoIcon}><BooksIcon size={32} /></span>
                         <h1 className={styles.logoText}>Readory</h1>
                     </div>
                     <p className={styles.tagline}>Reading + Memory</p>

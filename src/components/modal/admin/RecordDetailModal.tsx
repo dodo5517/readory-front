@@ -4,6 +4,7 @@ import recordStyles from "../../../styles/AdminRecordPage.module.css";
 import * as adminRecord from "../../../api/AdminRecord";
 import {AdminRecordDetailResponse, MatchStatus} from "../../../types/adminRecord";
 import RecordEditModal from "./RecordEditModal";
+import { XIcon, BooksIcon } from '@phosphor-icons/react';
 
 interface Props {
     isOpen: boolean;
@@ -124,7 +125,7 @@ export default function RecordDetailModal({
                     <div className={styles.header}>
                         <h2 className={styles.title}>기록 상세</h2>
                         <button className={styles.closeBtn} onClick={onClose}>
-                            ✕
+                            <XIcon />
                         </button>
                     </div>
 
@@ -178,7 +179,7 @@ export default function RecordDetailModal({
                                                 alt={record.bookTitle ?? ""}
                                             />
                                         ) : (
-                                            <div className={recordStyles.noCover}>📚</div>
+                                            <div className={recordStyles.noCover}><BooksIcon /></div>
                                         )}
                                         <div className={recordStyles.matchedBookInfo}>
                                             <span className={recordStyles.matchedBookTitle}>{record.bookTitle}</span>

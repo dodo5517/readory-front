@@ -1,5 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import styles from "../styles/RecordToolbar.module.css";
+import { MagnifyingGlassIcon, XIcon } from '@phosphor-icons/react';
 
 type Mode = "month" | "day";
 
@@ -115,7 +116,7 @@ export default function  RecordToolbar({
             <div className={styles.topBar}>
                 {/* 모바일 전용 검색 (항상 보임) */}
                 <label className={`${styles.search} ${styles.searchMobile}`}>
-                    <span className={styles.searchIcon} aria-hidden>🔎</span>
+                    <span className={styles.searchIcon} aria-hidden><MagnifyingGlassIcon /></span>
                     <input
                         className={styles.searchInput}
                         placeholder="문장/메모 검색…"
@@ -130,7 +131,7 @@ export default function  RecordToolbar({
                             className={styles.clearBtn}
                             aria-label="검색어 지우기"
                             title="지우기"
-                        >×</button>
+                        ><XIcon /></button>
                     )}
                 </label>
 
@@ -199,7 +200,7 @@ export default function  RecordToolbar({
 
                 {/* 데스크탑 전용 검색(한 줄 배치 위해) */}
                 <label className={`${styles.search} ${styles.searchDesktop}`}>
-                    <span className={styles.searchIcon} aria-hidden>🔎</span>
+                    <span className={styles.searchIcon} aria-hidden><MagnifyingGlassIcon /></span>
                     <input
                         className={styles.searchInput}
                         placeholder="문장/코멘트 검색…"
@@ -214,7 +215,7 @@ export default function  RecordToolbar({
                             className={styles.clearBtn}
                             aria-label="검색어 지우기"
                             title="지우기"
-                        >×</button>
+                        ><XIcon /></button>
                     )}
                 </label>
 

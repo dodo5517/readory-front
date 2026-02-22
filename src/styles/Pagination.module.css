@@ -1,3 +1,6 @@
+/* ═══════════════════════════════════════════════
+   Pagination
+   ═══════════════════════════════════════════════ */
 .wrap {
     display: flex;
     justify-content: center;
@@ -7,89 +10,76 @@
 .list {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 0 16px;
-    margin: 0;             /* 기본 margin 제거 */
-    list-style: none;      /* 불릿 제거 */
+    gap: 4px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 
+/* ── Buttons ── */
 .navBtn,
 .pageBtn {
-    min-width: 36px;
-    height: 36px;
-    padding: 0 10px;
-    border: 1px solid var( --input-border);
+    min-width: 34px;
+    height: 34px;
+    padding: 0 8px;
+    border: 1px solid var(--input-border);
     background: var(--card-bg);
-    color: var(--page-btn);
+    color: var(--text-main);
     border-radius: 8px;
     cursor: pointer;
+    font-size: 0.88rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+    font-variant-numeric: tabular-nums;
+}
+
+.navBtn:hover:not(:disabled),
+.pageBtn:hover:not(:disabled) {
+    background: var(--light-bg);
 }
 
 .pageBtn.active {
-    background: var(--page-btn);
-    color: var(--card-bg);
-    border-color: var(--page-btn);
+    background: var(--btn-bg);
+    color: #fff;
+    border-color: var(--btn-bg);
     cursor: default;
+    font-weight: 600;
 }
 
 .navBtn:disabled,
 .pageBtn:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
 }
 
+/* ── Ellipsis ── */
 .ellipsis {
-    padding: 0 6px;
+    padding: 0 4px;
     color: var(--text-muted);
+    font-size: 0.88rem;
+    user-select: none;
 }
 
-.sizeBox {
-    margin-left: 10px;
-}
-
-.sizeLabel {
-    font-size: 0.9rem;
-    color: var(--record-quote);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.sizeSelect {
-    height: 36px;
-    border: 1px solid var(--img-hover);
-    background: var(--white);
-    border-radius: 8px;
-    padding: 0 8px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 데스크탑: 5열 */
-    gap: 20px;
-}
-
-/* 반응형 */
+/* ══════════════════════════════
+   Mobile
+   ══════════════════════════════ */
 @media (max-width: 768px) {
-    .wrap {
-        margin: 16px 0 0;
-    }
+    .wrap { margin: 16px 0 0; }
+
     .list {
-        gap: 4px;
-        padding: 0 8px;
+        gap: 3px;
         overflow-x: auto;
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
     .list::-webkit-scrollbar { display: none; }
 
-    .navBtn, .pageBtn {
+    .navBtn,
+    .pageBtn {
         min-width: 32px;
         height: 32px;
-        border-radius: 10px;
-    }
-
-    .grid {
-        grid-template-columns: repeat(2, 1fr); /* 모바일: 2열 (상황 맞게 조정 가능) */
+        font-size: 0.85rem;
     }
 }

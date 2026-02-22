@@ -1,47 +1,53 @@
+/* ═══════════════════════════════════════════════
+   FaqPage
+   ═══════════════════════════════════════════════ */
 .container {
     min-height: 100vh;
-    padding: 40px 20px;
-    background: var(--bg, #f5f5f5);
+    padding: 48px 20px 60px;
+    background: var(--bg);
 }
 
 .card {
-    max-width: 800px;
+    max-width: 720px;
     margin: 0 auto;
-    background: var(--card-bg, #fff);
-    border-radius: 16px;
-    box-shadow: 0 2px 12px var(--copy-border);
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
     overflow: hidden;
 }
 
+/* ── Header ── */
 .header {
-    padding: 40px 30px 30px;
+    padding: 40px 36px 32px;
     text-align: center;
-    border-bottom: 1px solid var(--main-hr, #eee);
-    background: var(--bg, #fafafa);
+    border-bottom: 1px solid var(--main-hr);
+    background: var(--light-bg);
 }
 
 .title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: var(--text-main, #222);
+    letter-spacing: -0.02em;
+    color: var(--text-main);
     margin: 0 0 8px;
+    font-family: 'Georgia', serif;
 }
 
 .subtitle {
-    font-size: 1rem;
-    color: var(--text-muted, #666);
+    font-size: 0.88rem;
+    color: var(--text-muted);
     margin: 0;
 }
 
-/* 공지사항 리스트 */
+/* ── FAQ list ── */
 .noticeList {
     display: flex;
     flex-direction: column;
 }
 
 .noticeItem {
-    padding: 24px 30px;
-    border-bottom: 1px solid var(--main-hr, #eee);
+    padding: 26px 36px;
+    border-bottom: 1px solid var(--border-color);
     transition: background 0.15s;
 }
 
@@ -50,161 +56,72 @@
 }
 
 .noticeItem:hover {
-    background: var(--link-hover, #fafafa);
-}
-
-.noticeHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.noticeHeaderLeft {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* 타입 뱃지 */
-.typeBadge {
-    display: inline-block;
-    padding: 4px 10px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 6px;
-}
-
-.typeUpdate {
-    background: #e3f2fd;
-    color: #1565c0;
-}
-
-.typeNotice {
-    background: #fff3e0;
-    color: #ef6c00;
-}
-
-.typeEvent {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
-.typeMaintenance {
-    background: #fce4ec;
-    color: #c2185b;
-}
-
-.newBadge {
-    display: inline-block;
-    padding: 3px 8px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    border-radius: 4px;
-    background: #ff5252;
-    color: #fff;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-}
-
-.noticeDate {
-    font-size: 0.85rem;
-    color: var(--text-muted, #888);
+    background: var(--light-bg);
 }
 
 .noticeTitle {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-main, #222);
+    font-size: 0.97rem;
+    font-weight: 700;
+    color: var(--text-main);
     margin: 0 0 8px;
+    line-height: 1.5;
 }
 
 .noticeContent {
     font-size: 0.9rem;
-    color: var(--text-muted, #666);
+    color: var(--text-muted);
     margin: 0;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .noticeContent a {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 8px 14px;
-
-    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 10px;
+    padding: 5px 12px;
+    font-size: 0.82rem;
     font-weight: 600;
     text-decoration: none;
-
-    color: var(--calendar-intensity-4);
-    background: transparent;
+    color: var(--btn-bg);
+    border: 1px solid var(--btn-bg);
     border-radius: 6px;
-    text-decoration: none;
-
-    transition: all 0.2s ease;
+    transition: background 0.15s, color 0.15s;
 }
 
 .noticeContent a:hover {
-    background: var(--calendar-intensity-1);
-    transform: translateY(-1px);
+    background: var(--btn-bg);
+    color: #fff;
 }
 
-/* 푸터 */
+/* ── Footer ── */
 .footer {
-    padding: 24px 30px;
+    padding: 22px 36px;
     display: flex;
     justify-content: center;
-    background: var(--bg, #fafafa);
+    background: var(--light-bg);
+    border-top: 1px solid var(--border-color);
 }
 
 .backBtn {
-    padding: 12px 24px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: 10px;
+    padding: 8px 18px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    border-radius: 8px;
     cursor: pointer;
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--input-border, #ddd);
-    color: var(--text-main, #222);
-    transition: all 0.2s;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    transition: background 0.15s;
 }
+.backBtn:hover { background: var(--light-bg); }
 
-.backBtn:hover {
-    background: var(--link-hover, #f5f5f5);
-}
-
-/* 모바일 */
+/* ══════════════════════════════
+   Mobile
+   ══════════════════════════════ */
 @media (max-width: 768px) {
-    .container {
-        padding: 20px 16px;
-    }
-
-    .header {
-        padding: 30px 20px 24px;
-    }
-
-    .title {
-        font-size: 1.5rem;
-    }
-
-    .noticeItem {
-        padding: 20px;
-    }
-
-    .noticeHeader {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-
-    .noticeDate {
-        font-size: 0.8rem;
-    }
-
-    .noticeTitle {
-        font-size: 1rem;
-    }
+    .container { padding: 24px 16px 48px; }
+    .header { padding: 28px 20px 24px; }
+    .title { font-size: 1.35rem; }
+    .noticeItem { padding: 20px; }
+    .footer { padding: 18px 20px; }
 }

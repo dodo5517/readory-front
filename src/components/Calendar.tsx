@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import styles from "../styles/Calendar.module.css";
+import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 import {
     formatYMD,
     getMonthMeta,
@@ -114,13 +115,13 @@ export default function Calendar() {
             <hr className={styles.hr} />
             <section className={styles.calendar}>
                 <div className={styles.header}>
-                    <button onClick={() => changeMonth(-1)} aria-label="이전 달">‹</button>
+                    <button onClick={() => changeMonth(-1)} aria-label="이전 달"><CaretLeftIcon /></button>
                     <span className={styles.main}
                         onClick={()=> goMonth(y, m0 + 1)}>
                         <h2 className={styles.month}>{y}/ {m0 + 1}</h2>
                         <p className={styles.subheading}>Reading Calendar</p>
                       </span>
-                    <button onClick={() => changeMonth(1)} aria-label="다음 달">›</button>
+                    <button onClick={() => changeMonth(1)} aria-label="다음 달"><CaretRightIcon /></button>
                 </div>
 
                 {loading && <div>불러오는 중…</div>}

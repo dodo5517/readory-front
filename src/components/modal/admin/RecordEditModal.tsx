@@ -3,6 +3,7 @@ import styles from "../../../styles/AdminModal.module.css";
 import recordStyles from "../../../styles/AdminRecordPage.module.css";
 import * as adminRecord from "../../../api/AdminRecord";
 import {AdminRecordDetailResponse} from "../../../types/adminRecord";
+import { XIcon } from '@phosphor-icons/react';
 
 interface Props {
     isOpen: boolean;
@@ -77,7 +78,7 @@ export default function RecordEditModal({
                 <div className={styles.header}>
                     <h2 className={styles.title}>기록 수정</h2>
                     <button className={styles.closeBtn} onClick={onClose}>
-                        ✕
+                        <XIcon />
                     </button>
                 </div>
 

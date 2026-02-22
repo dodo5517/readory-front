@@ -4,6 +4,7 @@ import * as adminUser from "../../../api/AdminUser";
 import {AdminPageUserResponse} from "../../../types/adminUser";
 import UpdateUsernameModal from "./UpdateUsernameModal";
 import UpdatePasswordModal from "./UpdatePasswordModal";
+import { XIcon } from '@phosphor-icons/react';
 
 
 interface Props {
@@ -133,7 +134,7 @@ export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList
                 <div className={styles.header}>
                     <h2 className={styles.title}>유저 상세</h2>
                     <button className={styles.closeBtn} onClick={onClose}>
-                        ✕
+                        <XIcon />
                     </button>
                 </div>
 

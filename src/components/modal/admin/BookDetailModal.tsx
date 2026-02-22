@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../../../styles/AdminModal.module.css";
 import bookStyles from "../../../styles/AdminBookPage.module.css";
 import {BookDetailResponse} from "../../../types/adminLog";
+import { XIcon, TrashIcon , BooksIcon } from '@phosphor-icons/react';
 
 interface Props {
     isOpen: boolean;
@@ -60,7 +61,7 @@ export default function BookDetailModal({
                 <div className={styles.header}>
                     <h2 className={styles.title}>책 상세</h2>
                     <button className={styles.closeBtn} onClick={onClose}>
-                        ✕
+                        <XIcon />
                     </button>
                 </div>
 
@@ -73,7 +74,7 @@ export default function BookDetailModal({
                         {/* 삭제된 책 표시 */}
                         {isDeleted && (
                             <div className={bookStyles.deletedBanner}>
-                                <span className={bookStyles.deletedIcon}>🗑️</span>
+                                <span className={bookStyles.deletedIcon}><TrashIcon /></span>
                                 <span>삭제된 책입니다 ({formatDateTime(book.deletedAt)})</span>
                             </div>
                         )}
@@ -89,7 +90,7 @@ export default function BookDetailModal({
                                     />
                                 ) : (
                                     <div className={bookStyles.detailNoCover}>
-                                        <span>📚</span>
+                                        <span><BooksIcon /></span>
                                     </div>
                                 )}
                             </div>

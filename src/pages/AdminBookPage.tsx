@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import BookDetailModal from "../components/modal/admin/BookDetailModal";
 import {PageResponse} from "../types/books";
 import {BookDetailResponse, BookListResponse} from "../types/adminLog";
+import { BooksIcon } from '@phosphor-icons/react';
 
 export default function AdminBookPage() {
     const [sp, setSearchParams] = useSearchParams();
@@ -86,7 +87,7 @@ export default function AdminBookPage() {
     // 영구 삭제
     const handleHardDelete = async () => {
         if (!selectedBookId) return;
-        if (!window.confirm("⚠️ 이 책을 영구 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) return;
+        if (!window.confirm("이 책을 영구 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) return;
         if (!window.confirm("정말로 영구 삭제하시겠습니까?")) return;
 
         try {
@@ -224,7 +225,7 @@ export default function AdminBookPage() {
                                         />
                                     ) : (
                                         <div className={styles.noCover}>
-                                            <span>📚</span>
+                                            <span><BooksIcon /></span>
                                         </div>
                                     )}
                                 </div>

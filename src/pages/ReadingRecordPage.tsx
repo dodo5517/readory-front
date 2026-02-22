@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styles from '../styles/ReadingRecordPage.module.css';
 import {fetchCandidatesLocal, fetchCandidatesExternal, fetchDeleteRecord, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
+import { MagnifyingGlassIcon } from '@phosphor-icons/react';
 import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";
 import BookSelectModal from "../components/modal/BookSelectModal";
@@ -79,7 +80,7 @@ export default function ReadingRecordPage() {
             // 삭제 후 현재 페이지 재조회
             const updated = await fetchMyRecords({ page, size, q });
             setData(updated);
-        } catch (e:any) {
+        } catch (e: any) {
             alert(e?.message ?? "삭제에 실패했습니다.");
         } finally {
             setEditOpen(false);
@@ -122,7 +123,6 @@ export default function ReadingRecordPage() {
 
     // 책 후보 검색 후 모달 띄움
     const openSelectModal = async (rec: Record) => {
-        console.log("openSelectModal");
         setSelectedRecordId(rec.id);
         // 기록에 있는 제목/작가를 초기 키워드로 사용 (없으면 빈 문자열)
         const rawTitle = rec.title ?? "";
@@ -134,15 +134,12 @@ export default function ReadingRecordPage() {
             setModalSortKey('author');
             setModalKeyword(rawAuthor);
         }
-
         setCandidatesLoading(true);
         setModalOpen(true); // UX상 먼저 열고 "불러오는 중…" 보여줌
         try {
             const list = await fetchCandidatesLocal(rawTitle, rawAuthor); // 로컬로 검색(없으면 외부 호출함)
             setCandidates(list);
-            console.log("fetchCandidates candidates: ", candidates);
         } catch (e: any) {
-            console.error(e);
             setCandidates([]);
         } finally {
             setCandidatesLoading(false);
@@ -171,9 +168,7 @@ export default function ReadingRecordPage() {
             const author = modalSortKey === 'author' ? modalKeyword : "";
             const list = await fetchCandidatesLocal(title, author);
             setCandidates(list);
-            console.log("searched candidates: ", list);
         } catch (e) {
-            console.error(e);
             setCandidates([]);
         } finally {
             setCandidatesLoading(false);
@@ -188,9 +183,7 @@ export default function ReadingRecordPage() {
             const author = modalSortKey === 'author' ? modalKeyword : "";
             const list = await fetchCandidatesExternal(title, author);
             setCandidates(list);
-            console.log("searched candidates: ", list);
         } catch (e) {
-            console.error(e);
             setCandidates([]);
         } finally {
             setCandidatesLoading(false);
@@ -213,66 +206,58 @@ export default function ReadingRecordPage() {
 
     return (
         <section className={styles.container}>
+            {/* 제목 가운데 */}
             <h1 className={styles.title}>My Reading Records</h1>
 
-            {/* 기록 생성 버튼 */}
-            <div className={styles.recordToolbar}>
-                <button
-                    className={styles.createBtn}
-                    onClick={() => setCreateOpen(true)}
-                >
-                    ✏️ 새 기록 추가
-                </button>
-            </div>
-
-            {/* 검색 + 정렬 툴바 */}
+            {/* 툴바: 세그먼트 | 검색창 + 돋보기 + 기록 추가 */}
             <div className={styles.toolbar}>
-                <div style={{display: "flex", gap: "8px", flex: 1}}>
-                    <input
-                        type="text"
-                        value={queryInput}
-                        onChange={(e) => setQueryInput(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                setPage(0);
-                                setQ(queryInput.trim());
-                            }
-                        }}
-                        placeholder={PLACEHOLDER[scope]}
-                        aria-label={PLACEHOLDER[scope]}
-                        className={styles.searchInput}
-                    />
-                    <button
-                        className={styles.searchBtn}
-                        onClick={() => {
-                            setPage(0);
-                            setQ(queryInput.trim());
-                        }}
-                    >
-                        🔍
-                    </button>
-                </div>
-
+                {/* 세그먼트 — 데스크탑: 왼쪽, 모바일: 첫 번째 줄 전체 */}
                 <div className={styles.segment}>
                     <button
                         className={`${styles.segBtn} ${scope === "titleAndAuthor" ? styles.isActive : ""}`}
-                        onClick={() => {
-                            setScope("titleAndAuthor");
-                            setPage(0);
-                        }}
+                        onClick={() => { setScope("titleAndAuthor"); setPage(0); }}
                     >
                         제목/작가
                     </button>
                     <button
                         className={`${styles.segBtn} ${scope === "sentenceAndComment" ? styles.isActive : ""}`}
-                        onClick={() => {
-                            setScope("sentenceAndComment");
-                            setPage(0);
-                        }}
+                        onClick={() => { setScope("sentenceAndComment"); setPage(0); }}
                     >
                         문장/메모
                     </button>
                 </div>
+
+                {/* 검색창 — 남은 공간 차지 */}
+                <input
+                    type="text"
+                    value={queryInput}
+                    onChange={(e) => setQueryInput(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            setPage(0);
+                            setQ(queryInput.trim());
+                        }
+                    }}
+                    placeholder={PLACEHOLDER[scope]}
+                    aria-label={PLACEHOLDER[scope]}
+                    className={styles.searchInput}
+                />
+
+                {/* 돋보기 */}
+                <button
+                    className={styles.searchBtn}
+                    onClick={() => { setPage(0); setQ(queryInput.trim()); }}
+                >
+                    <MagnifyingGlassIcon />
+                </button>
+
+                {/* 기록 추가 */}
+                <button
+                    className={styles.createBtn}
+                    onClick={() => setCreateOpen(true)}
+                >
+                    기록 추가
+                </button>
             </div>
 
             {loading ? (
@@ -303,7 +288,6 @@ export default function ReadingRecordPage() {
                                     <div className={styles.info}>
                                         <h3 className={styles.bookTitle}>{record.title}</h3>
                                         <div className={styles.author}>{record.author?.length ? record.author + "(작가)" : ""}</div>
-
                                         <div className={styles.sentence}>{record.sentence}</div>
                                         <div className={styles.comment}>{record.comment}</div>
                                         {record.bookId && <span className={styles.badgeLinked}>연결됨</span>}
@@ -315,11 +299,9 @@ export default function ReadingRecordPage() {
                                         className={styles.editBtn}
                                         onClick={() => openEditModal(record)}
                                         aria-label="기록 수정"
-                                        title="기록 수정"
                                     >
-                                        ✏️ 수정
+                                        수정
                                     </button>
-
                                     <button
                                         type="button"
                                         className={styles.linkBtn}
@@ -333,18 +315,16 @@ export default function ReadingRecordPage() {
                                             className={styles.linkBtn}
                                             onClick={() => handleRemoveMatch(record.id)}
                                         >
-                                            책 연결 끊기
+                                            연결 끊기
                                         </button>
                                     )}
-
                                     <button
                                         type="button"
                                         className={styles.dangerBtn}
                                         onClick={() => handleDeleteRecord(record)}
                                         aria-label="기록 삭제"
-                                        title="기록 삭제"
                                     >
-                                        🗑️ 삭제
+                                        삭제
                                     </button>
                                 </div>
                             </div>
@@ -375,7 +355,6 @@ export default function ReadingRecordPage() {
                 onSelect={handleSelectCandidate}
                 onClose={() => setModalOpen(false)}
                 loading={candidatesLoading}
-
                 keyword={modalKeyword}
                 onKeywordChange={setModalKeyword}
                 sortKey={modalSortKey}

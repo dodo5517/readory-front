@@ -3,6 +3,7 @@ import styles from "../../../styles/AdminModal.module.css";
 import logStyles from "../../../styles/AdminLogPage.module.css";
 import {AuthEventType, LogDetailResponse} from "../../../types/adminLog";
 import UserDetailModal from "./UserDetailModal";
+import { XIcon } from '@phosphor-icons/react';
 
 interface Props {
     isOpen: boolean;
@@ -70,7 +71,7 @@ export default function LogDetailModal({ isOpen, log, loading, onClose }: Props)
                 <div className={styles.header}>
                     <h2 className={styles.title}>로그 상세</h2>
                     <button className={styles.closeBtn} onClick={onClose}>
-                        ✕
+                        <XIcon />
                     </button>
                 </div>
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../../styles/CreateRecordModal.module.css";
 import { createReadingRecord } from "../../api/ReadingRecord";
+import { XIcon } from '@phosphor-icons/react';
 
 interface Props {
     open: boolean;
@@ -70,7 +71,7 @@ export default function CreateRecordModal({ open, onClose, onCreated, initialTit
             <section className={styles.modal}>
                 <header className={styles.header}>
                     <h2 className={styles.title}>새 기록 추가</h2>
-                    <button type="button" className={styles.closeBtn} onClick={onClose}>✕</button>
+                    <button type="button" className={styles.closeBtn} onClick={onClose}><XIcon/></button>
                 </header>
 
                 <form className={styles.form} onSubmit={handleCreateRecord}>

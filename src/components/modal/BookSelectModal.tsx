@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../../styles/BookSelectModal.module.css";
 import {BookCandidate} from "../../types/books";
+import { XIcon, MagnifyingGlassIcon } from '@phosphor-icons/react';
 
 type Props = {
     open: boolean;
@@ -97,9 +98,9 @@ export default function BookSelectModal({open, candidates, onSelect, onClose,
                             <button type="button"
                                     className={`${styles.searchBtn} ${styles.searchBtnClear}`}
                                     onClick={() => onKeywordChange?.('')}
-                                    aria-label="검색어 지우기">×</button>
+                                    aria-label="검색어 지우기"><XIcon /></button>
                         )}
-                        <button type="submit" className={styles.searchBtn} aria-label="검색">🔎</button>
+                        <button type="submit" className={styles.searchBtn} aria-label="검색"><MagnifyingGlassIcon /></button>
                     </div>
                 </form>
 

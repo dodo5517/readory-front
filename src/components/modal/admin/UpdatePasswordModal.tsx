@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../../../styles/AdminModal.module.css";
 import * as adminUser from "../../../api/AdminUser";
 import {AdminPageUserResponse} from "../../../types/adminUser";
+import { XIcon, WarningIcon } from '@phosphor-icons/react';
 
 interface Props {
     isOpen: boolean;
@@ -70,7 +71,7 @@ export default function UpdatePasswordModal({ isOpen, userId, userLabel, onClose
                 <div className={styles.header}>
                     <h2 className={styles.title}>비밀번호 변경</h2>
                     <button className={styles.closeBtn} onClick={onClose}>
-                        ✕
+                        <XIcon />
                     </button>
                 </div>
 
@@ -114,7 +115,7 @@ export default function UpdatePasswordModal({ isOpen, userId, userLabel, onClose
                     {error && <div className={styles.errorMsg}>{error}</div>}
 
                     <div className={styles.infoText}>
-                        ⚠️ 관리자 권한으로 비밀번호를 직접 변경합니다.
+                        <WarningIcon /> 관리자 권한으로 비밀번호를 직접 변경합니다.
                     </div>
 
                     <div className={styles.formActions}>

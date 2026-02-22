@@ -1,5 +1,6 @@
 import React, {useMemo} from "react";
 import styles from "../../styles/Pagination.module.css";
+import { CaretLeftIcon, CaretRightIcon, CaretDoubleLeftIcon, CaretDoubleRightIcon, DotsThreeIcon } from '@phosphor-icons/react';
 
 type Props = {
     page: number;
@@ -83,7 +84,7 @@ export default function Pagination({
                         aria-label="첫 페이지"
                         disabled={prevDisabled}
                     >
-                        «
+                        <CaretDoubleLeftIcon />
                     </button>
                 </li>
                 <li>
@@ -94,14 +95,14 @@ export default function Pagination({
                         aria-label="이전 페이지"
                         disabled={prevDisabled}
                     >
-                        ‹
+                        <CaretLeftIcon />
                     </button>
                 </li>
 
                 {items.map((it, idx) =>
                     it === "..." ? (
                         <li key={`ellipsis-${idx}`} className={styles.ellipsis} aria-hidden="true">
-                            …
+                            <DotsThreeIcon />
                         </li>
                     ) : (
                         <li key={it}>
@@ -126,7 +127,7 @@ export default function Pagination({
                         aria-label="다음 페이지"
                         disabled={nextDisabled}
                     >
-                        ›
+                        <CaretRightIcon />
                     </button>
                 </li>
                 <li>
@@ -137,7 +138,7 @@ export default function Pagination({
                         aria-label="마지막 페이지"
                         disabled={nextDisabled}
                     >
-                        »
+                        <CaretDoubleRightIcon />
                     </button>
                 </li>
             </ul>

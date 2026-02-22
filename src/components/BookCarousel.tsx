@@ -3,6 +3,7 @@ import styles from "../styles/BookCarousel.module.css";
 import {SummaryBook} from "../types/books";
 import {fetchMySummaryBooks} from "../api/ReadingRecord";
 import {Link, useNavigate} from "react-router-dom";
+import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 
 export default function BookCarousel() {
     const [list, setList] = useState<SummaryBook[]>([]);
@@ -45,7 +46,7 @@ export default function BookCarousel() {
 
             <div className={styles.wrapper}>
                 <button className={styles.navBtn} onClick={() => scroll('left')}>
-                    ‹
+                    <CaretLeftIcon />
                 </button>
 
                 <div className={styles.bookList} ref={listRef}>
@@ -62,7 +63,7 @@ export default function BookCarousel() {
                 </div>
 
                 <button className={styles.navBtn} onClick={() => scroll('right')}>
-                    ›
+                    <CaretRightIcon />
                 </button>
             </div>
         </section>
