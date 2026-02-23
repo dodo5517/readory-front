@@ -167,7 +167,7 @@
    Mobile
    ══════════════════════════════ */
 @media (max-width: 768px) {
-    .desktopOnly { display: none;   }
+    .desktopOnly { display: none !important;   }
     .mobileOnly  { display: inline; }
 
     /* 모바일에선 tokenBadge / extendBtn hover 동작 비활성 */
