@@ -31,7 +31,7 @@ export default function Header(){
 
     console.log(user);
 
-    const handleExtend = async () => {
+    const handleExtend = React.useCallback(async () => {
         setRefreshing(true);
         try {
             await reissueAccessToken();
@@ -40,10 +40,10 @@ export default function Header(){
         } finally {
             setRefreshing(false);
         }
-    };
+    }, []);
 
     // 해당 기기에서 로그아웃 핸들러
-    const handleLogout = async (e?: React.SyntheticEvent) => {
+    const handleLogout = React.useCallback(async (e?: React.SyntheticEvent) => {
         e?.preventDefault?.();
         if (isSubmitting) return;
 
@@ -58,7 +58,7 @@ export default function Header(){
         } finally {
             setIsSubmitting(false);
         }
-    };
+    }, [isSubmitting, navigate]);
 
     const onExpire = React.useCallback(() => {
         if (document.visibilityState !== "visible") return;

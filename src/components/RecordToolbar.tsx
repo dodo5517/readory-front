@@ -37,8 +37,8 @@ export default function  RecordToolbar({
     const [size] = useState<number>(defaultSize); // UI 제거
     const [error, setError] = useState<string | null>(null);
 
-    const didMount = useRef(false);
-    useEffect(() => { didMount.current = true; }, []);
+    const isFirstMonthSearch = useRef(true);
+    const isFirstDateSearch = useRef(true);
 
     // 모바일: 기본 접힘 / 데스크탑: 기본 펼침
     const [open, setOpen] = useState<boolean>(true);
@@ -89,7 +89,10 @@ export default function  RecordToolbar({
 
     // monthValue 또는 sort 변경 시 자동 검색
     useEffect(() => {
-        if (!didMount.current) return;
+        if (isFirstMonthSearch.current) {
+            isFirstMonthSearch.current = false;
+            return;
+        }
         if (mode !== "month") return;
         if (!monthValue) return;
 
@@ -98,17 +101,20 @@ export default function  RecordToolbar({
         if (!year || !mon || mon < 1 || mon > 12) return;
 
         onSubmit({ mode: "month", year, month: mon, q: q || undefined, sort, page: 0, size });
-    }, [monthValue, sort]);
+    }, [monthValue, sort]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // dateValue 또는 sort 변경 시 자동 검색
     useEffect(() => {
-        if (!didMount.current) return;
+        if (isFirstDateSearch.current) {
+            isFirstDateSearch.current = false;
+            return;
+        }
         if (mode !== "day") return;
         if (!dateValue) return;
         if (!/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) return;
 
         onSubmit({ mode: "day", date: dateValue, q: q || undefined, sort, page: 0, size });
-    }, [dateValue, sort]);
+    }, [dateValue, sort]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <form className={styles.toolbar} onSubmit={handleSubmit} aria-labelledby={tabsId}>
