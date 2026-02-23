@@ -43,6 +43,7 @@
 .right {
     flex: 1;
     display: flex;
+    padding: 0 13.17vw 0 0;
     flex-direction: column;
     gap: 28px;
     cursor: pointer;
