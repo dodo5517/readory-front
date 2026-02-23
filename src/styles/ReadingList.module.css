@@ -4,7 +4,7 @@
 .container {
     display: flex;
     justify-content: space-between;
-    padding: 60px 100px 56px;
+    padding: 60px 13.17vw 56px 100px;
     margin: 0 0 0;
     border-bottom: 1px solid var(--main-hr);
     gap: 80px;
@@ -43,7 +43,6 @@
 .right {
     flex: 1;
     display: flex;
-    padding: 0 13.17vw 0 0;
     flex-direction: column;
     gap: 28px;
     cursor: pointer;
@@ -89,8 +88,9 @@
 }
 
 .main {
-    flex: 0 0 220px;
+    flex: 1 1 0;
     min-width: 0;
+    max-width: 480px;
 }
 
 .title {
