@@ -3,7 +3,6 @@ import {useNavigate, Link } from 'react-router-dom';
 
 import styles from '../styles/Login.module.css';
 import {loginUser} from "../api/Auth";
-import {BooksIcon} from "@phosphor-icons/react";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL!;
 
@@ -57,7 +56,7 @@ export default function Login() {
                 <form onSubmit={handleLogin} className={styles.form}>
                     <input
                         type="email"
-                        placeholder="Email"
+                        placeholder="이메일"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         className={styles.input}
@@ -65,30 +64,33 @@ export default function Login() {
                     />
                     <input
                         type="password"
-                        placeholder="Password"
+                        placeholder="비밀번호"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         className={styles.input}
                         required
                     />
 
-                    <button type="submit" className={styles.button}>Log In</button>
+                    <button type="submit" className={styles.button}>로그인</button>
                 </form>
 
                 <div className={styles.footer}>
-                    Don’t have an account? <Link to="/signUp" className={styles.a}>Sign Up</Link>
+                    계정이 없으신가요? <Link to="/signUp" className={styles.a}>회원가입</Link>
                 </div>
 
                 <div className={styles.socialLogin}>
-                    <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/google`}>
-                        <img src="/assets/social/google_login.png" alt="Google Login"/>
-                    </button>
-                    <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/kakao`}>
-                        <img src="/assets/social/kakao_login.png" alt="Kakao Login"/>
-                    </button>
-                    <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/naver`}>
-                        <img src="/assets/social/naver_login.png" alt="Naver Login"/>
-                    </button>
+                    <div className={styles.divider}><span>또는</span></div>
+                    <div className={styles.socialButtons}>
+                        <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/google`}>
+                            <img src="/assets/social/google_login.png" alt="Google Login"/>
+                        </button>
+                        <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/kakao`}>
+                            <img src="/assets/social/kakao_login.png" alt="Kakao Login"/>
+                        </button>
+                        <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/naver`}>
+                            <img src="/assets/social/naver_login.png" alt="Naver Login"/>
+                        </button>
+                    </div>
                 </div>
 
                 {/* 하단 링크 */}

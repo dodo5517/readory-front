@@ -10,7 +10,7 @@ export default function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false); // submit 연속 요청 방지
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleRegister = async(e: React.FormEvent) => {
         e.preventDefault();
@@ -19,14 +19,14 @@ export default function SignUp() {
         setIsSubmitting(true);
         if (password !== confirm) {
             alert('비밀번호가 일치하지 않습니다.');
+            setIsSubmitting(false);
             return;
         }
 
         console.log('회원가입 시도:', { email, username, password });
 
         try {
-            await registerUser( email, username, password);
-            // 따로 화면 필요할듯
+            await registerUser(email, username, password);
             alert("회원가입 성공");
             navigate('/login');
         } catch (err: any) {
@@ -35,19 +35,21 @@ export default function SignUp() {
         } finally {
             setIsSubmitting(false);
         }
-
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.card}>
-                <h1 className={styles.title}>Create Account</h1>
-                <p className={styles.subtitle}>Join us and start your reading notes</p>
+                {/* 헤더 */}
+                <div className={styles.hero}>
+                    <h1 className={styles.heroName}>회원가입</h1>
+                    <p className={styles.heroDesc}>Readory와 함께 독서 기록을 시작하세요</p>
+                </div>
 
                 <form onSubmit={handleRegister} className={styles.form}>
                     <input
                         type="text"
-                        placeholder="Name"
+                        placeholder="이름"
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                         className={styles.input}
@@ -55,7 +57,7 @@ export default function SignUp() {
                     />
                     <input
                         type="email"
-                        placeholder="Email"
+                        placeholder="이메일"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         className={styles.input}
@@ -63,7 +65,7 @@ export default function SignUp() {
                     />
                     <input
                         type="password"
-                        placeholder="Password"
+                        placeholder="비밀번호"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         className={styles.input}
@@ -71,18 +73,20 @@ export default function SignUp() {
                     />
                     <input
                         type="password"
-                        placeholder="Confirm Password"
+                        placeholder="비밀번호 확인"
                         value={confirm}
                         onChange={e => setConfirm(e.target.value)}
                         className={styles.input}
                         required
                     />
 
-                    <button type="submit" className={styles.button}>Sign Up</button>
+                    <button type="submit" className={styles.button} disabled={isSubmitting}>
+                        {isSubmitting ? '처리 중…' : '회원가입'}
+                    </button>
                 </form>
 
                 <div className={styles.footer}>
-                    Already have an account? <Link to="/login" className={styles.a}>Log In</Link>
+                    이미 계정이 있으신가요? <Link to="/login" className={styles.a}>로그인</Link>
                 </div>
             </div>
         </div>
