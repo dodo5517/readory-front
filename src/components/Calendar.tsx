@@ -61,7 +61,7 @@ export default function Calendar() {
             })}`,
         });
     };
-    
+
     // 월 기록
     const goMonth = (year: number, month1: number) => {
         const mm = String(month1).padStart(2, "0");
@@ -103,8 +103,7 @@ export default function Calendar() {
                 }}
                 style={{ position: "relative", cursor: hasRecord ? "pointer" : "default" }}
             >
-                {day}
-                {/*뱃지 쓸지 말지 고민중...*/}
+                <span>{day}</span>
                 {hasRecord && <span className={styles.badge}>{count}</span>}
             </div>
         );
@@ -117,8 +116,8 @@ export default function Calendar() {
                 <div className={styles.header}>
                     <button onClick={() => changeMonth(-1)} aria-label="이전 달"><CaretLeftIcon /></button>
                     <span className={styles.main}
-                        onClick={()=> goMonth(y, m0 + 1)}>
-                        <h2 className={styles.month}>{y}/ {m0 + 1}</h2>
+                          onClick={()=> goMonth(y, m0 + 1)}>
+                        <h2 className={styles.month}>{y}년 {m0 + 1}월</h2>
                         <p className={styles.subheading}>Reading Calendar</p>
                       </span>
                     <button onClick={() => changeMonth(1)} aria-label="다음 달"><CaretRightIcon /></button>

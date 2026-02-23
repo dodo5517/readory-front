@@ -8,7 +8,7 @@
 .calendar {
     padding: 48px 24px 60px;
     min-height: 600px;
-    max-width: 560px;
+    max-width: 520px;
     margin: 0 auto;
     font-family: 'Georgia', 'Times New Roman', serif;
 }
@@ -18,23 +18,22 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
 }
 
 .header button {
     background: none;
     border: 1px solid var(--cal-nav-border);
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
     color: var(--text-main);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s, border-color 0.2s, transform 0.1s;
-    line-height: 1;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
 }
 
 .header button:hover {
@@ -47,19 +46,19 @@
 .main {
     text-align: center;
     cursor: pointer;
-    padding: 6px 16px;
+    padding: 6px 18px;
     border-radius: 10px;
     transition: background 0.15s;
     user-select: none;
 }
 
 .main:hover {
-    background: var(--link-hover);
+    background: var(--cal-day-hover);
 }
 
 .month {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.45rem;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--text-main);
@@ -68,7 +67,7 @@
 
 .subheading {
     margin: 3px 0 0;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 400;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -81,18 +80,17 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     border-bottom: 1px solid var(--main-hr);
-    padding-bottom: 8px;
-    margin-bottom: 8px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .weekday {
-    padding: 4px 0;
     text-align: center;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--weekday-text);
+    color: var(--text-muted);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -100,71 +98,87 @@
 .grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
+    row-gap: 6px;
 }
 
 /* ─── Day Cell ────────────────────────────────────────────────── */
 .day {
     position: relative;
-    height: 58px;
+    height: 52px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    padding-top: 10px;
+    justify-content: center;
     font-size: 0.88rem;
     font-family: 'Georgia', serif;
     color: var(--text-main);
-    background-color: var(--day-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    transition: color 0.15s;
     cursor: default;
 }
 
-.day:not(.active):hover {
+/* 날짜 숫자를 감싸는 원 — 셀보다 작게 */
+.day::before {
+    content: "";
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.15s;
+    z-index: 0;
+}
+
+/* 숫자 자체는 원 위에 */
+.day > * { position: relative; z-index: 1; }
+
+/* 비활성 hover */
+.day:not(.active):hover::before {
     background: var(--cal-day-hover);
-    border-color: var(--cal-day-hover-border);
 }
 
 /* ─── Active (has record) ─────────────────────────────────────── */
 .active {
-    background-color: var(--calendar-intensity-2);
-    border-color: transparent;
     color: var(--cal-active-text);
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
 }
 
-.active:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px var(--cal-active-shadow);
-    filter: brightness(1.06);
+.active::before {
+    background-color: var(--calendar-intensity-2);
 }
 
-.active:active {
-    transform: translateY(0);
+.active:hover::before {
+    filter: brightness(1.08);
+    transform: scale(1.08);
+}
+
+.active:active::before {
+    transform: scale(0.96);
 }
 
 /* ─── Intensity Levels ────────────────────────────────────────── */
-.intensity-1 { background-color: var(--calendar-intensity-1); }
-.intensity-2 { background-color: var(--calendar-intensity-2); }
-.intensity-3 { background-color: var(--calendar-intensity-3); }
-.intensity-4 { background-color: var(--calendar-intensity-4); }
+.intensity-1::before { background-color: var(--calendar-intensity-1); }
+.intensity-2::before { background-color: var(--calendar-intensity-2); }
+.intensity-3::before { background-color: var(--calendar-intensity-3); }
+.intensity-4::before { background-color: var(--calendar-intensity-4); }
 
 /* ─── Badge ───────────────────────────────────────────────────── */
 .badge {
     position: absolute;
-    right: 5px;
-    bottom: 5px;
-    font-size: 0.62rem;
+    right: 6px;
+    bottom: 6px;
+    font-size: 0.58rem;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-weight: 700;
     line-height: 1;
-    padding: 2px 5px;
+    padding: 1px 4px;
     border-radius: 999px;
     background: var(--cal-badge-bg);
     color: var(--cal-badge-text);
+    z-index: 2;
 }
 
 /* ─── Responsive ──────────────────────────────────────────────── */
@@ -172,31 +186,38 @@
     .hr { margin: 0; }
 
     .calendar {
-        padding: 32px 12px 48px;
-        min-height: 520px;
+        padding: 28px 12px 48px;
+        min-height: 480px;
     }
 
-    .month { font-size: 1.25rem; }
+    .month { font-size: 1.2rem; }
 
     .day {
-        height: 50px;
-        padding-top: 8px;
+        height: 44px;
         font-size: 0.82rem;
-        border-radius: 3px;
+    }
+
+    .day::before {
+        width: 30px;
+        height: 30px;
     }
 
     .badge {
         right: 3px;
         bottom: 3px;
-        font-size: 0.55rem;
-        padding: 1px 4px;
+        font-size: 0.5rem;
+        padding: 1px 3px;
     }
 }
 
 @media (max-width: 400px) {
-    .grid { gap: 2px; }
+    .grid { row-gap: 4px; }
     .day {
-        height: 44px;
-        padding-top: 6px;
+        height: 38px;
+        font-size: 0.75rem;
+    }
+    .day::before {
+        width: 26px;
+        height: 26px;
     }
 }
