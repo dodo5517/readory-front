@@ -3,6 +3,7 @@ import {useNavigate, Link } from 'react-router-dom';
 
 import styles from '../styles/Login.module.css';
 import {loginUser} from "../api/Auth";
+import {BooksIcon} from "@phosphor-icons/react";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL!;
 
@@ -46,8 +47,12 @@ export default function Login() {
     return (
         <div className={styles.container}>
             <div className={styles.card}>
-                <h1 className={styles.title}>Welcome!</h1>
-                <p className={styles.subtitle}>Please log in to continue</p>
+                {/* 로고 + 서비스 설명 */}
+                <div className={styles.hero}>
+                    {/*<span className={styles.heroIcon}><BooksIcon /></span>*/}
+                    <h1 className={styles.heroName}>Readory</h1>
+                    <p className={styles.heroDesc}>흩어진 독서 메모를 한곳에서 관리하세요</p>
+                </div>
 
                 <form onSubmit={handleLogin} className={styles.form}>
                     <input

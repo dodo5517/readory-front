@@ -2,58 +2,75 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background-color: var(--bg);
     font-family: sans-serif;
+    padding: 24px 16px;
+    box-sizing: border-box;
 }
 
-@media (max-width: 768px){
+@media (max-width: 768px) {
     .container {
-        display: flex;
         align-items: flex-start;
-        margin-top: 15vh;
-        height: 100%;
+        padding-top: 10vh;
     }
 }
 
 .card {
     background-color: var(--card-bg);
-    padding: 28px 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    max-width: 400px;
+    padding: 36px 36px 24px;
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+    max-width: 380px;
     width: 100%;
     text-align: center;
     color: var(--text-main);
 }
 
-.title {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 4px;
+/* ── Hero: 로고 + 설명 ── */
+.hero {
+    margin-bottom: 24px;
+}
+
+.heroIcon {
+    display: block;
+    font-size: 2.2rem;
+    margin-bottom: 6px;
+}
+
+.heroName {
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
     color: var(--text-main);
+    font-family: 'Georgia', serif;
+    margin: 0 0 8px;
 }
 
-.subtitle {
-    font-size: 0.95rem;
-    color: var(--text-sub);
-    margin-bottom: 16px;
+.heroDesc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
 }
 
+/* ── Form ── */
 .form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .input {
-    padding: 11px 12px;
+    padding: 10px 12px;
     border: 1px solid var(--input-border);
-    border-radius: 6px;
-    font-size: 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
     outline: none;
     background-color: transparent;
     color: var(--text-main);
+    text-align: left;
+    transition: border-color 0.15s;
 }
 
 .input:focus {
@@ -62,68 +79,66 @@
 }
 
 .button {
-    padding: 11px;
+    padding: 10px;
     background-color: var(--btn-bg);
     color: white;
-    font-weight: bold;
+    font-size: 0.92rem;
+    font-weight: 600;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    margin-top: 2px;
+    transition: background-color 0.15s;
 }
+.button:hover { background-color: var(--btn-hover); }
 
-.button:hover {
-    background-color: var(--btn-hover);
-}
-
+/* ── Footer ── */
 .footer {
-    margin-top: 12px;
-    font-size: 0.85rem;
-    color: var(--text-sub);
+    margin-top: 10px;
+    font-size: 0.83rem;
+    color: var(--text-muted);
 }
 
 .a {
-    color: var(--link);
+    color: var(--btn-bg);
     text-decoration: none;
     font-weight: 500;
 }
+.a:hover { text-decoration: underline; }
 
-.a:hover {
-    text-decoration: underline;
-}
-
+/* ── Social login ── */
 .socialLogin {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 12px;
-    margin-top: 10px;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
 }
 
 .socialLogin button {
     background: none;
-    border: 1px solid var(--input-border, #ddd);
+    border: 1px solid var(--border-color);
     padding: 0;
     cursor: pointer;
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
 }
-
 .socialLogin button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-color: var(--input-focus, #5e92c6);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border-color: var(--input-focus);
 }
 
 .socialLogin img {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -134,21 +149,20 @@
     align-items: center;
     justify-content: center;
     gap: 2px;
-    margin-top: 20px;
-    padding-top: 16px;
+    margin-top: 14px;
+    padding-top: 14px;
     border-top: 1px solid var(--border-color);
 }
 
 .helpLink {
     color: var(--text-muted);
     text-decoration: none;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     padding: 3px 5px;
     border-radius: 4px;
     transition: color 0.15s, background 0.15s;
     white-space: nowrap;
 }
-
 .helpLink:hover {
     color: var(--text-main);
     background: var(--light-bg);
@@ -156,8 +170,8 @@
 
 .dot {
     display: inline-block;
-    width: 3px;
-    height: 3px;
+    width: 2px;
+    height: 2px;
     border-radius: 50%;
     background: var(--border-color);
     flex-shrink: 0;
@@ -169,18 +183,17 @@
     display: flex;
     align-items: center;
     padding: 4px;
-    margin-left: 6px;
+    margin-left: 4px;
     border-radius: 50%;
     transition: color 0.15s, transform 0.15s;
     flex-shrink: 0;
 }
-
 .githubIcon:hover {
     color: var(--text-main);
     transform: scale(1.15);
 }
+.githubIcon svg { pointer-events: none; display: block; }
 
-.githubIcon svg {
-    pointer-events: none;
-    display: block;
+@media (max-width: 480px) {
+    .card { padding: 28px 20px 20px; }
 }
