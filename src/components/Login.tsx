@@ -81,13 +81,13 @@ export default function Login() {
                 <div className={styles.socialLogin}>
                     <div className={styles.divider}><span>또는</span></div>
                     <div className={styles.socialButtons}>
-                        <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/google`}>
+                        <button onClick={() => window.location.href = `/oauth2/authorization/google`}>
                             <img src="/assets/social/google_login.png" alt="Google Login"/>
                         </button>
-                        <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/kakao`}>
+                        <button onClick={() => window.location.href = `/oauth2/authorization/kakao`}>
                             <img src="/assets/social/kakao_login.png" alt="Kakao Login"/>
                         </button>
-                        <button onClick={() => window.location.href = `${API_BASE_URL}/oauth2/authorization/naver`}>
+                        <button onClick={() => window.location.href = `/oauth2/authorization/naver`}>
                             <img src="/assets/social/naver_login.png" alt="Naver Login"/>
                         </button>
                     </div>
