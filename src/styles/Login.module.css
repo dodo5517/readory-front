@@ -128,35 +128,40 @@
     object-fit: cover;
 }
 
-/* helpLinks + github 한 줄 */
+/* ── Bottom links ── */
 .bottomRow {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px solid var(--main-hr, #eee);
-}
-
-.helpLinks {
-    display: flex;
-    align-items: center;
-    gap: 1px;
+    justify-content: center;
+    gap: 2px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
 }
 
 .helpLink {
-    color: var(--text-muted, #888);
+    color: var(--text-muted);
     text-decoration: none;
-    font-size: 0.72rem;
-    padding: 4px 6px;
-    border-radius: 5px;
-    transition: color 0.18s, background 0.18s;
+    font-size: 0.75rem;
+    padding: 3px 5px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
     white-space: nowrap;
 }
 
 .helpLink:hover {
-    color: var(--text-main, #222);
-    background: var(--link-hover, #f0f0f0);
+    color: var(--text-main);
+    background: var(--light-bg);
+}
+
+.dot {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--border-color);
+    flex-shrink: 0;
+    margin: 0 1px;
 }
 
 .githubIcon {
@@ -164,8 +169,9 @@
     display: flex;
     align-items: center;
     padding: 4px;
+    margin-left: 6px;
     border-radius: 50%;
-    transition: color 0.18s ease, transform 0.18s ease;
+    transition: color 0.15s, transform 0.15s;
     flex-shrink: 0;
 }
 

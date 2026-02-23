@@ -29,6 +29,7 @@ import GuidePage from "./pages/GuidePage ";
 import FaqPage from "./pages/FaqPage";
 import AdminRecordPage from "./pages/AdminRecordPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Terms from "./pages/Terms";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
                       <Route path="/guide" element={<GuidePage />} />
                       <Route path="/notice" element={<FaqPage />} />
                       <Route path="/privacy" element={<PrivacyPolicy />} />
+                      <Route path="/terms" element={<Terms />} />
 
                       <Route element={<AdminLayout />}>
                           <Route path="/admin" element={<AdminNav title="Readory Admin" />}>
