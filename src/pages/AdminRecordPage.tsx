@@ -198,7 +198,7 @@ export default function AdminRecordsPage() {
 
                 <div className={styles.list}>
                     {loading ? (
-                        <div className={styles.empty}>로딩중...</div>
+                        <div className={styles.empty}></div>
                     ) : records.length === 0 ? (
                         <div className={styles.empty}>기록이 없습니다.</div>
                     ) : (

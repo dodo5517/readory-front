@@ -141,7 +141,7 @@ export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList
                 {error && <div className={styles.errorMsg}>{error}</div>}
 
                 {loading || !user ? (
-                    <div className={styles.loading}>로딩중...</div>
+                    <div className={styles.loading}></div>
                 ) : (
                     <div className={styles.body}>
                         {/* 프로필 영역 */}

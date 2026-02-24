@@ -28,7 +28,7 @@ const Layout = () => {
             });
     }, []);
 
-    if (checking) return <div>Loading...</div>; // 또는 로딩 스피너
+    if (checking) return <div></div>; // 또는 로딩 스피너
 
 
 

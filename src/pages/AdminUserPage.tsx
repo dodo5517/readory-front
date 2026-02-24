@@ -129,7 +129,7 @@ export default function AdminUserPage() {
 
                 <div className={styles.list}>
                     {loading ? (
-                        <div className={styles.empty}>로딩중...</div>
+                        <div className={styles.empty}></div>
                     ) : users.length === 0 ? (
                         <div className={styles.empty}>유저가 없습니다.</div>
                     ) : (

@@ -206,7 +206,7 @@ export default function AdminBookPage() {
 
                 <div className={styles.list}>
                     {loading ? (
-                        <div className={styles.empty}>로딩중...</div>
+                        <div className={styles.empty}></div>
                     ) : books.length === 0 ? (
                         <div className={styles.empty}>책이 없습니다.</div>
                     ) : (

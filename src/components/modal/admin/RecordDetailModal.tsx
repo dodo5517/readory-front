@@ -130,7 +130,7 @@ export default function RecordDetailModal({
                     </div>
 
                     {loading ? (
-                        <div className={styles.loading}>로딩중...</div>
+                        <div className={styles.loading}></div>
                     ) : error ? (
                         <div className={styles.loading}>{error}</div>
                     ) : !record ? (

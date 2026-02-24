@@ -255,7 +255,7 @@ export default function AdminApiLogPage() {
                         {loading ? (
                             <tr>
                                 <td colSpan={7} className={styles.empty}>
-                                    로딩중...
+                                    {/*로딩중...*/}
                                 </td>
                             </tr>
                         ) : logs.length === 0 ? (
@@ -325,7 +325,7 @@ export default function AdminApiLogPage() {
                 {/* 카드 뷰 (모바일) */}
                 <div className={styles.cardList}>
                     {loading ? (
-                        <div className={styles.emptyCard}>로딩중...</div>
+                        <div className={styles.emptyCard}></div>
                     ) : logs.length === 0 ? (
                         <div className={styles.emptyCard}>로그가 없습니다.</div>
                     ) : (

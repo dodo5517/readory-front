@@ -66,7 +66,7 @@ export default function BookDetailModal({
                 </div>
 
                 {loading ? (
-                    <div className={styles.loading}>로딩중...</div>
+                    <div className={styles.loading}></div>
                 ) : !book ? (
                     <div className={styles.loading}>데이터를 불러올 수 없습니다.</div>
                 ) : (
