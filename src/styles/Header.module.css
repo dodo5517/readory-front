@@ -8,6 +8,7 @@
     padding: 20px 48px;
     background-color: var(--bg);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    /*font-family: 'Georgia', serif;*/
     flex-wrap: wrap;
     border-bottom: 1px solid var(--main-hr);
 }
@@ -20,7 +21,7 @@
 }
 
 .desktopOnly { display: inline; }
-.mobileOnly  { display: none;   }
+.mobileOnly  { display: none !important;   }
 
 .username {
     text-decoration: none;
@@ -116,16 +117,34 @@
 }
 
 .nav a {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     font-size: 0.88rem;
-    font-weight: 500;
+    font-weight: 500; /* 기본 굵기 */
     color: var(--text-normal);
     transition: color 0.15s;
     white-space: nowrap;
 }
 
-.nav a:hover {
-    color: var(--text-hover);
+/* 1. 호버 시 색상만 변경 */
+.nav a:hover,
+.navItem.active {
+    color: var(--text-strong);
+    font-weight: 700; /* 실제 볼드 적용 */
+}
+
+/* 2. 핵심: 가상 요소로 미리 공간 확보 */
+.nav a::after,
+.logoutButton::after {
+    display: block;
+    content: attr(data-text); /* HTML의 data-text 속성값을 가져옴 */
+    font-weight: 700;         /* 미리 볼드체 두께만큼 공간 계산 */
+    height: 0;               /* 화면에는 보이지 않게 높이 제거 */
+    overflow: hidden;
+    visibility: hidden;
 }
 
 .navFaq {
@@ -149,6 +168,7 @@
 }
 
 .logoutButton:hover {
+    font-weight: 700;
     color: var(--danger-color);
 }
 

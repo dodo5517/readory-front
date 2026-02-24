@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {createSearchParams, Link, useNavigate} from "react-router-dom";
+import {createSearchParams, Link, useLocation, useNavigate} from "react-router-dom";
 import { useUser } from '../contexts/UserContext';
 import {logoutUser, reissueAccessToken} from "../api/Auth";
 import TokenHUD from "./TokenHUD";
@@ -8,6 +8,8 @@ import { ListIcon } from '@phosphor-icons/react';
 
 export default function Header(){
     const navigate = useNavigate();
+    const location = useLocation(); // 현재 경로 가져오기
+    const currentPath = location.pathname;
 
     // 메뉴 오픈 상태
     const [menuOpen, setMenuOpen] = useState(false);
@@ -101,6 +103,9 @@ export default function Header(){
             {/*좌측 로고*/}
             <div className={styles.left}>
                 {/*데스크탑 화면일 때 보임*/}
+                {/*{targetMenu === "Home" && (*/}
+
+                {/*)}*/}
                 <Link to="/myPage" className={`${styles.username} ${styles.desktopOnly}`}>
                     {user?.username}
                 </Link>
@@ -131,23 +136,23 @@ export default function Header(){
             >
                 {/*관리자 페이지 링크*/}
                 {user?.role == "ADMIN" ?
-                    <Link to="/admin" role="menuitem">Admin</Link>
+                    <Link to="/admin" role="menuitem" data-text="Admin">Admin</Link>
                     : null
                 }
                 {/*데스크탑일 때는 보임*/}
-                <Link to="/" role="menuitem" className={`${styles.desktopOnly}`}>Home</Link>
-                <Link to="/readingRecords" role="menuitem">Recent Records</Link>
-                <a href="/bookshelf" role="menuitem">My Shelf</a>
-                <Link to={{ pathname: "/calendar", search }} role="menuitem">Reading Calendar</Link>
+                <Link to="/" role="menuitem" data-text="Home" className={`${styles.navItem} ${currentPath === '/main' ? styles.active : ''}`}>Home</Link>
+                <Link to="/readingRecords" role="menuitem" data-text="Recent Records" className={`${styles.navItem} ${currentPath === '/readingRecords' ? styles.active : ''}`}>Recent Records</Link>
+                <a href="/bookshelf" role="menuitem" data-text="My Shelf" className={`${styles.navItem} ${currentPath === '/bookshelf' ? styles.active : ''}`}>My Shelf</a>
+                <Link to={{ pathname: "/calendar", search }} role="menuitem" data-text="Reading Calendar" className={`${styles.navItem} ${currentPath === '/calendar' ? styles.active : ''}`}>Reading Calendar</Link>
 
                 {/*모바일일 때는 보임*/}
-                <Link to="/myPage" className={`${styles.mobileOnly}`}>My Page</Link>
-                <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
+                <Link to="/myPage" className={`${styles.mobileOnly} ${currentPath === '/myPage' ? styles.active : ''}`} data-text="My Page">My Page</Link>
+                <button className={styles.logoutButton} onClick={handleLogout} data-text="Logout">Logout</button>
                 {/* 구분선 */}
                 <span className={`${styles.divider}`}></span>
 
                 {/* 사용법 & 공지사항 */}
-                <Link to="/notice" role="menuitem" className={`${styles.navFaq}`}>FAQ</Link>
+                <Link to="/notice" role="menuitem" className={`${styles.navFaq}`} data-text="FAQ">FAQ</Link>
             </nav>
         </header>
     );
