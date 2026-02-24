@@ -105,7 +105,7 @@ export default function BookSelectModal({open, candidates, onSelect, onClose,
                 </form>
 
                 <div className={styles.content}>
-                    {loading && <div className={styles.helperText}>불러오는 중…</div>}
+                    {loading && <div className={styles.helperText}></div>}
                     {empty && <div className={styles.helperText}>검색 결과가 없습니다.</div>}
 
                     {!loading && !empty && (

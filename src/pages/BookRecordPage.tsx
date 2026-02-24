@@ -189,7 +189,7 @@ export default function BookRecordPage() {
             <hr className={styles.divider} />
 
             {/* 리스트 영역 */}
-            {loading && <div className={styles.helper}>불러오는 중…</div>}
+            {loading && <div className={styles.helper}></div>}
             {error && <div className={styles.helper}>{error}</div>}
 
             {!loading && !error && (
@@ -217,7 +217,7 @@ export default function BookRecordPage() {
 
                         {/* 무한 스크롤 */}
                         <div ref={sentinelRef} className={styles.sentinel} aria-hidden style={{ height: 1 }} />
-                        {loadingMore && <div className={styles.helper}>더 불러오는 중…</div>}
+                        {loadingMore && <div className={styles.helper}></div>}
                         {!hasMore && records.length > 0 && (
                             <div className={styles.helper}>마지막 기록까지 다 봤어요.</div>
                         )}
