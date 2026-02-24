@@ -184,7 +184,6 @@ export default function Calendar() {
                             <button className={[styles.viewTab, view === "heatmap" ? styles.viewTabActive : ""].join(" ")} onClick={() => setView("heatmap")}>히트맵</button>
                         </div>
                     </div>
-
                 </div>
 
                 {/* ── Stats 자리 공백 (달력 뷰만) ── */}
@@ -249,6 +248,118 @@ export default function Calendar() {
                         </div>
                     )}
                 </div>
+
+            </section>
+
+            {/* ══ 모바일 전용 레이아웃 ══ */}
+            <section className={styles.mobileContainer}>
+
+                {/* 모바일 헤더: 중앙 정렬 큰 월 타이틀 + 좌우 네비 */}
+                <div className={styles.mobileHeader}>
+                    {view === "calendar" && (
+                        <button className={styles.mobileNavBtn} onClick={() => changeMonth(-1)} aria-label="이전 달">
+                            <CaretLeftIcon size={16} />
+                        </button>
+                    )}
+                    {view === "heatmap" && (
+                        <button className={styles.mobileNavBtn} onClick={() => setHeatmapYear(y => y - 1)} aria-label="이전 연도">
+                            <CaretLeftIcon size={16} />
+                        </button>
+                    )}
+
+                    <div className={styles.mobileTitleBlock}>
+                        {view === "calendar" && (
+                            <h2 className={styles.mobileDateTitle} onClick={() => goMonth(y, m0 + 1)}>
+                                {y}년 {m0 + 1}월
+                            </h2>
+                        )}
+                        {view === "heatmap" && (
+                            <h2 className={styles.mobileDateTitle}>{heatmapYear}년</h2>
+                        )}
+                        <div className={styles.mobileViewToggle}>
+                            <button
+                                className={[styles.mobileToggleBtn, view === "calendar" ? styles.mobileToggleActive : ""].join(" ")}
+                                onClick={() => setView("calendar")}
+                            >달력</button>
+                            <span className={styles.mobileToggleSep} />
+                            <button
+                                className={[styles.mobileToggleBtn, view === "heatmap" ? styles.mobileToggleActive : ""].join(" ")}
+                                onClick={() => setView("heatmap")}
+                            >히트맵</button>
+                        </div>
+                    </div>
+
+                    {view === "calendar" && (
+                        <button className={styles.mobileNavBtn} onClick={() => changeMonth(1)} aria-label="다음 달">
+                            <CaretRightIcon size={16} />
+                        </button>
+                    )}
+                    {view === "heatmap" && (
+                        <button
+                            className={styles.mobileNavBtn}
+                            onClick={() => setHeatmapYear(y => Math.min(y + 1, thisYear))}
+                            disabled={heatmapYear >= thisYear}
+                            style={{ opacity: heatmapYear >= thisYear ? 0.25 : 1 }}
+                            aria-label="다음 연도"
+                        >
+                            <CaretRightIcon size={16} />
+                        </button>
+                    )}
+                </div>
+
+                {/* 모바일 달력: 가운데 정렬 */}
+                {view === "calendar" && (
+                    <div className={styles.mobileCalendar}>
+                        <div className={styles.weekdays}>
+                            {["일","월","화","수","목","금","토"].map((d, i) => (
+                                <div key={i} className={styles.weekday}>{d}</div>
+                            ))}
+                        </div>
+                        <div className={styles.grid}>{days}</div>
+                    </div>
+                )}
+
+                {/* 모바일 히트맵: scroll-snap 캐러셀 */}
+                {view === "heatmap" && (
+                    <div className={styles.mobileHeatmapCarousel}>
+                        <div className={styles.mobileHeatmapTrack}>
+                            {[0, 1].map((half) => {
+                                const start = half === 0 ? 0 : Math.ceil(heatmapWeeks.length / 2);
+                                const end = half === 0 ? Math.ceil(heatmapWeeks.length / 2) : heatmapWeeks.length;
+                                const halfWeeks = heatmapWeeks.slice(start, end);
+                                const halfLabels = monthLabels.filter(({ col }) => col >= start && col < end);
+                                return (
+                                    <div key={half} className={styles.mobileHeatmapSlide}>
+                                        <div className={styles.heatmapMonthRow} style={{ gridTemplateColumns: `repeat(${halfWeeks.length}, 1fr)` }}>
+                                            {halfLabels.map(({ label, col }) => (
+                                                <div key={col} className={styles.heatmapMonthLabel} style={{ gridColumn: col - start + 1 }}>{label}</div>
+                                            ))}
+                                        </div>
+                                        <div className={styles.heatmapGrid} style={{ gridTemplateColumns: `repeat(${halfWeeks.length}, 1fr)` }}>
+                                            {halfWeeks.map((week, wi) => (
+                                                <div key={wi} className={styles.heatmapCol}>
+                                                    {week.map(({ date, count }) => {
+                                                        const level = count === 0 ? 0 : Math.ceil((count / Math.max(hmMax, 1)) * 4);
+                                                        const isFuture = date > todayStr;
+                                                        return (
+                                                            <div
+                                                                key={date}
+                                                                className={[styles.hmCell, isFuture ? styles.hmFuture : styles[`hmLevel${level}`]].join(" ")}
+                                                                title={count > 0 ? `${date} · ${count}건` : date}
+                                                                onClick={() => count > 0 && goDay(date)}
+                                                                style={{ cursor: count > 0 ? "pointer" : "default" }}
+                                                            />
+                                                        );
+                                                    })}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
 
             </section>
         </div>

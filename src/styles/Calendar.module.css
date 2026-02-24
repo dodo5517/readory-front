@@ -48,29 +48,44 @@
 
 .viewTabs {
     display: flex;
-    gap: 4px;
-    background: var(--light-bg);
-    border-radius: 8px;
-    padding: 3px;
+    align-items: center;
+    gap: 0;
     width: fit-content;
 }
 .viewTab {
     background: none;
     border: none;
-    padding: 4px 12px;
-    font-size: 0.78rem;
+    padding: 3px 10px;
+    font-size: 0.72rem;
     font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
     color: var(--text-muted);
-    border-radius: 6px;
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
+    font-family: -apple-system, sans-serif;
+    transition: color 0.15s;
     white-space: nowrap;
+    position: relative;
+}
+.viewTab + .viewTab::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 1px; height: 10px;
+    background: var(--border-color);
 }
 .viewTab:hover { color: var(--text-main); }
 .viewTabActive {
-    background: var(--card-bg);
     color: var(--text-main);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    font-weight: 700;
+}
+.viewTabActive::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 10px; right: 10px;
+    height: 1px;
+    background: var(--text-main);
 }
 
 .monthNav {
@@ -290,10 +305,175 @@
 /* ══════════════════════════════
    Mobile
    ══════════════════════════════ */
+@media (min-width: 769px) {
+    .mobileContainer { display: none; }
+}
+
 @media (max-width: 768px) {
     .hr { margin: 0; }
-    .container { flex-direction: column; height: auto; padding: 32px 20px 40px; gap: 24px; }
-    .stats { flex-direction: row; gap: 24px; }
-    .right { height: auto; min-height: 280px; }
+    .container { display: none; }
+
+    /* 모바일 전용 컨테이너 - 고정 높이 */
+    .mobileContainer {
+        display: flex;
+        flex-direction: column;
+        padding: 28px 24px 72px;
+        border-bottom: 1px solid var(--main-hr);
+        height: 480px;
+        box-sizing: border-box;
+    }
+
+    /* 헤더: ◀ [타이틀+토글] ▶ */
+    .mobileHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        flex-shrink: 0;
+        margin-bottom: 22px;
+    }
+
+    /* 네비 버튼 - border 없이 텍스트처럼 */
+    .mobileNavBtn {
+        background: none;
+        border: none;
+        width: 28px; height: 28px;
+        cursor: pointer;
+        color: var(--text-muted);
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        transition: color 0.15s;
+        padding: 0;
+    }
+    .mobileNavBtn:hover { color: var(--text-main); }
+    .mobileNavBtn:disabled { opacity: 0.25; cursor: default; }
+
+    /* 중앙 타이틀 블록 */
+    .mobileTitleBlock {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .mobileDateTitle {
+        margin: 0;
+        font-size: 1.3rem;
+        font-weight: 700;
+        font-family: 'Georgia', serif;
+        letter-spacing: -0.02em;
+        color: var(--text-main);
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    /* 토글: 밑줄 스타일 - 전체 디자인과 통일 */
+    .mobileViewToggle {
+        display: flex;
+        align-items: center;
+        gap: 0;
+    }
+
+    .mobileToggleBtn {
+        background: none;
+        border: none;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 3px 10px;
+        font-family: -apple-system, sans-serif;
+        transition: color 0.15s;
+        white-space: nowrap;
+        position: relative;
+    }
+    .mobileToggleBtn + .mobileToggleBtn::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 50%;
+        transform: translateY(-50%);
+        width: 1px; height: 10px;
+        background: var(--border-color);
+    }
+    .mobileToggleBtn:hover { color: var(--text-main); }
+    .mobileToggleActive {
+        color: var(--text-main);
+        font-weight: 700;
+    }
+    .mobileToggleActive::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; left: 10px; right: 10px;
+        height: 1px;
+        background: var(--text-main);
+    }
+
+    /* 모바일 달력 영역 */
+    .mobileCalendar {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .mobileCalendar .weekdays {
+        max-width: 360px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .mobileCalendar .grid {
+        max-width: 360px;
+        margin: 0 auto;
+        width: 100%;
+        flex: 1;
+    }
+
     .day { height: 44px; }
+
+    /* 모바일 히트맵: 2행으로 한 화면에 */
+    .mobileHeatmapCarousel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        gap: 10px;
+    }
+
+    /* 상반기 + 하반기 두 행 세로로 */
+    .mobileHeatmapTrack {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 0;
+        overflow: visible;
+    }
+
+    .mobileHeatmapSlide {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-height: 0;
+        box-sizing: border-box;
+    }
+
+    .mobileHeatmapSlide .heatmapMonthRow {
+        height: 13px;
+        flex-shrink: 0;
+    }
+
+    .mobileHeatmapSlide .heatmapGrid {
+        flex: 1;
+        min-height: 0;
+        gap: 2px;
+    }
+
+    .mobileHeatmapSlide .heatmapCol {
+        gap: 2px;
+    }
 }
