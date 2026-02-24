@@ -9,6 +9,7 @@
     height: 46px;
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
+    color: var(--text-main);
     border-radius: 50%;
     font-size: 1.25rem;
     display: flex;
