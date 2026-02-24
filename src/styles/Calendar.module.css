@@ -1,223 +1,299 @@
-/* ─── Calendar Module ─────────────────────────────────────────── */
-.hr {
-    margin: 0 80px;
-    border: none;
-    border-top: 1px solid var(--main-hr);
-}
+/* ═══════════════════════════════════════════════
+   Calendar
+   ═══════════════════════════════════════════════ */
+.hr { margin: 0 80px; border: none; border-top: 1px solid var(--main-hr); }
 
-.calendar {
-    padding: 48px 24px 60px;
-    min-height: 600px;
-    max-width: 520px;
-    margin: 0 auto;
-    font-family: 'Georgia', 'Times New Roman', serif;
-}
-
-/* ─── Header ──────────────────────────────────────────────────── */
-.header {
+.container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
+    align-items: flex-start;
+    padding: 56px 13.17vw 64px 100px;
+    border-bottom: 1px solid var(--main-hr);
+    height: 410px;
+    box-sizing: border-box;
+    gap: 40px;
 }
 
-.header button {
-    background: none;
-    border: 1px solid var(--cal-nav-border);
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    font-size: 1rem;
-    cursor: pointer;
+/* ══════════════════════════════
+   Left: 타이틀 + 탭 + 네비 (좁게)
+   ══════════════════════════════ */
+.left {
+    min-width: 180px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Stats 자리 공백 */
+.statsSpacer {
+    flex-shrink: 0;
+    min-width: 120px;
+}
+
+.leftTop {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pageTitle {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     color: var(--text-main);
+    font-family: 'Georgia', serif;
+    white-space: nowrap;
+}
+
+.viewTabs {
+    display: flex;
+    gap: 4px;
+    background: var(--light-bg);
+    border-radius: 8px;
+    padding: 3px;
+    width: fit-content;
+}
+.viewTab {
+    background: none;
+    border: none;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+.viewTab:hover { color: var(--text-main); }
+.viewTabActive {
+    background: var(--card-bg);
+    color: var(--text-main);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.monthNav {
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    gap: 6px;
 }
-
-.header button:hover {
-    background: var(--cal-nav-hover-bg);
-    border-color: var(--cal-nav-hover-border);
-    transform: scale(1.08);
-}
-
-/* ─── Month Title ─────────────────────────────────────────────── */
-.main {
-    text-align: center;
+.monthNav button {
+    background: none;
+    border: 1px solid var(--border-color);
+    width: 22px; height: 22px;
+    border-radius: 50%;
     cursor: pointer;
-    padding: 6px 18px;
-    border-radius: 10px;
+    color: var(--text-muted);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+}
+.monthNav button:hover { background: var(--light-bg); color: var(--text-main); }
+.navDisabled { opacity: 0.25 !important; cursor: not-allowed !important; }
+.navDisabled:hover { background: none !important; color: var(--text-muted) !important; }
+
+.main {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 5px;
     transition: background 0.15s;
     user-select: none;
 }
-
-.main:hover {
-    background: var(--cal-day-hover);
-}
-
-.month {
-    margin: 0;
-    font-size: 1.45rem;
+.main:hover { background: var(--light-bg); }
+.monthLabel {
+    font-size: 0.88rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--text-main);
     font-variant-numeric: tabular-nums;
-}
-
-.subheading {
-    margin: 3px 0 0;
-    font-size: 0.68rem;
-    font-weight: 400;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    color: var(--text-main);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
+.monthSep {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 0 1px;
+}
 
-/* ─── Weekdays ────────────────────────────────────────────────── */
+/* ══════════════════════════════
+   Stats: 독립 중간 열 (달력 뷰만)
+   ══════════════════════════════ */
+.stats {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    min-width: 120px;
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.statValue {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-main);
+    font-variant-numeric: tabular-nums;
+    font-family: 'Georgia', serif;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.statLabel {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-family: -apple-system, sans-serif;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+/* ══════════════════════════════
+   Right: 달력 or 히트맵 (넓게)
+   ══════════════════════════════ */
+.right {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+}
+
+/* ── 달력 ── */
+.calendarArea {
+    height: 100%;
+    font-family: 'Georgia', serif;
+    display: flex;
+    flex-direction: column;
+}
+
 .weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     border-bottom: 1px solid var(--main-hr);
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+    flex-shrink: 0;
 }
-
 .weekday {
     text-align: center;
-    font-size: 0.68rem;
+    font-size: 0.62rem;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-muted);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: -apple-system, sans-serif;
 }
 
-/* ─── Grid ────────────────────────────────────────────────────── */
 .grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    row-gap: 6px;
+    flex: 1;
+    align-content: start;
+    row-gap: 2px;
 }
 
-/* ─── Day Cell ────────────────────────────────────────────────── */
 .day {
     position: relative;
-    height: 52px;
+    height: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 3px;
     font-size: 0.88rem;
     font-family: 'Georgia', serif;
     color: var(--text-main);
     background: transparent;
     border: none;
-    border-radius: 0;
-    transition: color 0.15s;
+    transition: opacity 0.15s;
     cursor: default;
 }
-
-/* 날짜 숫자를 감싸는 원 — 셀보다 작게 */
-.day::before {
+.day:not(.active):hover { opacity: 0.5; }
+.day::after {
     content: "";
-    position: absolute;
-    width: 36px;
-    height: 36px;
+    width: 4px; height: 4px;
     border-radius: 50%;
     background: transparent;
-    transition: background 0.15s;
-    z-index: 0;
+    transition: background 0.15s, transform 0.15s;
+    flex-shrink: 0;
 }
+.active { color: var(--text-main); font-weight: 700; cursor: pointer; }
+.active::after { background: var(--calendar-intensity-3); }
+.intensity-1::after { background: var(--calendar-intensity-2); }
+.intensity-2::after { background: var(--calendar-intensity-3); }
+.intensity-3::after { background: var(--calendar-intensity-4); width: 5px; height: 5px; }
+.intensity-4::after { background: var(--calendar-intensity-4); width: 5px; height: 5px; }
+.active:hover::after { transform: scale(1.4); }
+.badge { display: none; }
 
-/* 숫자 자체는 원 위에 */
-.day > * { position: relative; z-index: 1; }
-
-/* 비활성 hover */
-.day:not(.active):hover::before {
-    background: var(--cal-day-hover);
+/* ── 히트맵 ── */
+.heatmapArea {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+    margin-left: 9.17vw;
 }
-
-/* ─── Active (has record) ─────────────────────────────────────── */
-.active {
-    color: var(--cal-active-text);
-    font-weight: 700;
-    cursor: pointer;
+.heatmapHalf {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
-
-.active::before {
-    background-color: var(--calendar-intensity-2);
+.heatmapMonthRow {
+    display: grid;
+    height: 14px;
+    flex-shrink: 0;
 }
-
-.active:hover::before {
-    filter: brightness(1.08);
-    transform: scale(1.08);
+.heatmapMonthLabel {
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    font-family: -apple-system, sans-serif;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    opacity: 0.8;
 }
-
-.active:active::before {
-    transform: scale(0.96);
+.heatmapGrid {
+    display: grid;
+    gap: 3px;
+    flex: 1;
+    min-height: 0;
 }
-
-/* ─── Intensity Levels ────────────────────────────────────────── */
-.intensity-1::before { background-color: var(--calendar-intensity-1); }
-.intensity-2::before { background-color: var(--calendar-intensity-2); }
-.intensity-3::before { background-color: var(--calendar-intensity-3); }
-.intensity-4::before { background-color: var(--calendar-intensity-4); }
-
-/* ─── Badge ───────────────────────────────────────────────────── */
-.badge {
-    position: absolute;
-    right: 6px;
-    bottom: 6px;
-    font-size: 0.58rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-weight: 700;
-    line-height: 1;
-    padding: 1px 4px;
-    border-radius: 999px;
-    background: var(--cal-badge-bg);
-    color: var(--cal-badge-text);
-    z-index: 2;
+.heatmapCol {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
+.hmCell {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    border-radius: 2px;
+    background: var(--light-bg);
+    transition: opacity 0.15s, transform 0.12s;
+}
+.hmCell:hover { opacity: 0.8; transform: scale(1.3); }
+.hmFuture { background: transparent; }
+.hmLevel0 { background: var(--light-bg); }
+.hmLevel1 { background: var(--calendar-intensity-1); }
+.hmLevel2 { background: var(--calendar-intensity-2); }
+.hmLevel3 { background: var(--calendar-intensity-3); }
+.hmLevel4 { background: var(--calendar-intensity-4); }
 
-/* ─── Responsive ──────────────────────────────────────────────── */
+/* ══════════════════════════════
+   Mobile
+   ══════════════════════════════ */
 @media (max-width: 768px) {
     .hr { margin: 0; }
-
-    .calendar {
-        padding: 28px 12px 48px;
-        min-height: 480px;
-    }
-
-    .month { font-size: 1.2rem; }
-
-    .day {
-        height: 44px;
-        font-size: 0.82rem;
-    }
-
-    .day::before {
-        width: 30px;
-        height: 30px;
-    }
-
-    .badge {
-        right: 3px;
-        bottom: 3px;
-        font-size: 0.5rem;
-        padding: 1px 3px;
-    }
-}
-
-@media (max-width: 400px) {
-    .grid { row-gap: 4px; }
-    .day {
-        height: 38px;
-        font-size: 0.75rem;
-    }
-    .day::before {
-        width: 26px;
-        height: 26px;
-    }
+    .container { flex-direction: column; height: auto; padding: 32px 20px 40px; gap: 24px; }
+    .stats { flex-direction: row; gap: 24px; }
+    .right { height: auto; min-height: 280px; }
+    .day { height: 44px; }
 }
