@@ -20,7 +20,7 @@
     gap: 10px;
 }
 
-.desktopOnly { display: inline; }
+.desktopOnly { display: inline !important; }
 .mobileOnly  { display: none !important;   }
 
 .username {
@@ -131,7 +131,9 @@
 
 /* 1. 호버 시 색상만 변경 */
 .nav a:hover,
-.navItem.active {
+.navItem.active,
+.desktopOnly.active,
+.mobileOnly.active {
     color: var(--text-strong);
     font-weight: 700; /* 실제 볼드 적용 */
 }
@@ -188,7 +190,7 @@
    ══════════════════════════════ */
 @media (max-width: 768px) {
     .desktopOnly { display: none !important;   }
-    .mobileOnly  { display: inline; }
+    .mobileOnly  { display: inline !important; }
 
     /* 모바일에선 tokenBadge / extendBtn hover 동작 비활성 */
     .tokenWrap:hover .tokenBadge,

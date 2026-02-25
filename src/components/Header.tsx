@@ -140,7 +140,7 @@ export default function Header(){
                     : null
                 }
                 {/*데스크탑일 때는 보임*/}
-                <Link to="/" role="menuitem" data-text="Home" className={`${styles.navItem} ${currentPath === '/main' ? styles.active : ''}`}>Home</Link>
+                <Link to="/" role="menuitem" data-text="Home" className={`${styles.desktopOnly} ${currentPath === '/main' ? styles.active : ''}`}>Home</Link>
                 <Link to="/readingRecords" role="menuitem" data-text="Recent Records" className={`${styles.navItem} ${currentPath === '/readingRecords' ? styles.active : ''}`}>Recent Records</Link>
                 <a href="/bookshelf" role="menuitem" data-text="My Shelf" className={`${styles.navItem} ${currentPath === '/bookshelf' ? styles.active : ''}`}>My Shelf</a>
                 <Link to={{ pathname: "/calendar", search }} role="menuitem" data-text="Reading Calendar" className={`${styles.navItem} ${currentPath === '/calendar' ? styles.active : ''}`}>Reading Calendar</Link>
