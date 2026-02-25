@@ -45,47 +45,29 @@
 }
 
 .tokenBadge {
-    padding: 3px 8px;
-    border-radius: 999px;
-    font-size: 11px;
-    line-height: 1;
-    background: var(--light-bg);
-    color: var(--text-muted);
-    border: 1px solid var(--border-color);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.03em;
-    opacity: 0.9;
+    display: inline-flex;
+    align-items: center;
+    opacity: 0.65;
     transition: opacity 0.2s;
+    cursor: default;
+    outline: none;
 }
-
-.extendBtn {
-    position: absolute;
-    right: -6px;
-    top: 50%;
-    transform: translateY(-50%) translateX(8px);
-    padding: 3px 9px;
-    font-size: 11px;
-    line-height: 1.2;
-    border-radius: 999px;
-    border: 1px solid var(--btn-bg);
-    background: var(--btn-bg);
-    color: #fff;
-    cursor: pointer;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.15s, transform 0.15s;
-}
-
-.tokenWrap:hover .extendBtn,
-.tokenWrap:focus-within .extendBtn {
+.tokenHovered {
     opacity: 1;
-    pointer-events: auto;
-    transform: translateY(-50%) translateX(0);
+    cursor: pointer;
 }
+.tokenBadge:active { opacity: 0.5; }
+.tokenExpired { opacity: 1 !important; }
+
+.segClockSvg { display: block; flex-shrink: 0; }
+
+
+
+.extendBtn { display: none; }
 
 .tokenWrap:hover .tokenBadge,
 .tokenWrap:focus-within .tokenBadge {
-    opacity: 0.3;
+    opacity: 1;
 }
 
 /* ── Hamburger ── */
@@ -195,12 +177,7 @@
     /* 모바일에선 tokenBadge / extendBtn hover 동작 비활성 */
     .tokenWrap:hover .tokenBadge,
     .tokenWrap:focus-within .tokenBadge { opacity: 0.9 !important; }
-    .tokenWrap:hover .extendBtn,
-    .tokenWrap:focus-within .extendBtn {
-        opacity: 0 !important;
-        pointer-events: none !important;
-        transform: translateY(-50%) translateX(8px) !important;
-    }
+
 
     .header {
         position: fixed;

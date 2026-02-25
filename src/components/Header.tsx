@@ -103,19 +103,17 @@ export default function Header(){
             {/*좌측 로고*/}
             <div className={styles.left}>
                 {/*데스크탑 화면일 때 보임*/}
-                {/*{targetMenu === "Home" && (*/}
-
-                {/*)}*/}
                 <Link to="/myPage" className={`${styles.username} ${styles.desktopOnly}`}>
                     {user?.username}
                 </Link>
+                <div className={styles.desktopOnly}>
+                    <TokenHUD onExpire={onExpire} onExtend={handleExtend} refreshing={refreshing}/>
+                </div>
 
                 {/*모바일 화면일 때 보임*/}
                 <Link to="/" className={`${styles.username} ${styles.mobileOnly}`}>
                     Home
                 </Link>
-
-                <TokenHUD onExpire={onExpire} onExtend={handleExtend} refreshing={refreshing} />
             </div>
 
             {/*햄버거 메뉴 버튼*/}
