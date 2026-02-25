@@ -8,15 +8,10 @@ import {formatYMDhm} from "../utils/datetime";
 export async function fetchCalendarRange(year: number, month: number)
     : Promise<CalendarRangeResponse> {
 
-    const normalizedMonth =
-        month >= 1 && month <= 12 ? month : month >= 0 && month <= 11 ? month + 1 : (() => {
-            throw new Error(`잘못된 month 값: ${month}`);
-        })();
-
     // Url 매개변수 설정
     const params = new URLSearchParams({
         year: String(year),
-        month: String(normalizedMonth),
+        month: String(month),
     }).toString();
 
     const response = await fetchWithAuth(`/records/calendar?${params}`, { method: "GET" });
