@@ -52,7 +52,7 @@ export default function BookShelfPage() {
     },[page, sort, size, q]);
 
     if (loading) {
-        return <div className={styles.container} aria-live="polite">로딩 중...</div>;
+        return <div className={styles.container} aria-live="polite"></div>;
     }
     if (error) {
         return <div className={styles.container} role="alert">{error}</div>;

@@ -261,7 +261,7 @@ export default function ReadingRecordPage() {
             </div>
 
             {loading ? (
-                <div className={styles.loading} aria-live="polite">로딩 중…</div>
+                <div className={styles.loading} aria-live="polite"></div>
             ) : error ? (
                 <div className={styles.error} role="alert">{error}</div>
             ) : (
