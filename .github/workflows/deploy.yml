@@ -1,0 +1,52 @@
+name: Deploy to Raspberry Pi
+
+on:
+  push:
+    branches: [ main ]
+
+# job은 github 클라우드에서 하는 것임.
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout # 코드 가져오기
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js # Node.js 설치
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies # 의존성 설치
+        run: npm ci
+
+      - name: Build # 프로젝트 빌드
+        run: npm run build
+
+      - name: Setup SSH Key # SSH 키 설정
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Upload Build Files
+        run: |
+#         기존 파일 삭제
+          ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            "rm -rf /var/www/readory-app/*"
+          
+#         새 파일 복사
+          scp -i ~/.ssh/deploy_key -P ${{ secrets.SSH_PORT }} -r \
+            build/* \
+#         Raspberry Pi 로 전송
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/readory-app/
+
+      - name: Reload Nginx # Nginx 재로드
+        run: |
+          ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            "sudo systemctl reload nginx"
