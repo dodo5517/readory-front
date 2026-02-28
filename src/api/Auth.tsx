@@ -93,7 +93,9 @@ export async function reissueAccessToken() {
     if (response.ok) {
         const data = await response.json();
         localStorage.setItem('accessToken', data.accessToken);
-        const expiresAt = (data.serverTime ?? Date.now()) + (data.expiresIn ?? 0) * 1000;
+        // const expiresAt = (data.serverTime ?? Date.now()) + (data.expiresIn ?? 0) * 1000;
+        // expiresAt을 클라이언트 시각 기준으로 고정
+        const expiresAt = Date.now() + (data.expiresIn ?? 1800) * 1000;
         localStorage.setItem('accessTokenExpiresAt', String(expiresAt));
         return true;
     } else {

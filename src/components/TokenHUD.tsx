@@ -7,7 +7,7 @@ type Props = {
     refreshing: boolean;
 };
 
-const TOTAL_SEC = 1800;
+const TOTAL_SEC = 30 * 60;
 
 // ── 7-세그먼트: 얇고 둥근 현대적 스타일 ──────────────
 // W=8, H=14, 세그먼트는 rounded rect로
