@@ -93,7 +93,15 @@
     transition: background 0.15s;
     flex-shrink: 0;
 }
-.searchBtn:hover { background: var(--light-bg); }
+@media (hover: hover) {
+    .searchBtn:hover {
+        background: var(--light-bg);
+    }
+}
+.searchBtn:active, .cardBtn:active {
+    background: var(--light-bg);
+    opacity: 0.7;
+}
 
 /* ── 기록 추가 버튼 ── */
 .createBtn {

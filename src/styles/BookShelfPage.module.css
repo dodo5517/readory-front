@@ -57,7 +57,15 @@
     transition: background 0.15s;
     flex-shrink: 0;
 }
-.searchBtn:hover { background: var(--light-bg); }
+@media (hover: hover) {
+    .searchBtn:hover {
+        background: var(--light-bg);
+    }
+}
+.searchBtn:active, .cardBtn:active {
+    background: var(--light-bg);
+    opacity: 0.7;
+}
 
 .segment {
     display: inline-flex;

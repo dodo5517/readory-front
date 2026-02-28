@@ -98,14 +98,22 @@
     white-space: nowrap;
     transition: background 0.15s;
 }
-.iconBtn:hover { background: var(--light-bg); }
+@media (hover: hover) {
+    .iconBtn:hover {
+        background: var(--light-bg);
+    }
+}
 
 .submitIcon {
     border-color: var(--input-border);
     background: var(--card-bg);
     color: var(--text-main);
 }
-.submitIcon:hover { background: var(--light-bg); }
+@media (hover: hover) {
+    .submitIcon:hover {
+        background: var(--light-bg);
+    }
+}
 
 /* ── Summary chip ── */
 .summaryChip {
