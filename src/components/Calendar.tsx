@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import styles from "../styles/Calendar.module.css";
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
-import { formatYMD, getMonthMeta, toCountMap, calcMaxCount } from "../utils/calendar";
+import { formatYMD, getMonthMeta, toCountMap } from "../utils/calendar";
 import { fetchCalendarRange } from "../api/Calendar";
 import { CalendarRangeResponse } from "../types/calendar";
 
@@ -56,6 +56,20 @@ export default function Calendar() {
     const navigate = useNavigate();
     const { y, m0, startDay, totalDays } = useMemo(() => getMonthMeta(currentDate), [currentDate]);
 
+    // ── 오늘 기준으로 미래 달 이동 막기
+    const today = new Date();
+    const thisYear = today.getFullYear();
+    const thisMonth = today.getMonth(); // 0-based
+    const isCurrentMonth = y === thisYear && m0 === thisMonth;
+    const isFutureMonth = y > thisYear || (y === thisYear && m0 > thisMonth);
+
+    // 미래 달이면 현재 달로 보정
+    useEffect(() => {
+        if (isFutureMonth) {
+            setCurrentDate(new Date(thisYear, thisMonth, 1));
+        }
+    }, [isFutureMonth]);
+
     useEffect(() => {
         setLoading(true); setErr(null);
         fetchCalendarRange(y, m0 + 1)
@@ -92,6 +106,9 @@ export default function Calendar() {
     const changeMonth = (offset: number) => {
         const d = new Date(currentDate);
         d.setMonth(currentDate.getMonth() + offset);
+        // 미래 달로 이동 불가
+        const ny = d.getFullYear(), nm = d.getMonth();
+        if (ny > thisYear || (ny === thisYear && nm > thisMonth)) return;
         setCurrentDate(d);
     };
 
@@ -138,7 +155,7 @@ export default function Calendar() {
         return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;
     })();
 
-    const thisYear = new Date().getFullYear();
+    const monthLabelText = `${y} / ${String(m0 + 1).padStart(2, "0")}`;
 
     return (
         <div>
@@ -148,7 +165,7 @@ export default function Calendar() {
                 {/* ── Left ── */}
                 <div className={styles.left}>
                     <div className={styles.leftTop}>
-                        <p className={styles.pageTitle}>Reading Calendar</p>
+                        <p className={styles.pageTitle}>Activity Log</p>
 
                         {/* 달력: 월 네비 */}
                         {view === "calendar" && (
@@ -159,7 +176,12 @@ export default function Calendar() {
                                     <span className={styles.monthSep}>/</span>
                                     <span className={styles.monthLabel}>{String(m0 + 1).padStart(2, "0")}</span>
                                 </span>
-                                <button onClick={() => changeMonth(1)} aria-label="다음 달"><CaretRightIcon size={12} /></button>
+                                <button
+                                    onClick={() => changeMonth(1)}
+                                    aria-label="다음 달"
+                                    disabled={isCurrentMonth}
+                                    className={isCurrentMonth ? styles.navDisabled : ""}
+                                ><CaretRightIcon size={12} /></button>
                             </div>
                         )}
 
@@ -180,8 +202,8 @@ export default function Calendar() {
                         )}
 
                         <div className={styles.viewTabs}>
-                            <button className={[styles.viewTab, view === "calendar" ? styles.viewTabActive : ""].join(" ")} onClick={() => setView("calendar")}>달력</button>
-                            <button className={[styles.viewTab, view === "heatmap" ? styles.viewTabActive : ""].join(" ")} onClick={() => setView("heatmap")}>히트맵</button>
+                            <button className={[styles.viewTab, view === "calendar" ? styles.viewTabActive : ""].join(" ")} onClick={() => setView("calendar")}>Calendar</button>
+                            <button className={[styles.viewTab, view === "heatmap" ? styles.viewTabActive : ""].join(" ")} onClick={() => setView("heatmap")}>Heatmap</button>
                         </div>
                     </div>
                 </div>
@@ -254,60 +276,60 @@ export default function Calendar() {
             {/* ══ 모바일 전용 레이아웃 ══ */}
             <section className={styles.mobileContainer}>
 
-                {/* 모바일 헤더: 중앙 정렬 큰 월 타이틀 + 좌우 네비 */}
-                <div className={styles.mobileHeader}>
-                    {view === "calendar" && (
-                        <button className={styles.mobileNavBtn} onClick={() => changeMonth(-1)} aria-label="이전 달">
-                            <CaretLeftIcon size={16} />
-                        </button>
-                    )}
-                    {view === "heatmap" && (
-                        <button className={styles.mobileNavBtn} onClick={() => setHeatmapYear(y => y - 1)} aria-label="이전 연도">
-                            <CaretLeftIcon size={16} />
-                        </button>
-                    )}
+                {/* ── 모바일: 타이틀 + 서브라인  */}
+                <div className={styles.mobileTop}>
+                    <p className={styles.pageTitle}>Activity Log</p>
+                    <div className={styles.mobileSubLine}>
+                        <button
+                            className={styles.mobileNavBtn}
+                            onClick={() => view === "calendar" ? changeMonth(-1) : setHeatmapYear(y => y - 1)}
+                            aria-label="이전"
+                        ><CaretLeftIcon size={13} /></button>
 
-                    <div className={styles.mobileTitleBlock}>
                         {view === "calendar" && (
-                            <h2 className={styles.mobileDateTitle} onClick={() => goMonth(y, m0 + 1)}>
-                                {y}년 {m0 + 1}월
-                            </h2>
+                            <span className={styles.mobileDateTitle} onClick={() => goMonth(y, m0 + 1)}>
+                                {y} / {String(m0 + 1).padStart(2, "0")}
+                            </span>
                         )}
                         {view === "heatmap" && (
-                            <h2 className={styles.mobileDateTitle}>{heatmapYear}년</h2>
+                            <span className={styles.mobileDateTitle}>{heatmapYear}</span>
                         )}
+
+                        {view === "calendar" && (
+                            <button
+                                className={styles.mobileNavBtn}
+                                onClick={() => changeMonth(1)}
+                                disabled={isCurrentMonth}
+                                style={{ opacity: isCurrentMonth ? 0.25 : 1 }}
+                                aria-label="다음"
+                            ><CaretRightIcon size={13} /></button>
+                        )}
+                        {view === "heatmap" && (
+                            <button
+                                className={styles.mobileNavBtn}
+                                onClick={() => setHeatmapYear(y => Math.min(y + 1, thisYear))}
+                                disabled={heatmapYear >= thisYear}
+                                style={{ opacity: heatmapYear >= thisYear ? 0.25 : 1 }}
+                                aria-label="다음"
+                            ><CaretRightIcon size={13} /></button>
+                        )}
+
+                        <span className={styles.mobileSubSep} />
+
                         <div className={styles.mobileViewToggle}>
                             <button
                                 className={[styles.mobileToggleBtn, view === "calendar" ? styles.mobileToggleActive : ""].join(" ")}
                                 onClick={() => setView("calendar")}
-                            >달력</button>
-                            <span className={styles.mobileToggleSep} />
+                            >Calendar</button>
                             <button
                                 className={[styles.mobileToggleBtn, view === "heatmap" ? styles.mobileToggleActive : ""].join(" ")}
                                 onClick={() => setView("heatmap")}
-                            >히트맵</button>
+                            >Heatmap</button>
                         </div>
                     </div>
-
-                    {view === "calendar" && (
-                        <button className={styles.mobileNavBtn} onClick={() => changeMonth(1)} aria-label="다음 달">
-                            <CaretRightIcon size={16} />
-                        </button>
-                    )}
-                    {view === "heatmap" && (
-                        <button
-                            className={styles.mobileNavBtn}
-                            onClick={() => setHeatmapYear(y => Math.min(y + 1, thisYear))}
-                            disabled={heatmapYear >= thisYear}
-                            style={{ opacity: heatmapYear >= thisYear ? 0.25 : 1 }}
-                            aria-label="다음 연도"
-                        >
-                            <CaretRightIcon size={16} />
-                        </button>
-                    )}
                 </div>
 
-                {/* 모바일 달력: 가운데 정렬 */}
+                {/* 모바일 달력 */}
                 {view === "calendar" && (
                     <div className={styles.mobileCalendar}>
                         <div className={styles.weekdays}>
@@ -319,7 +341,7 @@ export default function Calendar() {
                     </div>
                 )}
 
-                {/* 모바일 히트맵: scroll-snap 캐러셀 */}
+                {/* 모바일 히트맵 */}
                 {view === "heatmap" && (
                     <div className={styles.mobileHeatmapCarousel}>
                         <div className={styles.mobileHeatmapTrack}>

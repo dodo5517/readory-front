@@ -33,6 +33,7 @@
 .leftTop {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 16px;
 }
 
@@ -200,7 +201,7 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-normal);
     font-family: -apple-system, sans-serif;
 }
 
@@ -321,11 +322,10 @@
 }
 .heatmapMonthLabel {
     font-size: 0.6rem;
-    color: var(--text-muted);
+    color: var(--text-normal);
     font-family: -apple-system, sans-serif;
     letter-spacing: 0.04em;
     white-space: nowrap;
-    opacity: 0.8;
 }
 .heatmapGrid {
     display: grid;
@@ -343,12 +343,12 @@
     flex: 1;
     min-height: 0;
     border-radius: 2px;
-    background: var(--light-bg);
+    background: var(--hm-empty);
     transition: opacity 0.15s, transform 0.12s;
 }
 .hmCell:hover { opacity: 0.8; transform: scale(1.3); }
 .hmFuture { background: transparent; }
-.hmLevel0 { background: var(--light-bg); }
+.hmLevel0 { background: var(--hm-empty); }
 .hmLevel1 { background: var(--calendar-intensity-1); }
 .hmLevel2 { background: var(--calendar-intensity-2); }
 .hmLevel3 { background: var(--calendar-intensity-3); }
@@ -369,27 +369,48 @@
     .mobileContainer {
         display: flex;
         flex-direction: column;
-        padding: 28px 24px 72px;
+        padding: 32px 20px 70px;
         border-bottom: 1px solid var(--main-hr);
-        height: 480px;
+        height: 520px;
         box-sizing: border-box;
     }
 
-    /* 헤더: ◀ [타이틀+토글] ▶ */
-    .mobileHeader {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        flex-shrink: 0;
-        margin-bottom: 22px;
+    .pageTitle {
+        margin: 0 0 5px;
+        font-size: 1.3rem;
     }
 
-    /* 네비 버튼 - border 없이 텍스트처럼 */
+    /* ── 모바일 상단: 타이틀 + 서브라인 ── */
+    .mobileTop {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 24px;
+        flex-shrink: 0;
+    }
+
+    /* 서브라인: 네비 + 날짜 + 탭 가로 배치 */
+    .mobileSubLine {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .mobileSubSep {
+        display: inline-block;
+        width: 1px;
+        height: 11px;
+        background: var(--border-color);
+        margin: 0 4px;
+        opacity: 0.6;
+        flex-shrink: 0;
+    }
+
+    /* 네비 버튼 */
     .mobileNavBtn {
         background: none;
         border: none;
-        width: 28px; height: 28px;
+        width: 22px; height: 22px;
         cursor: pointer;
         color: var(--text-muted);
         display: flex; align-items: center; justify-content: center;
@@ -400,27 +421,23 @@
     .mobileNavBtn:hover { color: var(--text-main); }
     .mobileNavBtn:disabled { opacity: 0.25; cursor: default; }
 
-    /* 중앙 타이틀 블록 */
-    .mobileTitleBlock {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
+    /* 날짜 텍스트 — 고정 너비로 탭 위치 유지 */
     .mobileDateTitle {
-        margin: 0;
-        font-size: 1.3rem;
-        font-weight: 700;
-        font-family: 'Georgia', serif;
-        letter-spacing: -0.02em;
-        color: var(--text-main);
+        font-size: 0.82rem;
+        font-weight: 600;
+        font-family: -apple-system, sans-serif;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.02em;
+        color: var(--text-sub);
         cursor: pointer;
         line-height: 1;
+        white-space: nowrap;
+        display: inline-block;
+        width: 64px;
+        text-align: center;
     }
 
-    /* 토글: 밑줄 스타일 - 전체 디자인과 통일 */
+    /* 탭 토글 */
     .mobileViewToggle {
         display: flex;
         align-items: center;

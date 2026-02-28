@@ -63,6 +63,7 @@
   --cal-active-shadow: rgba(118, 167, 214, 0.35);
   --cal-badge-bg: rgba(255, 255, 255, 0.55);
   --cal-badge-text: #1a3a5c;
+  --hm-empty: #e4e8ed;
 }
 
 [data-theme='dark'] {
@@ -130,6 +131,7 @@
   --cal-active-shadow: rgba(167, 139, 250, 0.3);
   --cal-badge-bg: rgba(0, 0, 0, 0.25);
   --cal-badge-text: #ede9fe;
+  --hm-empty: #333333;
 }
 
 body {
