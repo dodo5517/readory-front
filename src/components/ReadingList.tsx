@@ -7,8 +7,8 @@ import { ChatIcon } from '@phosphor-icons/react';
 
 export default function ReadingList() {
     const [list, setList] = useState<SummaryRecord[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [_loading, setLoading] = useState(true);
+    const [_error, setError] = useState<string | null>(null);
 
     const navigate = useNavigate();
 

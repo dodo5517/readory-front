@@ -7,8 +7,8 @@ import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 
 export default function BookCarousel() {
     const [list, setList] = useState<SummaryBook[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [_loading, setLoading] = useState(true);
+    const [_error, setError] = useState<string | null>(null);
     const listRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 

@@ -133,7 +133,7 @@ export default function Header(){
                 onClick={handleNavClick}
             >
                 {/*관리자 페이지 링크*/}
-                {user?.role == "ADMIN" ?
+                {user?.role === "ADMIN" ?
                     <Link to="/admin" role="menuitem" data-text="Admin">Admin</Link>
                     : null
                 }
