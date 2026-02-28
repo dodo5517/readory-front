@@ -75,7 +75,7 @@ export default function Pagination({
 
     return (
         <nav className={styles.wrap} aria-label="페이지네이션">
-            <ul className={styles.list} role="list">
+            <ul className={styles.list}>
                 <li>
                     <button
                         type="button"

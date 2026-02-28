@@ -107,6 +107,7 @@ export default function CalendarPage() {
         }
 
         didInitURL.current = true;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mode, year, month, date, setSearchParams]); // 최소 의존성
 
 

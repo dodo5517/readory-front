@@ -68,7 +68,7 @@ export default function Calendar() {
         if (isFutureMonth) {
             setCurrentDate(new Date(thisYear, thisMonth, 1));
         }
-    }, [isFutureMonth]);
+    }, [isFutureMonth, thisYear, thisMonth]);
 
     useEffect(() => {
         setLoading(true); setErr(null);
@@ -86,22 +86,6 @@ export default function Calendar() {
 
     const countMap = useMemo(() => toCountMap(data?.days ?? []), [data]);
     const yearCountMap = useMemo(() => toCountMap(yearData?.days ?? data?.days ?? []), [yearData, data]);
-
-    const stats = useMemo(() => {
-        const days = data?.days ?? [];
-        const totalThisMonth = days.reduce((sum, d) => sum + d.count, 0);
-        const activeDays = days.filter(d => d.count > 0).length;
-        const today = new Date();
-        let streak = 0;
-        for (let i = 0; i < 365; i++) {
-            const d = new Date(today);
-            d.setDate(today.getDate() - i);
-            const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-            if (yearCountMap.get(key)) streak++;
-            else if (i > 0) break;
-        }
-        return { totalThisMonth, activeDays, streak };
-    }, [data, yearCountMap]);
 
     const changeMonth = (offset: number) => {
         const d = new Date(currentDate);
@@ -154,8 +138,6 @@ export default function Calendar() {
         const t = new Date();
         return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;
     })();
-
-    const monthLabelText = `${y} / ${String(m0 + 1).padStart(2, "0")}`;
 
     return (
         <div>

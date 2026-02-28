@@ -6,6 +6,41 @@ import {fetchBookRecords} from "../api/ReadingRecord";
 import {useParams} from "react-router-dom";
 import CreateRecordModal from "../components/modal/CreateRecordModal";
 
+// 날짜 그룹 유틸
+function formatDateTime(iso: string) {
+    const d = new Date(iso);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    const hh = String(d.getHours()).padStart(2, "0");
+    const mi = String(d.getMinutes()).padStart(2, "0");
+    return { day: `${yyyy}.${mm}.${dd}`, time: `${hh}:${mi}` };
+}
+
+function formatYMD(iso: string): string {
+    const d = new Date(iso);
+    const yyyy = d.getFullYear();
+    const MM = String(d.getMonth() + 1);
+    const dd = String(d.getDate());
+    return `${yyyy}.${MM}.${dd}`;
+}
+
+function groupByDay(items: BookRecord[]) {
+    const map = new Map<string, BookRecord[]>();
+    for (const r of items) {
+        const { day } = formatDateTime(r.recordedAt);
+        if (!map.has(day)) map.set(day, []);
+        map.get(day)!.push(r);
+    }
+    // 날짜 그룹 내림차순
+    const groups = Array.from(map.entries()).sort((a, b) => (a[0] < b[0] ? 1 : -1));
+    // 각 그룹 내부를 미리 정렬(시간 내림차순)
+    for (const [, arr] of groups) {
+        arr.sort((a, b) => (a.recordedAt < b.recordedAt ? 1 : -1));
+    }
+    return groups;
+}
+
 export default function BookRecordPage() {
     const { bookId } = useParams<{ bookId: string }>();
     const id = Number(bookId);
@@ -27,41 +62,6 @@ export default function BookRecordPage() {
     const lockRef = useRef<boolean>(false);
     const lastRequestedCursorRef = useRef<string | null>(null);
 
-    // 날짜 그룹 유틸
-    function formatDateTime(iso: string) {
-        const d = new Date(iso);
-        const yyyy = d.getFullYear();
-        const mm = String(d.getMonth() + 1).padStart(2, "0");
-        const dd = String(d.getDate()).padStart(2, "0");
-        const hh = String(d.getHours()).padStart(2, "0");
-        const mi = String(d.getMinutes()).padStart(2, "0");
-        return { day: `${yyyy}.${mm}.${dd}`, time: `${hh}:${mi}` };
-    }
-
-    function formatYMD(iso: string): string {
-        const d = new Date(iso);
-        const yyyy = d.getFullYear();
-        const MM = String(d.getMonth() + 1);
-        const dd = String(d.getDate());
-        return `${yyyy}.${MM}.${dd}`;
-    }
-
-    function groupByDay(items: BookRecord[]) {
-        const map = new Map<string, BookRecord[]>();
-        for (const r of items) {
-            const { day } = formatDateTime(r.recordedAt);
-            if (!map.has(day)) map.set(day, []);
-            map.get(day)!.push(r);
-        }
-        // 날짜 그룹 내림차순
-        const groups = Array.from(map.entries()).sort((a, b) => (a[0] < b[0] ? 1 : -1));
-        // 각 그룹 내부를 미리 정렬(시간 내림차순)
-        for (const [, arr] of groups) {
-            arr.sort((a, b) => (a.recordedAt < b.recordedAt ? 1 : -1));
-        }
-        return groups;
-    }
-
     const grouped = useMemo(() => groupByDay(records), [records]);
 
     // 레코드 합치기
@@ -80,6 +80,7 @@ export default function BookRecordPage() {
         setHasMore(true);
         setError(null);
         loadNext(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [bookId]);
 
     // 다음 페이지 로드(중복 방지 포함)
@@ -143,6 +144,7 @@ export default function BookRecordPage() {
 
         io.observe(target);
         return () => io.disconnect();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading, loadingMore, hasMore, cursor, bookId]);
 
     return (

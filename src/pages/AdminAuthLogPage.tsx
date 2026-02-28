@@ -38,7 +38,7 @@ export default function AdminLogsPage() {
     const [error, setError] = useState<string | null>(null);
 
     // 상세 모달 관련
-    const [selectedLogId, setSelectedLogId] = useState<number | null>(null);
+    const [, setSelectedLogId] = useState<number | null>(null);
     const [logDetail, setLogDetail] = useState<LogDetailResponse | null>(null);
     const [detailLoading, setDetailLoading] = useState(false);
     const [openDetail, setOpenDetail] = useState(false);

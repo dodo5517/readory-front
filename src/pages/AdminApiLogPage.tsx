@@ -3,7 +3,7 @@ import styles from "../styles/AdminApiLogPage.module.css";
 import * as adminLog from "../api/AdminLog";
 import { useSearchParams } from "react-router-dom";
 import ApiLogDetailModal from "../components/modal/admin/ApiLogDetailModal";
-import {ApiLogDetailResponse, ApiLogListResponse, HttpMethod} from "../types/adminLog";
+import {ApiLogDetailResponse, ApiLogListResponse} from "../types/adminLog";
 import {PageResponse} from "../types/books";
 
 // HTTP 메서드 옵션
@@ -57,7 +57,7 @@ export default function AdminApiLogPage() {
     const [error, setError] = useState<string | null>(null);
 
     // 상세 모달 관련
-    const [selectedLogId, setSelectedLogId] = useState<number | null>(null);
+    const [, setSelectedLogId] = useState<number | null>(null);
     const [logDetail, setLogDetail] = useState<ApiLogDetailResponse | null>(null);
     const [detailLoading, setDetailLoading] = useState(false);
     const [openDetail, setOpenDetail] = useState(false);

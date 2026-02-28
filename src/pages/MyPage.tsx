@@ -25,7 +25,7 @@ export default function MyPage() {
             return;
         }
         await navigator.clipboard.writeText(apiKey);
-        alert('API Key가 클립보드에 복사되었습니다. \n\ \n\API Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
+        alert('API Key가 클립보드에 복사되었습니다. \n \nAPI Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
     };
 
     // api_key 재발급 핸들러
@@ -38,7 +38,7 @@ export default function MyPage() {
                 maskedApiKey: result.maskedApiKey
             });
             console.log("마스킹된 키:", result.maskedApiKey);
-            alert('API Key를 새로 만들었습니다. \n\ \n\API Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
+            alert('API Key를 새로 만들었습니다. \n \nAPI Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
         } catch (error) {
             alert('새로 만드는 중 오류가 발생했습니다.');
         } finally {

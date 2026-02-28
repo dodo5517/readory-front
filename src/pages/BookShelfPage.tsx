@@ -110,7 +110,7 @@ export default function BookShelfPage() {
             </div>
 
             {/* 그리드 */}
-            <ul className={styles.grid} role="list">
+            <ul className={styles.grid}>
                 {books.map(b => (
                     <li key={b.id} className={styles.card}>
                         <button

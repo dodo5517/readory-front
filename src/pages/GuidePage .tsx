@@ -39,12 +39,6 @@ const FEATURES = [
         ],
     },
 ];
-// 링크 정보
-const LINKS = {
-    site: "https://readory.kimdohyeon.dev",
-    shortcut: "https://www.icloud.com/shortcuts/2672b86805f043c9b57981f42b62db5d",
-};
-
 export default function GuidePage() {
     const navigate = useNavigate();
 

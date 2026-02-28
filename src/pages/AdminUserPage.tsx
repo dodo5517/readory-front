@@ -13,7 +13,7 @@ export default function AdminUserPage() {
     const [provider, setProvider] = useState("ALL");
     const [role, setRole] = useState("ALL");
     const [page, setPage] = useState(0);
-    const [size, setSize] = useState<number>();
+    const [size] = useState<number>();
     const [sort, setSort]   = useState<"asc"|"desc">((sp.get("sort") ?? "desc") as "asc"|"desc");
 
     const [data, setData] = useState<PageResponse<AdminPageUserResponse> | null>(null);

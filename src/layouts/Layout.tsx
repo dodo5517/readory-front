@@ -26,7 +26,7 @@ const Layout = () => {
                 localStorage.removeItem('accessToken');
                 setChecking(false); // 토큰 만료 등
             });
-    }, []);
+    }, [setUser]);
 
     if (checking) return <div></div>; // 또는 로딩 스피너
 

@@ -119,7 +119,7 @@ export default function ReadingRecordPage() {
             }
         })();
         return () => { aborted = true; };
-    }, [page, size, q]);
+    }, [page, size, q, scope]);
 
     // 책 후보 검색 후 모달 띄움
     const openSelectModal = async (rec: Record) => {

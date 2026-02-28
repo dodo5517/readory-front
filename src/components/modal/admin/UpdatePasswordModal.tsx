@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/AdminModal.module.css";
 import * as adminUser from "../../../api/AdminUser";
-import {AdminPageUserResponse} from "../../../types/adminUser";
 import { XIcon, WarningIcon } from '@phosphor-icons/react';
 
 interface Props {

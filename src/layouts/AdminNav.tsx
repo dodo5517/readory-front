@@ -1,5 +1,5 @@
 import React from "react";
-import {Link, NavLink, Outlet, useLocation} from "react-router-dom";
+import {Link, NavLink, Outlet} from "react-router-dom";
 import styles from "../styles/AdminLayout.module.css";
 import type { AdminNavItem } from "../types/adminNav";
 import { useUser } from '../contexts/UserContext';
@@ -46,8 +46,7 @@ type Props = {
 };
 
 export default function AdminNav({ title = "Admin"}: Props) {
-    const location = useLocation();
-    const { user, setUser } = useUser();
+    const { user } = useUser();
 
     return (
         <section className={styles.section}>

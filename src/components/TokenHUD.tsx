@@ -122,17 +122,6 @@ const TokenHUD: React.FC<Props> = ({ onExpire, onExtend, refreshing }) => {
         onExpireRef.current();
     }, [remainSec, refreshing]);
 
-    const handleExtendClick = React.useCallback(
-        (e: React.MouseEvent<HTMLButtonElement>) => {
-            onExtend();
-            const el = e.currentTarget;
-            el.blur();
-            requestAnimationFrame(() => el.blur());
-            if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
-        },
-        [onExtend]
-    );
-
     if (remainSec === null) return null;
 
     const expired = remainSec <= 0;

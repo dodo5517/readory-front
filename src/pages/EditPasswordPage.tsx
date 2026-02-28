@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/EditPasswordPage.module.css';
 import {useNavigate} from "react-router-dom";
-import {updatePassword, updateUsername} from "../api/Auth";
+import {updatePassword} from "../api/Auth";
 
 export default function EditPasswordPage() {
     const navigate = useNavigate();
@@ -48,11 +48,6 @@ export default function EditPasswordPage() {
         alert('비밀번호가 성공적으로 변경되었습니다.');
         navigate('/myPage');
     }
-    const handleSave = () => {
-
-
-    };
-
     return (
         <form onSubmit={handleUpdate} className={styles.container}>
             <h2 className={styles.title}>비밀번호 변경</h2>
