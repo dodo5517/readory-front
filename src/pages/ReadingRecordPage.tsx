@@ -9,6 +9,7 @@ import Pagination from "../components/pagination/Pagination";
 import RecordEditModal from "../components/modal/EditRecordModal";
 import CreateRecordModal from "../components/modal/CreateRecordModal";
 import {useNavigate} from "react-router-dom";
+import {useDemoGuard} from "../hook/useDemoGuard";
 
 // 초기 페이지크기: 모바일 6, 데스크탑 10
 const getInitialPageSize = () => {
@@ -24,6 +25,8 @@ export default function ReadingRecordPage() {
     const [scope, setScope] = useState<"titleAndAuthor" | "sentenceAndComment">("titleAndAuthor");
     const [q, setQ] = useState("");
     const [queryInput, setQueryInput] = useState("");
+
+    const { demoGuard } = useDemoGuard();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -321,7 +324,7 @@ export default function ReadingRecordPage() {
                                     <button
                                         type="button"
                                         className={styles.dangerBtn}
-                                        onClick={() => handleDeleteRecord(record)}
+                                        onClick={demoGuard(() => handleDeleteRecord(record))}
                                         aria-label="기록 삭제"
                                     >
                                         삭제
@@ -375,11 +378,11 @@ export default function ReadingRecordPage() {
                         sentence: editing.sentence ?? "",
                         comment: editing.comment ?? "",
                     }}
-                    onSave={async (form) => {
+                    onSave={async () => {
                         const updated = await fetchMyRecords({ page, size, q });
                         setData(updated);
                     }}
-                    onDelete={async (id) => handleDeleteRecord(editing)}
+                    onDelete={async () => handleDeleteRecord(editing)}
                     onClose={() => setEditOpen(false)}
                 />
             )}

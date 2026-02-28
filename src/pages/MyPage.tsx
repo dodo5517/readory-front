@@ -10,11 +10,13 @@ import {
 import styles from '../styles/MyPage.module.css';
 import {Link, useNavigate} from "react-router-dom";
 import { PlusIcon, XIcon, LockIcon, TrashIcon } from '@phosphor-icons/react';
+import {useDemoGuard} from "../hook/useDemoGuard";
 
 export default function MyPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { user, setUser } = useUser();
+    const { demoGuard } = useDemoGuard();
     const [apiKey, setApiKey] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -107,13 +109,13 @@ export default function MyPage() {
     }
 
     // 탈퇴 핸들러
-    const handleDeleteUser = async () => {
+    const handleDeleteUser = demoGuard(async () => {
         if(!user) return;
 
         const confirmed1 = window.confirm("정말 탈퇴하시겠어요?");
         if (!confirmed1) return;
 
-        const confirmed2 = window.confirm("탈퇴 시 모든 기록이 영구 삭제되며 복구할 수 없습니다. 계속 진행할까요?");
+        const confirmed2 = window.confirm("탈퇴 시 모든 기록이 영구 삭제되며 복구할 수 없습니다.\n계속 진행할까요?");
         if (!confirmed2) return;
         
         try {
@@ -124,8 +126,7 @@ export default function MyPage() {
             console.error("탈퇴 실패:", err);
             alert("탈퇴에 실패했습니다.");
         }
-
-    }
+    });
 
     // 모달 열리자마자 api key 로드 및 저장
     useEffect(() => {
