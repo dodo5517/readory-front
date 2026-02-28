@@ -1,0 +1,31 @@
+name: Test Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout # 코드 가져오기
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js # Node.js 설치
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies # 의존성 설치
+        run: npm ci
+
+      - name: Build # 프로젝트 빌드
+        run: npm run build
+        env:
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+
+      - name: Check build output
+        run: |
+          echo "빌드 결과물 확인:"
+          ls -la build/
