@@ -150,7 +150,9 @@ export default function  RecordToolbar({
                         onClick={() => setOpen(v => !v)}
                         title="필터 열기/닫기"
                     >필터</button>
-                    <button type="submit" className={`${styles.iconBtn} ${styles.submitIcon}`} title="검색 실행" aria-label="검색 실행">검색</button>
+                    <button type="submit" className={`${styles.iconBtn} ${styles.submitIcon}`} title="검색 실행" aria-label="검색 실행">
+                        <MagnifyingGlassIcon />
+                    </button>
                 </div>
             </div>
 
@@ -239,7 +241,7 @@ export default function  RecordToolbar({
 
                 {/* 실행(데스크탑용) */}
                 <button type="submit" className={`${styles.primary} ${styles.desktopOnly}`} aria-label="검색 실행">
-                    검색
+                    <MagnifyingGlassIcon />
                 </button>
             </div>
 

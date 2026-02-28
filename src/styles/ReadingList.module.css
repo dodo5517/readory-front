@@ -152,9 +152,14 @@
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
-        gap: 24px;
+        gap: 7px;
         padding: 32px 20px 40px;
         margin: 0;
+    }
+
+    .pageTitle {
+        margin: 0 0 5px;
+        font-size: 1.3rem;
     }
 
     .left { text-align: left; }

@@ -101,11 +101,11 @@
 .iconBtn:hover { background: var(--light-bg); }
 
 .submitIcon {
-    border-color: var(--btn-bg);
-    background: var(--btn-bg);
-    color: #fff;
+    border-color: var(--input-border);
+    background: var(--card-bg);
+    color: var(--text-main);
 }
-.submitIcon:hover { background: var(--btn-hover); border-color: var(--btn-hover); }
+.submitIcon:hover { background: var(--light-bg); }
 
 /* ── Summary chip ── */
 .summaryChip {
@@ -184,9 +184,10 @@
     justify-content: center;
     height: var(--ctl);
     padding: 0 18px;
-    border: 1px solid var(--btn-bg);
-    background: var(--btn-bg);
-    color: #fff;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-main);
     border-radius: 8px;
     cursor: pointer;
     font-size: 0.9rem;
@@ -194,8 +195,8 @@
     white-space: nowrap;
     transition: background 0.15s, border-color 0.15s;
 }
-.primary:hover { background: var(--btn-hover); border-color: var(--btn-hover); }
-.primary:focus-visible { outline: 2px solid var(--input-focus); outline-offset: 2px; }
+.primary:hover { background: var(--light-bg); }
+.primary:focus-visible { outline: 2px solid var(--calendar-intensity-4); outline-offset: 2px; }
 
 /* ── Error ── */
 .error { margin-top: 2px; font-size: 0.88rem; color: var(--danger-color); }

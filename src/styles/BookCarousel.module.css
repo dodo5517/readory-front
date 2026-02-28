@@ -52,7 +52,7 @@
 .navBtn {
     flex-shrink: 0;
     background: none;
-    border: 1px solid var(--border-color);
+    border: none;
     border-radius: 50%;
     width: 34px;
     height: 34px;
@@ -139,7 +139,7 @@
 @media (max-width: 768px) {
     .carousel {
         flex-direction: column;
-        gap: 16px;
+        gap: 27px;
         padding: 32px 20px 40px;
     }
 
@@ -148,7 +148,10 @@
         width: 100%;
     }
 
-    .heading { font-size: 1.2rem; }
+    .heading {
+        margin: 0 0 5px;
+        font-size: 1.3rem;
+    }
 
     .wrapper {
         position: relative;
