@@ -300,3 +300,14 @@ export async function fetchDeleteRecord(recordId: number): Promise<void> {
         throw new Error("기록 삭제 실패");
     }
 }
+
+// 해당 책의 모든 기록 삭제
+export async function fetchDeleteBook(bookId: number): Promise<void> {
+    const response = await fetchWithAuth(`/records/delete/books/${bookId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" }
+    });
+    if (!response.ok) {
+        throw new Error("기록 삭제 실패");
+    }
+}

@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import styles from "../styles/BookShelfPage.module.css";
 import {PageResult, SummaryBook} from "../types/books";
-import {fetchMyBooks} from "../api/ReadingRecord";
+import {fetchMyBooks, fetchDeleteBook} from "../api/ReadingRecord";
 import {useNavigate} from "react-router-dom";
 import Pagination from "../components/pagination/Pagination";
-import { MagnifyingGlassIcon } from '@phosphor-icons/react';
+import { MagnifyingGlassIcon, TrashIcon } from '@phosphor-icons/react';
+import {useDemoGuard} from "../hook/useDemoGuard";
 
 export default function BookShelfPage() {
     const [data, setData] = useState<PageResult<SummaryBook >| null>(null);
@@ -16,7 +17,28 @@ export default function BookShelfPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const { demoGuard } = useDemoGuard();
+
     const navigate = useNavigate();
+    const [deletingId, setDeletingId] = useState<number | null>(null);
+
+    const handleDeleteBook = demoGuard(async (e: React.MouseEvent, bookId: number, title: string) => {
+        e.stopPropagation();
+        if (!window.confirm(`정말 "${title}"의 모든 기록을 삭제할까요?`)) return;
+        if (!window.confirm(`"${title}"의 모든 기록이 영구 삭제되며 복구할 수 없습니다.\n계속 진행할까요?`)) return;
+        try {
+            setDeletingId(bookId);
+            await fetchDeleteBook(bookId);
+            setData(prev => prev ? {
+                ...prev,
+                items: prev.items.filter(b => b.id !== bookId),
+            } : prev);
+        } catch {
+            alert("삭제에 실패했습니다.");
+        } finally {
+            setDeletingId(null);
+        }
+    });
 
     // 화면 크기에 따라 페이지 사이즈 설정
     useEffect(() => {
@@ -132,6 +154,15 @@ export default function BookShelfPage() {
                             </div>
                             <div className={styles.bookTitle} title={b.title}>{b.title}</div>
                             {b.author && <div className={styles.author}>{b.author}</div>}
+                        </button>
+                        <button
+                            className={styles.deleteBtn}
+                            onClick={(e) => handleDeleteBook(e, b.id, b.title)}
+                            disabled={deletingId === b.id}
+                            aria-label={`${b.title} 모든 기록 삭제`}
+                            title="모든 기록 삭제"
+                        >
+                            {deletingId === b.id ? "…" : <TrashIcon size={13} />}
                         </button>
                     </li>
                 ))}

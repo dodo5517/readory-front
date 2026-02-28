@@ -72,9 +72,67 @@
     color: var(--text-main);
     white-space: nowrap;
     transition: background 0.15s;
-    margin-top: 16px;
 }
 .addRecordBtn:hover { background: var(--light-bg); }
+
+/* 액션 버튼 그룹 */
+.actionBtns {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    align-self: flex-end;
+}
+
+/* 전체 삭제 버튼 */
+.deleteAllBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 12px;
+    height: 32px;
+    font-size: 0.83rem;
+    font-weight: 500;
+    border-radius: 7px;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--input-border);
+    color: var(--text-muted);
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.deleteAllBtn:hover {
+    border: 1px solid var(--danger-color);
+    background: var(--danger-bg);
+    color: var(--danger-color);
+}
+.deleteAllBtn:disabled { cursor: not-allowed; opacity: 0.5; }
+
+/* 단일 기록 삭제 버튼 — 카드 우하단, 호버 시 등장 */
+.deleteRecordBtn {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    width: 26px;
+    height: 26px;
+    border-radius: 5px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+}
+.recordCard:hover .deleteRecordBtn { opacity: 1; }
+.deleteRecordBtn:hover {
+    border: 1px solid var(--danger-color);
+    background: var(--danger-bg);
+    color: var(--danger-color);
+}
+.deleteRecordBtn:disabled { cursor: not-allowed; }
 
 /* ── Divider ── */
 .divider { margin: 20px 0 0; border: 0; border-top: 1px solid var(--border-color); }
@@ -101,6 +159,7 @@
 }
 .time { color: var(--text-muted); font-size: 0.82rem; font-variant-numeric: tabular-nums; text-align: right; padding: 10px 8px 0 0; }
 .recordCard {
+    position: relative;
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 10px;
@@ -118,6 +177,7 @@
 
 @media (max-width: 768px) {
     .wrap { padding: 16px 12px 40px; margin: 0 auto; }
+    .deleteRecordBtn { opacity: 1; }  /* 모바일: 항상 노출 */
     .header { grid-template-columns: 80px 1fr; gap: 14px; }
     .coverBox { width: 80px; border-radius: 6px; }
     .title { font-size: 1.1rem; }
@@ -130,6 +190,14 @@
     .periodCard { padding: 8px 10px; }
     .periodValue { font-size: 0.9rem; }
     .bookInfo { flex-direction: column; }
-    .addRecordBtn { align-self: flex-start; margin-top: 12px; width: 100%; justify-content: center; height: 38px; }
+    .actionBtns { align-self: flex-start; margin-top: 12px; width: 100%; }
+    .addRecordBtn { flex: 1; justify-content: center; height: 38px; }
+    .deleteAllBtn { height: 38px; }
 }
 @media (min-width: 1024px) { .wrap { padding: 32px 24px 64px; } }
+/* 터치 디바이스: 호버 고착 방지 */
+@media (hover: none) {
+    .deleteRecordBtn:hover { background: transparent; color: var(--text-muted); }
+    .deleteAllBtn:hover { background: transparent; color: var(--text-muted); border-color: var(--input-border); }
+    .recordCard:hover { box-shadow: none; }
+}

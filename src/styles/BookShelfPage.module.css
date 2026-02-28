@@ -120,7 +120,34 @@
 }
 
 /* ── Card ── */
-.card {}
+.card { position: relative; }
+
+/* 삭제 버튼 — 카드 우상단, 호버 시 등장 */
+.deleteBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: none;
+    background: var(--card-bg);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+    z-index: 2;
+}
+.card:hover .deleteBtn { opacity: 1; }
+.deleteBtn:hover {
+    border: 1px solid var(--danger-color);
+    background: var(--danger-bg);
+    color: var(--danger-color);
+}
+.deleteBtn:disabled { cursor: not-allowed; opacity: 0.5; }
 
 .cardBtn {
     width: 100%;
@@ -194,6 +221,7 @@
 @media (max-width: 768px) {
     .container { padding: 8px 12px 40px; }
     .title { margin-bottom: 16px; }
+    /*.deleteBtn { opacity: 1; }  !* 모바일: 항상 노출 *!*/
 
     .toolbar {
         flex-direction: column;
@@ -206,4 +234,9 @@
 
     .bookTitle { font-size: 0.84rem; }
     .author { font-size: 0.76rem; }
+}
+/* 터치 디바이스: 호버 고착 방지 */
+@media (hover: none) {
+    /*.deleteBtn:hover { background: var(--card-bg); color: var(--text-muted); }*/
+    .cardBtn:hover { background: var(--card-bg); transform: none; box-shadow: none; }
 }

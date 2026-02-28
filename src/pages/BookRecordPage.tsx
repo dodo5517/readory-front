@@ -2,9 +2,11 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../styles/BookRecordPage.module.css";
 import {BookMeta} from "../types/books";
 import {BookRecord} from "../types/records";
-import {fetchBookRecords} from "../api/ReadingRecord";
-import {useParams} from "react-router-dom";
+import {fetchBookRecords, fetchDeleteRecord, fetchDeleteBook} from "../api/ReadingRecord";
+import {useParams, useNavigate} from "react-router-dom";
 import CreateRecordModal from "../components/modal/CreateRecordModal";
+import { TrashIcon } from '@phosphor-icons/react';
+import {useDemoGuard} from "../hook/useDemoGuard";
 
 // 날짜 그룹 유틸
 function formatDateTime(iso: string) {
@@ -44,11 +46,14 @@ function groupByDay(items: BookRecord[]) {
 export default function BookRecordPage() {
     const { bookId } = useParams<{ bookId: string }>();
     const id = Number(bookId);
+    const navigate = useNavigate();
 
     const [book, setBook] = useState<BookMeta | null>(null);
     const [records, setRecords] = useState<BookRecord[]>([]);
     const [cursor, setCursor] = useState<string | null>(null);
     const [hasMore, setHasMore] = useState<boolean>(true);
+
+    const { demoGuard } = useDemoGuard();
 
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingMore, setLoadingMore] = useState<boolean>(false);
@@ -56,6 +61,9 @@ export default function BookRecordPage() {
 
     // 기록 생성 모달 상태
     const [createOpen, setCreateOpen] = useState(false);
+    // 삭제 상태
+    const [deletingRecordId, setDeletingRecordId] = useState<number | null>(null);
+    const [deletingAllBooks, setDeletingAllBooks] = useState(false);
 
     const PAGE_SIZE = 10;
     const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -119,6 +127,36 @@ export default function BookRecordPage() {
         loadNext(true);
     };
 
+    // 단일 기록 삭제
+    const handleDeleteRecord = demoGuard(async (recordId: number) => {
+        if (!window.confirm("이 기록을 삭제할까요?")) return;
+        try {
+            setDeletingRecordId(recordId);
+            await fetchDeleteRecord(recordId);
+            setRecords(prev => prev.filter(r => r.id !== recordId));
+        } catch {
+            alert("삭제에 실패했습니다.");
+        } finally {
+            setDeletingRecordId(null);
+        }
+    });
+
+    // 책의 모든 기록 삭제
+    const handleDeleteBook = demoGuard(async () => {
+        if (!book) return;
+        if (!window.confirm(`정말 "${book.title}"의 모든 기록을 삭제할까요?`)) return;
+        if (!window.confirm(`"${book.title}"의 모든 기록이 영구 삭제되며 복구할 수 없습니다. 계속 진행할까요?`)) return;
+        try {
+            setDeletingAllBooks(true);
+            await fetchDeleteBook(id);
+            navigate(-1);
+        } catch {
+            alert("삭제에 실패했습니다.");
+        } finally {
+            setDeletingAllBooks(false);
+        }
+    });
+
     // IntersectionObserver로 센티널 진입 시 다음 페이지 로드
     useEffect(() => {
         const target = sentinelRef.current;
@@ -178,13 +216,24 @@ export default function BookRecordPage() {
                         ) : null}
                     </div>
 
-                    {/* 기록 추가 버튼 */}
-                    <button
-                        className={styles.addRecordBtn}
-                        onClick={() => setCreateOpen(true)}
-                    >
-                        기록 추가
-                    </button>
+                    {/* 액션 버튼 */}
+                    <div className={styles.actionBtns}>
+                        <button
+                            className={styles.addRecordBtn}
+                            onClick={() => setCreateOpen(true)}
+                        >
+                            기록 추가
+                        </button>
+                        <button
+                            className={styles.deleteAllBtn}
+                            onClick={handleDeleteBook}
+                            disabled={deletingAllBooks}
+                            title="이 책의 모든 기록 삭제"
+                        >
+                            <TrashIcon size={14} />
+                            {deletingAllBooks ? "삭제 중…" : "전체 삭제"}
+                        </button>
+                    </div>
                 </div>
             </header>
 
@@ -209,6 +258,15 @@ export default function BookRecordPage() {
                                                 <div className={styles.recordCard} data-time={time}>
                                                     {r.sentence && <blockquote className={styles.quote}>{r.sentence}</blockquote>}
                                                     {r.comment && <p className={styles.comment}>{r.comment}</p>}
+                                                    <button
+                                                        className={styles.deleteRecordBtn}
+                                                        onClick={() => handleDeleteRecord(r.id)}
+                                                        disabled={deletingRecordId === Number(r.id)}
+                                                        aria-label="이 기록 삭제"
+                                                        title="이 기록 삭제"
+                                                    >
+                                                        <TrashIcon size={12} />
+                                                    </button>
                                                 </div>
                                             </li>
                                         );
