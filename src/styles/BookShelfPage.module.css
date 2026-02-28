@@ -234,6 +234,7 @@
 
     .bookTitle { font-size: 0.84rem; }
     .author { font-size: 0.76rem; }
+    .deleteBtn { display: none; }
 }
 /* 터치 디바이스: 호버 고착 방지 */
 @media (hover: none) {
