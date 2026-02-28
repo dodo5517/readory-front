@@ -129,7 +129,7 @@
     border: 1px solid var(--border-color);
     color: var(--text-main);
     text-decoration: none;
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 
 .backLink:hover {

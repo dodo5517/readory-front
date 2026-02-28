@@ -34,7 +34,7 @@
     font-size: 0.9rem;
     background: var(--card-bg);
     color: var(--text-main);
-    transition: border-color 0.15s;
+    transition: border-color 0.2s;
 }
 .searchInput::placeholder { color: var(--placeholder); }
 .searchInput:focus {
@@ -54,7 +54,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: background 0.15s;
+    transition: background 0.2s;
     flex-shrink: 0;
 }
 @media (hover: hover) {
@@ -86,7 +86,7 @@
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.88rem;
-    transition: background 0.15s, color 0.15s;
+    transition: background 0.2s, color 0.2s;
 }
 
 .isActive {
@@ -142,7 +142,7 @@
     justify-content: center;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.15s, background 0.15s, color 0.15s;
+    transition: opacity 0.2s, background 0.2s, color 0.2s;
     z-index: 2;
 }
 .card:hover .deleteBtn { opacity: 1; }
@@ -164,7 +164,7 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    transition: box-shadow 0.15s, background 0.15s, transform 0.15s;
+    transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
 }
 
 .cardBtn:hover {

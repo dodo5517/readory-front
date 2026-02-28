@@ -70,7 +70,7 @@
     background-color: transparent;
     color: var(--text-main);
     text-align: left;
-    transition: border-color 0.15s;
+    transition: border-color 0.2s;
 }
 
 .input:focus {
@@ -88,7 +88,7 @@
     border-radius: 8px;
     cursor: pointer;
     margin-top: 2px;
-    transition: background-color 0.15s;
+    transition: background-color 0.2s;
 }
 .button:hover { background-color: var(--btn-hover); }
 
@@ -150,7 +150,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 .socialLogin button:hover {
     transform: translateY(-2px);
@@ -182,7 +182,7 @@
     font-size: 0.72rem;
     padding: 3px 5px;
     border-radius: 4px;
-    transition: color 0.15s, background 0.15s;
+    transition: color 0.2s, background 0.2s;
     white-space: nowrap;
 }
 .helpLink:hover {
@@ -207,7 +207,7 @@
     padding: 4px;
     margin-left: 4px;
     border-radius: 50%;
-    transition: color 0.15s, transform 0.15s;
+    transition: color 0.2s, transform 0.2s;
     flex-shrink: 0;
 }
 .githubIcon:hover {

@@ -18,7 +18,7 @@
     cursor: pointer;
     z-index: 100;
     box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
     line-height: 1;
 }
 

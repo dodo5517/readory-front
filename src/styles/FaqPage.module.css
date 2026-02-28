@@ -48,7 +48,7 @@
 .noticeItem {
     padding: 26px 36px;
     border-bottom: 1px solid var(--border-color);
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 
 .noticeItem:last-child {
@@ -85,7 +85,7 @@
     color: var(--btn-bg);
     border: 1px solid var(--btn-bg);
     border-radius: 6px;
-    transition: background 0.15s, color 0.15s;
+    transition: background 0.2s, color 0.2s;
 }
 
 .noticeContent a:hover {
@@ -111,7 +111,7 @@
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     color: var(--text-main);
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 .backBtn:hover { background: var(--light-bg); }
 

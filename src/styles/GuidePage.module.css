@@ -78,7 +78,7 @@
     background: var(--light-bg);
     border: 1px solid var(--border-color);
     border-radius: 10px;
-    transition: box-shadow 0.15s;
+    transition: box-shadow 0.2s;
 }
 
 .featureItem:hover {
@@ -153,7 +153,7 @@
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     color: var(--text-main);
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 .backBtn:hover { background: var(--light-bg); }
 

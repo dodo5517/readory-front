@@ -31,7 +31,7 @@
     color: var(--text-muted);
     text-decoration: none;
     letter-spacing: 0.02em;
-    transition: color 0.15s;
+    transition: color 0.2s;
 }
 
 .left a:hover {
@@ -55,7 +55,7 @@
     gap: 20px;
     padding-bottom: 28px;
     border-bottom: 1px solid var(--border-color);
-    transition: opacity 0.15s;
+    transition: opacity 0.2s;
 }
 
 .list:last-child {
