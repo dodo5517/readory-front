@@ -152,8 +152,10 @@ export default function BookShelfPage() {
                                     <div className={styles.coverPlaceholder}>No Image</div>
                                 )}
                             </div>
-                            <div className={styles.bookTitle} title={b.title}>{b.title}</div>
-                            {b.author && <div className={styles.author}>{b.author}</div>}
+                            <div style={{ marginTop: "auto" }}>
+                                <div className={styles.bookTitle} title={b.title}>{b.title}</div>
+                                {b.author && <div className={styles.author}>{b.author}</div>}
+                            </div>
                         </button>
                         <button
                             className={styles.deleteBtn}
