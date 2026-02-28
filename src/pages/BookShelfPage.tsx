@@ -12,6 +12,7 @@ export default function BookShelfPage() {
     const [size, setSize] = useState(10); // 데스크탑(10), 모바일(6)
     const [sort, setSort] = useState<"recent" | "title">("recent");
     const [q, setQ] = useState("");
+    const [queryInput, setQueryInput] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -69,10 +70,13 @@ export default function BookShelfPage() {
                 <div style={{display: "flex", gap: "8px", flex: 1}}>
                     <input
                         type="text"
-                        value={q}
-                        onChange={(e) => {
-                            setPage(0);
-                            setQ(e.target.value);
+                        value={queryInput}
+                        onChange={(e) => setQueryInput(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                setPage(0);
+                                setQ(queryInput.trim());           // Enter 시 API 트리거
+                            }
                         }}
                         placeholder="책 제목, 저자 검색..."
                         className={styles.searchInput}
@@ -80,7 +84,8 @@ export default function BookShelfPage() {
                     <button
                         className={styles.searchBtn}
                         onClick={() => {
-                            setPage(0); /* 검색 실행 */
+                            setPage(0);
+                            setQ(queryInput.trim()); /* 검색 실행 */
                         }}
                     >
                         <MagnifyingGlassIcon />
