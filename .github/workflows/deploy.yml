@@ -34,15 +34,14 @@ jobs:
 
       - name: Upload Build Files
         run: |
-#         기존 파일 삭제
+          # 기존 파일 삭제
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
             "rm -rf /var/www/readory-app/*"
           
-#         새 파일 복사
+          # 새 파일 복사 후 전송
           scp -i ~/.ssh/deploy_key -P ${{ secrets.SSH_PORT }} -r \
             build/* \
-#         Raspberry Pi 로 전송
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/readory-app/
 
       - name: Reload Nginx # Nginx 재로드
