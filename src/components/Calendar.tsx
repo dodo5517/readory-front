@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import styles from "../styles/Calendar.module.css";
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
@@ -6,40 +6,23 @@ import { formatYMD, getMonthMeta, toCountMap } from "../utils/calendar";
 import { fetchCalendarRange } from "../api/Calendar";
 import { CalendarRangeResponse } from "../types/calendar";
 
-function buildHeatmapWeeks(countMap: Map<string, number>, year: number): { date: string; count: number }[][] {
-    const jan1 = new Date(year, 0, 1);
-    const start = new Date(year, 0, 1);
-    start.setDate(1 - jan1.getDay());
-    const end = new Date(year, 11, 31);
-    const weeks: { date: string; count: number }[][] = [];
-    const cur = new Date(start);
-    while (cur <= end) {
-        const week: { date: string; count: number }[] = [];
-        for (let d = 0; d < 7; d++) {
-            const yyyy = cur.getFullYear();
-            const mm = String(cur.getMonth() + 1).padStart(2, "0");
-            const dd = String(cur.getDate()).padStart(2, "0");
-            const dateStr = `${yyyy}-${mm}-${dd}`;
-            week.push({ date: dateStr, count: countMap.get(dateStr) ?? 0 });
-            cur.setDate(cur.getDate() + 1);
-        }
-        weeks.push(week);
-    }
-    return weeks;
-}
+const HM_MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-function buildMonthLabels(weeks: { date: string; count: number }[][], year: number): { label: string; col: number }[] {
-    const labels: { label: string; col: number }[] = [];
-    const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    let lastMonth = -1;
-    weeks.forEach((week, col) => {
-        const d = new Date(week[0].date);
-        if (d.getMonth() !== lastMonth && d.getFullYear() === year) {
-            labels.push({ label: MONTHS[d.getMonth()], col });
-            lastMonth = d.getMonth();
+interface MonthShelf { month: string; totalCount: number; isPast: boolean; }
+
+/** 월별 총 기록 수 집계 */
+function buildMonthShelves(countMap: Map<string, number>, year: number, todayStr: string): MonthShelf[] {
+    return HM_MONTHS.map((month, m) => {
+        const daysInMonth = new Date(year, m + 1, 0).getDate();
+        let totalCount = 0;
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateStr = `${year}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+            if (dateStr <= todayStr) totalCount += countMap.get(dateStr) ?? 0;
         }
+        const lastDay = `${year}-${String(m + 1).padStart(2, "0")}-${String(daysInMonth).padStart(2, "0")}`;
+        const isPast = lastDay <= todayStr;
+        return { month, totalCount, isPast };
     });
-    return labels;
 }
 
 type ViewMode = "calendar" | "heatmap";
@@ -52,6 +35,42 @@ export default function Calendar() {
     const [err, setErr] = useState<string | null>(null);
     const [view, setView] = useState<ViewMode>("calendar");
     const [heatmapYear, setHeatmapYear] = useState(new Date().getFullYear());
+    const [shelfWidth, setShelfWidth] = useState(120);
+    const shelfAreaRef = useRef<HTMLDivElement>(null);
+    const [mobileShelfWidth, setMobileShelfWidth] = useState(90);
+    const mobileShelfAreaRef = useRef<HTMLDivElement>(null);
+
+    // 데스크탑 칸 너비 측정
+    useEffect(() => {
+        if (!shelfAreaRef.current) return;
+        const measure = () => {
+            const el = shelfAreaRef.current;
+            if (!el) return;
+            const totalGap = 5 * 16;
+            const w = Math.floor((el.clientWidth - totalGap) / 6);
+            setShelfWidth(Math.max(80, w));
+        };
+        measure();
+        const ro = new ResizeObserver(measure);
+        ro.observe(shelfAreaRef.current);
+        return () => ro.disconnect();
+    }, [view]);
+
+    // 모바일 칸 너비 측정 (3열, gap 12px)
+    useEffect(() => {
+        if (!mobileShelfAreaRef.current) return;
+        const measure = () => {
+            const el = mobileShelfAreaRef.current;
+            if (!el) return;
+            const totalGap = 2 * 12;
+            const w = Math.floor((el.clientWidth - totalGap) / 3);
+            setMobileShelfWidth(Math.max(70, w));
+        };
+        measure();
+        const ro = new ResizeObserver(measure);
+        ro.observe(mobileShelfAreaRef.current);
+        return () => ro.disconnect();
+    }, [view]);
 
     const navigate = useNavigate();
     const { y, m0, startDay, totalDays } = useMemo(() => getMonthMeta(currentDate), [currentDate]);
@@ -126,18 +145,18 @@ export default function Calendar() {
         );
     }
 
-    const heatmapWeeks = useMemo(() => buildHeatmapWeeks(yearCountMap, heatmapYear), [yearCountMap, heatmapYear]);
-    const monthLabels = useMemo(() => buildMonthLabels(heatmapWeeks, heatmapYear), [heatmapWeeks, heatmapYear]);
-    const hmMax = useMemo(() => {
-        let max = 0;
-        heatmapWeeks.forEach(w => w.forEach(d => { if (d.count > max) max = d.count; }));
-        return max;
-    }, [heatmapWeeks]);
-
     const todayStr = (() => {
         const t = new Date();
         return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;
     })();
+
+    const monthShelves = useMemo(
+        () => buildMonthShelves(yearCountMap, heatmapYear, todayStr),
+        [yearCountMap, heatmapYear, todayStr]
+    );
+    const hmMax = useMemo(() => {
+        return Math.max(...monthShelves.map(s => s.totalCount), 1);
+    }, [monthShelves]);
 
     return (
         <div>
@@ -190,10 +209,8 @@ export default function Calendar() {
                     </div>
                 </div>
 
-                {/* ── Stats 자리 공백 (달력 뷰만) ── */}
-                {view === "calendar" && (
-                    <div className={styles.statsSpacer} />
-                )}
+                {/* ── Stats 자리 공백 (달력 + 히트맵 뷰 모두) ── */}
+                <div className={styles.statsSpacer} />
 
                 {/* ── Right ── */}
                 <div className={styles.right}>
@@ -212,43 +229,61 @@ export default function Calendar() {
                         </div>
                     )}
 
-                    {/* 히트맵 */}
                     {view === "heatmap" && (
-                        <div className={styles.heatmapArea}>
-                            {[0, 1].map((half) => {
-                                const start = half === 0 ? 0 : Math.ceil(heatmapWeeks.length / 2);
-                                const end = half === 0 ? Math.ceil(heatmapWeeks.length / 2) : heatmapWeeks.length;
-                                const halfWeeks = heatmapWeeks.slice(start, end);
-                                const halfLabels = monthLabels.filter(({ col }) => col >= start && col < end);
-                                return (
-                                    <div key={half} className={styles.heatmapHalf}>
-                                        <div className={styles.heatmapMonthRow} style={{ gridTemplateColumns: `repeat(${halfWeeks.length}, 1fr)` }}>
-                                            {halfLabels.map(({ label, col }) => (
-                                                <div key={col} className={styles.heatmapMonthLabel} style={{ gridColumn: col - start + 1 }}>{label}</div>
-                                            ))}
-                                        </div>
-                                        <div className={styles.heatmapGrid} style={{ gridTemplateColumns: `repeat(${halfWeeks.length}, 1fr)` }}>
-                                            {halfWeeks.map((week, wi) => (
-                                                <div key={wi} className={styles.heatmapCol}>
-                                                    {week.map(({ date, count }) => {
-                                                        const level = count === 0 ? 0 : Math.ceil((count / Math.max(hmMax, 1)) * 4);
-                                                        const isFuture = date > todayStr;
-                                                        return (
-                                                            <div
-                                                                key={date}
-                                                                className={[styles.hmCell, isFuture ? styles.hmFuture : styles[`hmLevel${level}`]].join(" ")}
-                                                                title={count > 0 ? `${date} · ${count}건` : date}
-                                                                onClick={() => count > 0 && goDay(date)}
-                                                                style={{ cursor: count > 0 ? "pointer" : "default" }}
-                                                            />
-                                                        );
-                                                    })}
+                        <div className={styles.heatmapWrapper}>
+                            <div className={styles.bookshelfArea} ref={shelfAreaRef}>
+                                {monthShelves.map(({ month, totalCount }) => {
+                                    // 칸 너비 기반으로 책 너비·개수 동적 계산
+                                    const PADDING = 6; // shelfInner padding × 2
+                                    const GAP = 3;
+                                    const BOOK_WIDTHS = [20, 17, 23, 19, 21]; // 5종 너비 패턴
+                                    const availW = shelfWidth - PADDING;
+                                    // 몇 권까지 들어가는지 계산
+                                    let cumW = 0; let maxBooks = 0;
+                                    for (let i = 0; i < 20; i++) {
+                                        const bw = BOOK_WIDTHS[i % 5];
+                                        cumW += bw + (i > 0 ? GAP : 0);
+                                        if (cumW > availW) break;
+                                        maxBooks++;
+                                    }
+                                    maxBooks = Math.max(1, maxBooks);
+                                    const bookCount = totalCount === 0 ? 0 : Math.max(1, Math.round((totalCount / hmMax) * maxBooks));
+                                    return (
+                                        <div key={month} className={styles.shelf}>
+                                            <div className={styles.shelfInner}>
+                                                <div className={styles.shelfRow}>
+                                                    {Array.from({ length: bookCount }).map((_, i) => (
+                                                        <div key={i} className={[styles.book, styles[`bookColor${(i % 5) + 1}`]].join(" ")}>
+                                                            <div className={styles.bookCap} />
+                                                            <div className={styles.bookStripe1} />
+                                                            <div className={styles.bookStripe2} />
+                                                        </div>
+                                                    ))}
                                                 </div>
+                                                <div className={styles.shelfBoard} />
+                                            </div>
+                                            <div className={styles.shelfLabel}>
+                                                {month}
+                                                {totalCount > 0 && <span className={styles.shelfCount}>{totalCount}</span>}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            <div className={styles.hmLegend}>
+                                <span className={styles.hmLegendLabel}>fewer</span>
+                                {[0, 1, 2, 3].map(level => (
+                                    <div key={level} className={styles.hmLegendShelf}>
+                                        <div className={styles.hmLegendRow}>
+                                            {Array.from({ length: level }).map((_, i) => (
+                                                <div key={i} className={[styles.hmLegendBook, styles[`hmLegendL${level}`]].join(" ")} />
                                             ))}
                                         </div>
+                                        <div className={styles.hmLegendBoard} />
                                     </div>
-                                );
-                            })}
+                                ))}
+                                <span className={styles.hmLegendLabel}>more</span>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -323,44 +358,59 @@ export default function Calendar() {
                     </div>
                 )}
 
-                {/* 모바일 히트맵 */}
+                {/* 모바일 책장 히트맵 */}
                 {view === "heatmap" && (
-                    <div className={styles.mobileHeatmapCarousel}>
-                        <div className={styles.mobileHeatmapTrack}>
-                            {[0, 1].map((half) => {
-                                const start = half === 0 ? 0 : Math.ceil(heatmapWeeks.length / 2);
-                                const end = half === 0 ? Math.ceil(heatmapWeeks.length / 2) : heatmapWeeks.length;
-                                const halfWeeks = heatmapWeeks.slice(start, end);
-                                const halfLabels = monthLabels.filter(({ col }) => col >= start && col < end);
+                    <div className={styles.heatmapWrapperMobile}>
+                        <div className={styles.bookshelfAreaMobile} ref={mobileShelfAreaRef}>
+                            {monthShelves.map(({ month, totalCount }) => {
+                                const PADDING = 8;
+                                const GAP = 3;
+                                const BOOK_WIDTHS = [18, 15, 20, 17, 18];
+                                const availW = mobileShelfWidth - PADDING;
+                                let cumW = 0; let maxBooks = 0;
+                                for (let i = 0; i < 20; i++) {
+                                    const bw = BOOK_WIDTHS[i % 5];
+                                    cumW += bw + (i > 0 ? GAP : 0);
+                                    if (cumW > availW) break;
+                                    maxBooks++;
+                                }
+                                maxBooks = Math.max(1, maxBooks);
+                                const bookCount = totalCount === 0 ? 0 : Math.max(1, Math.round((totalCount / hmMax) * maxBooks));
                                 return (
-                                    <div key={half} className={styles.mobileHeatmapSlide}>
-                                        <div className={styles.heatmapMonthRow} style={{ gridTemplateColumns: `repeat(${halfWeeks.length}, 1fr)` }}>
-                                            {halfLabels.map(({ label, col }) => (
-                                                <div key={col} className={styles.heatmapMonthLabel} style={{ gridColumn: col - start + 1 }}>{label}</div>
-                                            ))}
+                                    <div key={month} className={styles.shelf}>
+                                        <div className={styles.shelfInner}>
+                                            <div className={styles.shelfRow}>
+                                                {Array.from({ length: bookCount }).map((_, i) => (
+                                                    <div key={i} className={[styles.book, styles[`bookColor${(i % 5) + 1}`]].join(" ")}>
+                                                        <div className={styles.bookCap} />
+                                                        <div className={styles.bookStripe1} />
+                                                        <div className={styles.bookStripe2} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className={styles.shelfBoard} />
                                         </div>
-                                        <div className={styles.heatmapGrid} style={{ gridTemplateColumns: `repeat(${halfWeeks.length}, 1fr)` }}>
-                                            {halfWeeks.map((week, wi) => (
-                                                <div key={wi} className={styles.heatmapCol}>
-                                                    {week.map(({ date, count }) => {
-                                                        const level = count === 0 ? 0 : Math.ceil((count / Math.max(hmMax, 1)) * 4);
-                                                        const isFuture = date > todayStr;
-                                                        return (
-                                                            <div
-                                                                key={date}
-                                                                className={[styles.hmCell, isFuture ? styles.hmFuture : styles[`hmLevel${level}`]].join(" ")}
-                                                                title={count > 0 ? `${date} · ${count}건` : date}
-                                                                onClick={() => count > 0 && goDay(date)}
-                                                                style={{ cursor: count > 0 ? "pointer" : "default" }}
-                                                            />
-                                                        );
-                                                    })}
-                                                </div>
-                                            ))}
+                                        <div className={styles.shelfLabel}>
+                                            {month}
+                                            {totalCount > 0 && <span className={styles.shelfCount}>{totalCount}</span>}
                                         </div>
                                     </div>
                                 );
                             })}
+                        </div>
+                        <div className={styles.hmLegend}>
+                            <span className={styles.hmLegendLabel}>fewer</span>
+                            {[0, 1, 2, 3].map(level => (
+                                <div key={level} className={styles.hmLegendShelf}>
+                                    <div className={styles.hmLegendRow}>
+                                        {Array.from({ length: level }).map((_, i) => (
+                                            <div key={i} className={[styles.hmLegendBook, styles[`hmLegendL${level}`]].join(" ")} />
+                                        ))}
+                                    </div>
+                                    <div className={styles.hmLegendBoard} />
+                                </div>
+                            ))}
+                            <span className={styles.hmLegendLabel}>more</span>
                         </div>
                     </div>
                 )}

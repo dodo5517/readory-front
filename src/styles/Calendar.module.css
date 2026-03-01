@@ -299,60 +299,216 @@
 }
 .active:hover .badge { opacity: 1; }
 
-/* ── 히트맵 ── */
-.heatmapArea {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    overflow: hidden;
-    margin-left: 9.17vw;
-}
-.heatmapHalf {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-.heatmapMonthRow {
+/* ══════════════════════════════
+   책장 히트맵 — 2행 6열
+   ══════════════════════════════ */
+.bookshelfArea {
     display: grid;
-    height: 14px;
-    flex-shrink: 0;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px 16px;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px 0;
 }
-.heatmapMonthLabel {
+
+/* 각 월 칸 */
+.shelf {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+}
+
+/* 선반 내부 */
+.shelfInner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0 3px 0;
+    box-sizing: border-box;
+}
+
+/* 책들 — 1층, 바닥 정렬 */
+.shelfRow {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 3px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+/* 책등 */
+.book {
+    flex-shrink: 0;
+    border-radius: 2px 2px 0 0;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+            inset -2px 0 4px rgba(0,0,0,0.1),
+            inset  1px 0 0 rgba(255,255,255,0.15);
+    filter: saturate(0.9) brightness(0.95);
+}
+.book:hover {
+    transform: translateY(-6px);
+    box-shadow:
+            inset -2px 0 4px rgba(0,0,0,0.14),
+            inset  1px 0 0 rgba(255,255,255,0.18),
+            1px 6px 10px rgba(0,0,0,0.12);
+}
+
+
+/* 상단 액센트 캡 */
+.bookCap {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+}
+
+/* 제목 줄 (첫 번째) */
+.bookStripe1 {
+    position: absolute;
+    top: 14px; left: 4px; right: 4px;
+    height: 2px;
+    background: rgba(255,255,255,0.22);
+}
+
+/* 제목 줄 (두 번째) */
+.bookStripe2 {
+    position: absolute;
+    top: 20px; left: 4px; right: 4px;
+    height: 1px;
+    background: rgba(255,255,255,0.13);
+}
+
+/* 책 5종 — 사이트 팔레트만 사용, 두께·높이 px 고정 */
+.bookColor1 { background: var(--calendar-intensity-3); width: 20px; height: 64px; }
+.bookColor2 { background: var(--calendar-intensity-4); width: 17px; height: 80px; }
+.bookColor3 { background: var(--calendar-intensity-2); width: 23px; height: 56px; }
+.bookColor4 { background: var(--calendar-intensity-4); width: 19px; height: 74px; }
+.bookColor5 { background: var(--calendar-intensity-3); width: 21px; height: 68px; }
+
+/* 액센트 캡 — 살짝 밝게만 */
+.bookColor1 .bookCap { background: var(--calendar-intensity-2); }
+.bookColor2 .bookCap { background: var(--calendar-intensity-3); }
+.bookColor3 .bookCap { background: var(--calendar-intensity-1); }
+.bookColor4 .bookCap { background: var(--calendar-intensity-3); }
+.bookColor5 .bookCap { background: var(--calendar-intensity-2); }
+
+/* 빈 달 고스트 책 */
+.bookGhost {
+    flex-shrink: 0;
+    border-radius: 2px 2px 0 0;
+    background: var(--hm-empty);
+    opacity: 0.5;
+}
+
+/* 선반 판 — 사이트 톤에 맞게 */
+.shelfBoard {
+    height: 3px;
+    background: var(--text-muted);
+    opacity: 0.4;
+    flex-shrink: 0;
+    margin: 0 -3px;
+}
+
+/* 월 라벨 + 기록 수 */
+.shelfLabel {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin-top: 6px;
+    font-size: 0.65rem;
+    font-family: -apple-system, sans-serif;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    padding-left: 2px;
+}
+
+.shelfCount {
     font-size: 0.6rem;
     color: var(--text-normal);
-    font-family: -apple-system, sans-serif;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
 }
-.heatmapGrid {
-    display: grid;
-    gap: 3px;
-    flex: 1;
-    min-height: 0;
-}
-.heatmapCol {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-.hmCell {
-    width: 100%;
-    flex: 1;
-    min-height: 0;
-    border-radius: 2px;
-    background: var(--hm-empty);
-    transition: opacity 0.2s, transform 0.2s;
-}
-.hmCell:hover { opacity: 0.8; transform: scale(1.3); }
+
 .hmFuture { background: transparent; }
 .hmLevel0 { background: var(--hm-empty); }
 .hmLevel1 { background: var(--calendar-intensity-1); }
 .hmLevel2 { background: var(--calendar-intensity-2); }
 .hmLevel3 { background: var(--calendar-intensity-3); }
 .hmLevel4 { background: var(--calendar-intensity-4); }
+
+/* ══════════════════════════════
+   히트맵 범례
+   ══════════════════════════════ */
+.heatmapWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 8px;
+}
+
+.hmLegend {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.hmLegendLabel {
+    font-size: 0.58rem;
+    font-family: -apple-system, sans-serif;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    padding-bottom: 3px;
+    white-space: nowrap;
+}
+
+/* 미니 책장 1칸 — 이미지처럼 고정 너비 박스 */
+.hmLegendShelf {
+    display: flex;
+    flex-direction: column;
+    width: 28px;
+}
+
+.hmLegendRow {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 2px;
+    height: 16px;       /* 고정 높이 — 이미지처럼 납작하게 */
+    padding: 0 2px;
+    box-sizing: border-box;
+}
+
+/* 미니 책 — 모두 동일 높이, 개수만 증가 */
+.hmLegendBook {
+    width: 5px;
+    height: 14px;
+    border-radius: 1px 1px 0 0;
+    flex-shrink: 0;
+}
+
+.hmLegendBoard {
+    height: 2px;
+    background: var(--text-muted);
+    opacity: 0.35;
+    width: 100%;
+}
+
+/* level별 색상 */
+.hmLegendL1 { background: var(--calendar-intensity-2); }
+.hmLegendL2 { background: var(--calendar-intensity-3); }
+.hmLegendL3 { background: var(--calendar-intensity-4); }
 
 /* ══════════════════════════════
    Mobile
@@ -503,46 +659,56 @@
 
     .day { height: 44px; }
 
-    /* 모바일 히트맵: 2행으로 한 화면에 */
-    .mobileHeatmapCarousel {
+    /* 모바일 책장 히트맵 — 4행 3열 */
+    .heatmapWrapperMobile {
         flex: 1;
         display: flex;
         flex-direction: column;
+        gap: 8px;
         min-height: 0;
-        gap: 10px;
+        width: fit-content;
     }
 
-    /* 상반기 + 하반기 두 행 세로로 */
-    .mobileHeatmapTrack {
+    .bookshelfAreaMobile {
         flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 10px 12px;
         min-height: 0;
-        overflow: visible;
-    }
-
-    .mobileHeatmapSlide {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        min-height: 0;
+        width: 100%;
         box-sizing: border-box;
     }
 
-    .mobileHeatmapSlide .heatmapMonthRow {
-        height: 13px;
-        flex-shrink: 0;
+    .bookshelfAreaMobile .shelfInner {
+        padding: 0 4px 0;
+        overflow: hidden;
     }
 
-    .mobileHeatmapSlide .heatmapGrid {
-        flex: 1;
-        min-height: 0;
-        gap: 2px;
+    .bookshelfAreaMobile .shelfRow {
+        gap: 3px;
+        overflow: hidden;
     }
 
-    .mobileHeatmapSlide .heatmapCol {
-        gap: 2px;
+    /* 모바일 책 — px 고정 */
+    .bookshelfAreaMobile .bookColor1 { width: 18px; height: 56px; }
+    .bookshelfAreaMobile .bookColor2 { width: 15px; height: 68px; }
+    .bookshelfAreaMobile .bookColor3 { width: 20px; height: 48px; }
+    .bookshelfAreaMobile .bookColor4 { width: 17px; height: 62px; }
+    .bookshelfAreaMobile .bookColor5 { width: 18px; height: 58px; }
+
+    .bookshelfAreaMobile .shelfBoard {
+        height: 3px;
+        margin: 0 -4px;
+    }
+
+    .bookshelfAreaMobile .shelfLabel {
+        font-size: 0.6rem;
+        margin-top: 5px;
+    }
+
+    .heatmapWrapperMobile .hmLegend {
+        justify-content: flex-end;
+        padding-right: 0;
     }
 }
