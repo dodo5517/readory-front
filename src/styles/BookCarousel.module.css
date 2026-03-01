@@ -30,7 +30,7 @@
     color: var(--text-muted);
     text-decoration: none;
     letter-spacing: 0.02em;
-    transition: color 0.15s;
+    transition: color 0.2s;
 }
 
 .left a:hover {
@@ -63,7 +63,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
     align-self: center;
     margin-bottom: 0;
 }
@@ -94,7 +94,7 @@
     min-width: 130px;
     max-width: 130px;
     text-align: left;
-    transition: transform 0.18s, opacity 0.18s;
+    transition: transform 0.2s, opacity 0.2s;
 }
 
 .bookItem:hover {

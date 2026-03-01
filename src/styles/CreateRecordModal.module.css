@@ -55,7 +55,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 .closeBtn:hover { background: var(--light-bg); }
 
@@ -89,7 +89,7 @@
     background: var(--card-bg);
     color: var(--text-main);
     font-size: 0.92rem;
-    transition: border-color 0.15s;
+    transition: border-color 0.2s;
     box-sizing: border-box;
 }
 .input:focus { outline: none; border-color: var(--input-focus); }
@@ -106,7 +106,7 @@
     font-size: 0.9rem;
     color: var(--text-main);
     font-family: inherit;
-    transition: border-color 0.15s;
+    transition: border-color 0.2s;
     box-sizing: border-box;
 }
 .textarea:focus { outline: none; border-color: var(--input-focus); }
@@ -157,7 +157,7 @@
     background: var(--card-bg);
     color: var(--text-main);
     font-size: 0.9rem;
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 .secondaryBtn:hover { background: var(--light-bg); }
 
@@ -171,7 +171,7 @@
     color: #fff;
     font-size: 0.9rem;
     font-weight: 600;
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 .primaryBtn:hover { background: var(--btn-hover); border-color: var(--btn-hover); }
 .primaryBtn:disabled { opacity: 0.55; cursor: not-allowed; }

@@ -161,7 +161,7 @@
 
 .row {
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 
 .row:hover {

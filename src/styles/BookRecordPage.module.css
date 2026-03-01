@@ -71,7 +71,7 @@
     border: 1px solid var(--input-border);
     color: var(--text-main);
     white-space: nowrap;
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 .addRecordBtn:hover { background: var(--light-bg); }
 
@@ -99,7 +99,7 @@
     border: 1px solid var(--input-border);
     color: var(--text-muted);
     white-space: nowrap;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 .deleteAllBtn:hover {
     border: 1px solid var(--danger-color);
@@ -124,7 +124,7 @@
     justify-content: center;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.15s, background 0.15s, color 0.15s;
+    transition: opacity 0.2s, background 0.2s, color 0.2s;
 }
 .recordCard:hover .deleteRecordBtn { opacity: 1; }
 .deleteRecordBtn:hover {
@@ -166,7 +166,7 @@
     padding: 14px 16px;
     line-height: 1.65;
     word-break: keep-all; overflow-wrap: anywhere;
-    transition: box-shadow 0.15s;
+    transition: box-shadow 0.2s;
 }
 .recordCard:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
 .quote { margin: 0 0 8px; color: var(--record-quote); font-size: 0.95rem; white-space: pre-line; line-height: 1.7; }

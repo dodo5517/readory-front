@@ -31,7 +31,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s, border-color 0.15s;
+    transition: background 0.2s, border-color 0.2s;
     font-variant-numeric: tabular-nums;
 }
 

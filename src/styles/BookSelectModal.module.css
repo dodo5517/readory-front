@@ -54,7 +54,7 @@
     border-radius: 6px;
     background: var(--card-bg);
     color: var(--text-muted);
-    transition: background 0.15s;
+    transition: background 0.2s;
     font-size: 0.9rem;
 }
 .closeBtn:hover { background: var(--light-bg); }
@@ -85,7 +85,7 @@
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.88rem;
-    transition: background 0.15s, color 0.15s;
+    transition: background 0.2s, color 0.2s;
 }
 
 .isActive {
@@ -104,7 +104,7 @@
     background: var(--card-bg);
     height: var(--ctl-h);
     overflow: hidden;
-    transition: border-color 0.15s;
+    transition: border-color 0.2s;
 }
 .field:focus-within { border-color: var(--input-focus); }
 
@@ -132,7 +132,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 .searchBtn:hover { background: var(--light-bg); color: var(--text-main); }
 .searchBtnClear { border-left: none; font-size: 1rem; }
@@ -172,7 +172,7 @@
     border-radius: 8px;
     background: var(--card-bg);
     cursor: pointer;
-    transition: background 0.15s, box-shadow 0.15s;
+    transition: background 0.2s, box-shadow 0.2s;
 }
 .item:hover {
     background: var(--light-bg);
@@ -243,7 +243,7 @@
     cursor: pointer;
     color: var(--text-main);
     flex: 0 0 auto;
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 .selectBtn:hover { background: var(--light-bg); }
 
@@ -267,7 +267,7 @@
     border-radius: 7px;
     cursor: pointer;
     font-size: 0.88rem;
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
 .secondaryBtn:hover { background: var(--light-bg); }
 
@@ -307,7 +307,7 @@
         padding: 10px;
         text-align: left;
         cursor: pointer;
-        transition: background 0.15s;
+        transition: background 0.2s;
     }
     .card:hover { background: var(--light-bg); }
 
