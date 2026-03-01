@@ -162,7 +162,7 @@
 
 .isActive {
     color: var(--text-main);
-    border-color: var(--input-focus);
+    border-color: var(--calendar-intensity-4);
     font-weight: 600;
 }
 
@@ -181,7 +181,7 @@
     transition: border-color 0.2s;
 }
 .input:focus-visible, .select:focus-visible {
-    outline: 2px solid var(--input-focus);
+    outline: 2px solid var(--calendar-intensity-4);
     box-shadow: 0 0 0 3px var(--input-focus-shadow);
 }
 

@@ -4,11 +4,11 @@
   --text-main: #000000;
   --text-sub: #666;
   --input-border: #ddd;
-  --input-focus: #5e92c6;
-  --input-focus-shadow: rgba(30, 107, 65, 0.1);
-  --btn-bg: #76a7d6;
-  --btn-hover: #5e92c6;
-  --link: #5e92c6;
+  --input-focus: #3a6b52;
+  --input-focus-shadow: rgba(58, 107, 82, 0.12);
+  --btn-bg: #3a6b52;
+  --btn-hover: #2d5540;
+  --link: #3a6b52;
   --header-bg: #f9f9f9;
   --text-strong: #333333;
   --text-hover: #222222;
@@ -18,9 +18,9 @@
   --light-bg: #f5f5f5;
   --white: #fff;
   --copy-border: #ccc;
-  --link-color: #007bff;
+  --link-color: #3a6b52;
   --border-color: #eee;
-  --avatar-bg: #f3bcbc;
+  --avatar-bg: #f5d5d5;
   --img-border: #ffffff;
   --img-bg: #f3f3f3;
   --img-hover: #ddd;
@@ -31,15 +31,15 @@
   --card-border: #e8e8e8;
   --record-comment: #9ca3af;
   --record-quote: #444;
-  --badge-linked-bg: #f6f9ff;
-  --badge-linked-text: #3355aa;
+  --badge-linked-bg: #f0f7f3;
+  --badge-linked-text: #1e4d36;
   --page-btn: #111;
   --placeholder: #777;
   --search-btn: #f6f9f7;
-  --danger-border: #e5a5a5;
-  --danger-color: #b94a4a;
-  --danger-bg: #faf7f7;
-  --danger-hover: #f6eaea;
+  --danger-border: #e8b4b4;
+  --danger-color: #c0474a;
+  --danger-bg: #fdf5f5;
+  --danger-hover: #f8ecec;
 
   --weekday-text: #555;
   --day-bg: #f9f9f9;
@@ -48,22 +48,23 @@
   --shadow-press: 0 4px 10px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.08);
   --hover-brightness: 1.02;
 
-  --calendar-intensity-1: rgba(118, 167, 214, 0.45);
-  --calendar-intensity-2: rgba(118, 167, 214, 0.65);
-  --calendar-intensity-3: rgba(118, 167, 214, 0.85);
-  --calendar-intensity-4: rgba(118, 167, 214, 1);
+  --calendar-intensity-1: rgba(58, 107, 82, 0.25);
+  --calendar-intensity-2: rgba(58, 107, 82, 0.50);
+  --calendar-intensity-3: rgba(58, 107, 82, 0.75);
+  --calendar-intensity-4: rgba(58, 107, 82, 1.00);
 
   /* ─── Calendar 전용 추가 변수 (light) ──────────────── */
   --cal-nav-border: #ddd;
   --cal-nav-hover-bg: #f0f0f0;
   --cal-nav-hover-border: #bbb;
-  --cal-day-hover: #f0f5fa;
-  --cal-day-hover-border: #c8dff0;
-  --cal-active-text: #1a3a5c;
-  --cal-active-shadow: rgba(118, 167, 214, 0.35);
+  --cal-day-hover: #eef5f1;
+  --cal-day-hover-border: #b8d8c4;
+  --cal-active-text: #1e4d36;
+  --cal-active-shadow: rgba(58, 107, 82, 0.25);
   --cal-badge-bg: rgba(255, 255, 255, 0.55);
-  --cal-badge-text: #1a3a5c;
-  --hm-empty: #e4e8ed;
+  --cal-badge-text: #1e4d36;
+  --hm-empty: #e8e8e8;
+  --hm-border: rgba(0, 0, 0, 0.25);
 }
 
 [data-theme='dark'] {
@@ -72,11 +73,11 @@
   --text-main: #ffffff;
   --text-sub: #aaaaaa;
   --input-border: #444;
-  --input-focus: #76a7d6;
-  --input-focus-shadow: rgba(118, 167, 214, 0.3);
-  --btn-bg: #5e92c6;
-  --btn-hover: #4179ab;
-  --link: #76a7d6;
+  --input-focus: #3a6b52;
+  --input-focus-shadow: rgba(58, 107, 82, 0.25);
+  --btn-bg: #3a6b52;
+  --btn-hover: #4a7d62;
+  --link: #c4884a;
   --header-bg: #1a1a1a;
   --text-strong: #f0f0f0;
   --text-hover: #ffffff;
@@ -87,8 +88,8 @@
   --light-bg: #2a2a2a;
   --white: #1e1e1e;
   --copy-border: #666;
-  --link-color: #4da6ff;
-  --avatar-bg: #5c3b3b;
+  --link-color: #3a6b52;
+  --avatar-bg: #3d2020;
   --img-border: #1e1e1e;
   --img-bg: #ffffff;
   --img-hover: #ccc;
@@ -99,15 +100,15 @@
   --card-border: #2c2c2c;
   --record-comment: #4b5563;
   --record-quote: #bbb;
-  --badge-linked-bg: #444;
-  --badge-linked-text: #93c5fd;
+  --badge-linked-bg: #2a2a2a;
+  --badge-linked-text: #7abf9a;
   --page-btn: #eee;
   --placeholder: #777;
   --search-btn: #1f1f23;
-  --danger-border: #663333;
-  --danger-color: #ff6b6b;
-  --danger-bg: #2a1e1e;
-  --danger-hover: #3a2626;
+  --danger-border: #7a2e2e;
+  --danger-color: #f06060;
+  --danger-bg: #261818;
+  --danger-hover: #301e1e;
 
   --weekday-text: #aaa;
   --day-bg: #262626;
@@ -116,22 +117,23 @@
   --shadow-press: 0 0 0 1px rgba(255,255,255,.08), 0 6px 14px rgba(0,0,0,.60);
   --hover-brightness: 1.06;
 
-  --calendar-intensity-1: rgba(167, 139, 250, 0.35);
-  --calendar-intensity-2: rgba(167, 139, 250, 0.55);
-  --calendar-intensity-3: rgba(167, 139, 250, 0.75);
-  --calendar-intensity-4: rgba(167, 139, 250, 1);
+  --calendar-intensity-1: rgba(160, 180, 150, 0.20);
+  --calendar-intensity-2: rgba(160, 180, 150, 0.40);
+  --calendar-intensity-3: rgba(160, 180, 150, 0.65);
+  --calendar-intensity-4: rgba(160, 180, 150, 0.90);
 
   /* ─── Calendar 전용 추가 변수 (dark) ───────────────── */
   --cal-nav-border: #444;
   --cal-nav-hover-bg: #333;
   --cal-nav-hover-border: #666;
-  --cal-day-hover: #2f2f3a;
-  --cal-day-hover-border: #555;
-  --cal-active-text: #ede9fe;
-  --cal-active-shadow: rgba(167, 139, 250, 0.3);
+  --cal-day-hover: #1a2e22;
+  --cal-day-hover-border: #3a6b52;
+  --cal-active-text: #dceee6;
+  --cal-active-shadow: rgba(220, 235, 228, 0.20);
   --cal-badge-bg: rgba(0, 0, 0, 0.25);
-  --cal-badge-text: #ede9fe;
-  --hm-empty: #333333;
+  --cal-badge-text: #dceee6;
+  --hm-empty: #202020;
+  --hm-border: rgba(255, 255, 255, 0.3);
 }
 
 body {
