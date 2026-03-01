@@ -25,7 +25,7 @@ const FAQS: FAQItem[] = [
         id: 2,
         question: "Readory 사용법은 어디서 보나요?",
         answer: "사용법은 아래 가이드 페이지에서 확인해 주세요.",
-        link: { kind: "external", href: "https://hill-snarl-f10.notion.site/Readory-2b7276b3090780a298f5c3c3f8d3a3d0", label: "사용법 가이드 열기" },
+        link: { kind: "external", href: "https://hill-snarl-f10.notion.site/Readory-316276b3090780ba8a9df2403db0fa73?pvs=143", label: "사용법 가이드 열기" },
     },
     {
         id: 3,

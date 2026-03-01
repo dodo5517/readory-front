@@ -96,7 +96,7 @@ export default function Login() {
                     <Link to="/guide" className={styles.helpLink}>Readory란?</Link>
                     <span className={styles.dot} />
                     <a
-                        href="https://hill-snarl-f10.notion.site/Readory-2b7276b3090780a298f5c3c3f8d3a3d0?pvs=74"
+                        href="https://hill-snarl-f10.notion.site/Readory-316276b3090780ba8a9df2403db0fa73?pvs=143"
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.helpLink}
