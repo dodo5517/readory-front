@@ -1,0 +1,269 @@
+.section {
+    padding: 20px 40px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.pageTitle {
+    color: var(--text-main);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.error {
+    padding: 10px 12px;
+    border: 1px solid var(--danger-border);
+    background: var(--danger-bg);
+    color: var(--danger-color);
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.loading {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* 요약 카드 */
+.summaryGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.summaryCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px;
+    border: 1px solid var(--main-hr);
+    border-radius: 12px;
+    background: var(--card-bg);
+}
+
+.summaryLabel {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.summaryValue {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* 섹션 */
+.section2 {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sectionTitle {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.sectionDesc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* 매칭 상태 */
+.statusGrid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.statusCard {
+    flex: 1 1 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+}
+
+.statusLabel {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.statusValue {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.matched { background: #e8f5e9; border-color: #a5d6a7; color: #2e7d32; }
+.pending { background: #e3f2fd; border-color: #90caf9; color: #1565c0; }
+.unmatched { background: #fff3e0; border-color: #ffcc80; color: #ef6c00; }
+.failed { background: #ffebee; border-color: #ef9a9a; color: #c62828; }
+
+/* 바 차트 */
+.chartWrap {
+    padding: 16px;
+    border: 1px solid var(--main-hr);
+    border-radius: 12px;
+    background: var(--card-bg);
+}
+
+.barChart {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    height: 140px;
+}
+
+.barItem {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+}
+
+.barValue {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.barTrack {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    background: var(--bg, #f5f5f5);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.barFill {
+    width: 100%;
+    background: var(--link-color, #1976d2);
+    border-radius: 4px 4px 0 0;
+    transition: height 0.3s ease;
+    min-height: 2px;
+}
+
+.barLabel {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* 테이블 */
+.tableWrap {
+    overflow-x: auto;
+    border: 1px solid var(--main-hr);
+    border-radius: 12px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.table th {
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--bg, #fafafa);
+    border-bottom: 1px solid var(--main-hr);
+}
+
+.table td {
+    padding: 12px 14px;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--main-hr);
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.table tr:hover td {
+    background: var(--link-hover);
+}
+
+.idCell { font-weight: 600; color: var(--text-muted); }
+.emailCell { color: var(--text-muted); font-size: 0.85rem; }
+.countCell { font-weight: 600; }
+.dateCell { color: var(--text-muted); font-size: 0.85rem; }
+
+.lookupBtn {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    background: var(--card-bg);
+    color: var(--link-color, #1976d2);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.lookupBtn:hover {
+    background: var(--link-hover);
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pageBtn {
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    cursor: pointer;
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.pageBtn:hover { background: var(--search-btn); }
+.pageBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.pageInfo {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    min-width: 70px;
+    text-align: center;
+}
+
+.empty {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    padding: 20px 0;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .section { padding: 20px; }
+    .summaryGrid { grid-template-columns: repeat(2, 1fr); }
+    .statusGrid { flex-direction: column; }
+    .statusCard { flex: none; }
+}

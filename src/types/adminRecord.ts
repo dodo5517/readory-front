@@ -1,55 +1,74 @@
+export type MatchStatus =
+    | "PENDING"
+    | "RESOLVED_AUTO"
+    | "RESOLVED_MANUAL"
+    | "NO_CANDIDATE"
+    | "MULTIPLE_CANDIDATES";
 
-export type MatchStatus = "PENDING" | "RESOLVED_AUTO" | "RESOLVED_MANUAL" | "NO_CANDIDATE" | "MULTIPLE_CANDIDATES";
-
-// 목록용 응답
+// 목록용 응답 - sentence, comment 제거
 export interface AdminRecordListResponse {
     id: number;
+    userId: number;
     username: string;
     rawTitle: string;
     rawAuthor: string;
-    sentence: string | null;
     matchStatus: MatchStatus;
     recordedAt: string;
 }
 
-// 상세용 응답
+// 상세용 응답 - sentence, comment 제거
 export interface AdminRecordDetailResponse {
     id: number;
-    // 유저 정보
     userId: number;
     username: string;
     userEmail: string;
-    // 책 정보 (매칭된 경우)
     bookId: number | null;
     bookTitle: string | null;
     bookAuthor: string | null;
     bookCoverUrl: string | null;
-    // 원본 입력값
     rawTitle: string;
     rawAuthor: string;
-    // 기록 내용
-    sentence: string | null;
-    comment: string | null;
-    // 상태 및 시간
     matchStatus: MatchStatus;
     recordedAt: string;
     updatedAt: string | null;
     matchedAt: string | null;
 }
 
-// 수정 요청
+// 수정 요청 - sentence, comment 제거
 export interface AdminRecordUpdateRequest {
     rawTitle?: string;
     rawAuthor?: string;
-    sentence?: string;
-    comment?: string;
 }
 
+// userId 필수
 export interface GetRecordsParams {
+    userId: number;
     keyword?: string;
     matchStatus?: string;
-    userId?: number;
     page?: number;
     size?: number;
     sort?: string;
+}
+
+// 통계
+export interface AdminRecordStatsResponse {
+    totalRecords: number;
+    todayRecords: number;
+    pendingCount: number;
+    resolvedAutoCount: number;
+    resolvedManualCount: number;
+    noCandidateCount: number;
+    multipleCandidatesCount: number;
+    dailyCounts: { date: string; count: number }[];
+    activeUsersLast7Days: number;
+    activeUsersLast30Days: number;
+}
+
+// 유저 활동 현황
+export interface AdminUserActivityResponse {
+    userId: number;
+    username: string;
+    userEmail: string;
+    totalRecords: number;
+    lastRecordedAt: string;
 }

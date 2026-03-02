@@ -30,6 +30,7 @@ import FaqPage from "./pages/FaqPage";
 import AdminRecordPage from "./pages/AdminRecordPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
+import AdminStatsPage from "./pages/AdminStatsPage";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
                               <Route path="refreshTokens" element={<div>토큰 관리(준비중)</div>} />
                               <Route path="books" element={<AdminBookPage/>} />
                               <Route path="records" element={<AdminRecordPage/>} />
+                              <Route path="stats" element={<AdminStatsPage />} />
                           </Route>
                       </Route>
 

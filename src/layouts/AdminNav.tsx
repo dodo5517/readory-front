@@ -10,7 +10,7 @@ const NAV: AdminNavItem[] = [
         label: "유저 관리",
         children: [
             { key: "users-list", label: "유저 리스트", to: "/admin/users" },
-            // { key: "users-refreshToken", label: "유저 토큰", to: "/admin/refreshTokens" },
+            { key: "users-refreshToken", label: "통계", to: "/admin/stats" },
         ],
     },
     {
