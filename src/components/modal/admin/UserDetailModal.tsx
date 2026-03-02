@@ -149,7 +149,7 @@ export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList
                             <div className={styles.avatarWrap}>
                                 <img
                                     className={styles.avatar}
-                                    src={user.profileImageUrl ?? "https://via.placeholder.com/80x80?text=U"}
+                                    src={user.profileImageUrl ?? "/assets/blank.png"}
                                     alt="profile"
                                 />
                                 <div className={styles.avatarActions}>

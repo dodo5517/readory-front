@@ -145,7 +145,7 @@ export default function AdminUserPage() {
                                 <div className={styles.avatarArea}>
                                     <img
                                         className={styles.avatar}
-                                        src={u.profileImageUrl ?? "https://via.placeholder.com/56x56?text=U"}
+                                        src={u.profileImageUrl ?? "/assets/blank.png"}
                                         alt="profile"
                                     />
                                 </div>
