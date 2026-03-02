@@ -3,6 +3,7 @@ import {useNavigate, Link } from 'react-router-dom';
 
 import styles from '../styles/Login.module.css';
 import {loginUser} from "../api/Auth";
+import {ArrowDownIcon} from "@phosphor-icons/react";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -75,6 +76,7 @@ export default function Login() {
                 <div className={styles.footer}>
                     계정이 없으신가요? <Link to="/signUp" className={styles.a}>회원가입</Link>
                 </div>
+                <p className={styles.googleHint}>현재 구글 로그인으로만 가입할 수 있어요 <ArrowDownIcon className={styles.icon}/></p>
 
                 <div className={styles.socialLogin}>
                     <div className={styles.divider}><span>또는</span></div>
@@ -94,16 +96,16 @@ export default function Login() {
                 {/* 하단 링크 */}
                 <div className={styles.bottomRow}>
                     <Link to="/guide" className={styles.helpLink}>Readory란?</Link>
-                    <span className={styles.dot} />
+                    <span className={styles.dot}/>
                     <a
                         href="https://hill-snarl-f10.notion.site/Readory-316276b3090780ba8a9df2403db0fa73?pvs=143"
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.helpLink}
                     >사용법</a>
-                    <span className={styles.dot} />
+                    <span className={styles.dot}/>
                     <Link to="/privacy" className={styles.helpLink}>개인정보</Link>
-                    <span className={styles.dot} />
+                    <span className={styles.dot}/>
                     <Link to="/terms" className={styles.helpLink}>이용약관</Link>
                     <a
                         href="https://github.com/dodo5517/readory-server"
@@ -113,7 +115,8 @@ export default function Login() {
                         className={styles.githubIcon}
                     >
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.05-.015-2.055-3.33.72-4.035-1.605-4.035-1.605-.54-1.38-1.335-1.755-1.335-1.755-1.08-.735.09-.72.09-.72 1.2.075 1.83 1.23 1.83 1.23 1.065 1.815 2.805 1.29 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.225 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405 1.02 0 2.04.135 3 .405 2.28-1.545 3.3-1.23 3.3-1.23.66 1.695.255 2.925.135 3.225.765.84 1.23 1.92 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.285 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            <path
+                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.05-.015-2.055-3.33.72-4.035-1.605-4.035-1.605-.54-1.38-1.335-1.755-1.335-1.755-1.08-.735.09-.72.09-.72 1.2.075 1.83 1.23 1.83 1.23 1.065 1.815 2.805 1.29 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.225 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405 1.02 0 2.04.135 3 .405 2.28-1.545 3.3-1.23 3.3-1.23.66 1.695.255 2.925.135 3.225.765.84 1.23 1.92 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.285 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
                         </svg>
                     </a>
                 </div>

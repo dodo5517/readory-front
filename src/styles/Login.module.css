@@ -32,6 +32,10 @@
     margin-bottom: 24px;
 }
 
+.heroSignup {
+    margin-bottom: 10px;
+}
+
 .heroIcon {
     display: block;
     font-size: 2.2rem;
@@ -218,4 +222,91 @@
 
 @media (max-width: 480px) {
     .card { padding: 28px 20px 20px; }
+}
+
+/* ── Disabled signup ── */
+.disabledLink {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    cursor: not-allowed;
+    font-weight: 500;
+}
+
+.demoHint {
+    color: var(--btn-bg);
+    font-weight: 500;
+}
+
+.formDisabled {
+    opacity: 0.35;
+    pointer-events: none;
+    filter: blur(0.6px);
+}
+
+.backButton {
+    width: 100%;
+    margin-top: 2px;
+}
+
+.googleHint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 4px 0 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.signupDisabledBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 16px;
+    border: 1px dashed var(--border-color);
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.signupDisabledText {
+    font-size: 0.92rem;
+    color: var(--text-main);
+    font-weight: 600;
+    margin: 0;
+}
+
+.signupDisabledSub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.lastLine {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+}
+
+.googleButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #444;
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.googleButton:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
 }
