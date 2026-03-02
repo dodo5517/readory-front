@@ -137,7 +137,7 @@ export default function MyPage() {
         <section className={styles.container}>
             <div className={styles.avatarWrapper}>
                 <img
-                    src={user?.profileImageUrl || "/assets/readory_icon.png"}
+                    src={user?.profileImageUrl || "/assets/blank.png"}
                     alt="프로필 이미지"
                     className={styles.avatar}
                 />
