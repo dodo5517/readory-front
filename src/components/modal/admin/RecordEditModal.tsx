@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/AdminModal.module.css";
-import recordStyles from "../../../styles/AdminRecordPage.module.css";
 import * as adminRecord from "../../../api/AdminRecord";
 import {AdminRecordDetailResponse} from "../../../types/adminRecord";
 import { XIcon } from '@phosphor-icons/react';
