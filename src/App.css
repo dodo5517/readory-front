@@ -4,10 +4,10 @@
   padding: 0;
   box-sizing: border-box;
 }
-* {
-  user-select: none;
-  cursor: default;
-}
+/** {*/
+/*  user-select: none;*/
+/*  cursor: default;*/
+/*}*/
 
 /* input 요소들은 예외 처리 */
 input,
