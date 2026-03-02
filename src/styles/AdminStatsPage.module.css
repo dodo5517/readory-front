@@ -267,3 +267,143 @@
     .statusGrid { flex-direction: column; }
     .statusCard { flex: none; }
 }
+
+/* 섹션 헤더 (제목 + 탭) */
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* 탭 */
+.tabGroup {
+    display: inline-flex;
+    gap: 4px;
+    border: 1px solid var(--input-border, #ddd);
+    border-radius: 8px;
+    padding: 3px;
+    background: var(--card-bg);
+}
+
+.tab {
+    padding: 5px 12px;
+    font-size: 0.82rem;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.tabActive {
+    background: var(--search-btn, #f0f0f0);
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+/* 책 리스트 */
+.bookList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bookRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1px solid var(--main-hr);
+    border-radius: 10px;
+    background: var(--card-bg);
+}
+
+.bookRank {
+    flex: 0 0 24px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.bookRow:nth-child(1) .bookRank { color: #f59e0b; }
+.bookRow:nth-child(2) .bookRank { color: #9ca3af; }
+.bookRow:nth-child(3) .bookRank { color: #b45309; }
+
+.bookCover {
+    width: 36px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.bookCoverEmpty {
+    width: 36px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg, #f5f5f5);
+    border: 1px solid var(--main-hr);
+    border-radius: 4px;
+    flex-shrink: 0;
+    color: var(--text-muted);
+}
+
+.bookMeta {
+    flex: 0 0 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.bookTitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bookAuthor {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bookBarWrap {
+    flex: 1;
+    height: 8px;
+    background: var(--bg, #f0f0f0);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.bookBar {
+    height: 100%;
+    background: var(--link-color, #1976d2);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+    min-width: 4px;
+}
+
+.bookCount {
+    flex: 0 0 52px;
+    text-align: right;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+@media (max-width: 768px) {
+    .bookMeta { flex: 1; }
+    .bookBarWrap { display: none; }
+}

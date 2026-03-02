@@ -2,22 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/AdminStatsPage.module.css";
 import * as adminRecord from "../api/AdminRecord";
-import { AdminRecordStatsResponse, AdminUserActivityResponse } from "../types/adminRecord";
+import {
+    AdminRecordStatsResponse,
+    AdminUserActivityResponse,
+    AdminBookStatsResponse,
+} from "../types/adminRecord";
 import { PageResponse } from "../types/books";
 import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
+import { BooksIcon } from "@phosphor-icons/react";
 
 export default function AdminStatsPage() {
     const navigate = useNavigate();
 
     const [stats, setStats] = useState<AdminRecordStatsResponse | null>(null);
+    const [bookStats, setBookStats] = useState<AdminBookStatsResponse | null>(null);
     const [activity, setActivity] = useState<PageResponse<AdminUserActivityResponse> | null>(null);
     const [activityPage, setActivityPage] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -27,11 +27,13 @@ export default function AdminStatsPage() {
         try {
             setLoading(true);
             setError(null);
-            const [s, a] = await Promise.all([
+            const [s, b, a] = await Promise.all([
                 adminRecord.getStats(),
+                adminRecord.getBookStats(),
                 adminRecord.getUserActivity(activityPage),
             ]);
             setStats(s);
+            setBookStats(b);
             setActivity(a);
         } catch (e) {
             setError(e instanceof Error ? e.message : "통계 조회 실패");
@@ -51,23 +53,23 @@ export default function AdminStatsPage() {
             hour: "2-digit", minute: "2-digit",
         });
 
-    const goToUserRecords = (userId: number) => {
-        navigate(`/admin/records?userId=${userId}`);
-    };
+    const goToUserRecords = (userId: number) => navigate(`/admin/records?userId=${userId}`);
 
-    // 최근 30일 날짜 전체 채우기 (데이터 없는 날은 0)
     const buildChartData = (dailyCounts: { date: string; count: number }[]) => {
         const countMap = new Map(dailyCounts.map((d) => [d.date, d.count]));
         const result = [];
         for (let i = 29; i >= 0; i--) {
             const d = new Date();
             d.setDate(d.getDate() - i);
-            const key = d.toISOString().slice(0, 10); // "2026-03-01"
+            const key = d.toISOString().slice(0, 10);
             const label = `${d.getMonth() + 1}/${d.getDate()}`;
             result.push({ date: label, count: countMap.get(key) ?? 0 });
         }
         return result;
     };
+
+    const topBooks = bookStats?.topByRecordCount ?? [];
+    const maxCount = topBooks.length > 0 ? Math.max(...topBooks.map((b) => b.recordCount)) : 1;
 
     return (
         <section className={styles.section}>
@@ -170,6 +172,52 @@ export default function AdminStatsPage() {
                             </div>
                         </div>
                     </>
+                )}
+
+                {/* 인기 책 Top 10 */}
+                {bookStats && (
+                    <div className={styles.section2}>
+                        <h2 className={styles.sectionTitle}>인기 책 Top 10 · 기록 수 기준</h2>
+                        <div className={styles.bookList}>
+                            {topBooks.length === 0 ? (
+                                <div className={styles.empty}>데이터가 없습니다.</div>
+                            ) : (
+                                topBooks.map((book, idx) => (
+                                    <div key={book.bookId} className={styles.bookRow}>
+                                        <span className={styles.bookRank}>{idx + 1}</span>
+
+                                        {book.coverUrl ? (
+                                            <img
+                                                className={styles.bookCover}
+                                                src={book.coverUrl}
+                                                alt={book.title}
+                                            />
+                                        ) : (
+                                            <div className={styles.bookCoverEmpty}>
+                                                <BooksIcon size={18} />
+                                            </div>
+                                        )}
+
+                                        <div className={styles.bookMeta}>
+                                            <span className={styles.bookTitle}>{book.title}</span>
+                                            <span className={styles.bookAuthor}>{book.author}</span>
+                                        </div>
+
+                                        <div className={styles.bookBarWrap}>
+                                            <div
+                                                className={styles.bookBar}
+                                                style={{ width: `${Math.round((book.recordCount / maxCount) * 100)}%` }}
+                                            />
+                                        </div>
+
+                                        <span className={styles.bookCount}>
+                                            {book.recordCount.toLocaleString()}건
+                                        </span>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
                 )}
 
                 {/* 유저 활동 현황 */}

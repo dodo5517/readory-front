@@ -72,3 +72,16 @@ export interface AdminUserActivityResponse {
     totalRecords: number;
     lastRecordedAt: string;
 }
+
+// 책 통계
+export interface TopBook {
+    bookId: number;
+    title: string;
+    author: string;
+    coverUrl: string | null;
+    recordCount: number;
+}
+
+export interface AdminBookStatsResponse {
+    topByRecordCount: TopBook[];
+}

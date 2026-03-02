@@ -1,4 +1,5 @@
 import {
+    AdminBookStatsResponse,
     AdminRecordDetailResponse,
     AdminRecordListResponse,
     AdminRecordStatsResponse,
@@ -87,6 +88,7 @@ export async function getUserActivity(
     const query = new URLSearchParams({
         page: String(page),
         size: String(size),
+        sort: "lastRecordedAt,desc",
     });
 
     const response = await fetchWithAuth(`/admin/records/user-activity?${query}`, {
@@ -95,5 +97,16 @@ export async function getUserActivity(
     });
 
     if (!response.ok) throw new Error("유저 활동 현황 조회 실패");
+    return response.json();
+}
+
+// 책 통계 조회
+export async function getBookStats(): Promise<AdminBookStatsResponse> {
+    const response = await fetchWithAuth("/admin/records/stats/books", {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (!response.ok) throw new Error("책 통계 조회 실패");
     return response.json();
 }
