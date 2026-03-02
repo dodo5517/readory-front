@@ -22,8 +22,6 @@ export default function RecordEditModal({
                                         }: Props) {
     const [rawTitle, setRawTitle] = useState("");
     const [rawAuthor, setRawAuthor] = useState("");
-    const [sentence, setSentence] = useState("");
-    const [comment, setComment] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -31,8 +29,6 @@ export default function RecordEditModal({
         if (isOpen && initialData) {
             setRawTitle(initialData.rawTitle ?? "");
             setRawAuthor(initialData.rawAuthor ?? "");
-            setSentence(initialData.sentence ?? "");
-            setComment(initialData.comment ?? "");
             setError(null);
         }
     }, [isOpen, initialData]);
@@ -60,8 +56,6 @@ export default function RecordEditModal({
             const updated = await adminRecord.updateRecord(recordId, {
                 rawTitle: rawTitle.trim(),
                 rawAuthor: rawAuthor.trim(),
-                sentence: sentence.trim(),
-                comment: comment.trim(),
             });
 
             onUpdated(updated);
@@ -102,28 +96,6 @@ export default function RecordEditModal({
                             value={rawAuthor}
                             onChange={(e) => setRawAuthor(e.target.value)}
                             placeholder="저자명"
-                        />
-                    </div>
-
-                    <div className={styles.fieldGroup}>
-                        <label className={styles.fieldLabel}>문장 (sentence)</label>
-                        <textarea
-                            className={recordStyles.textarea}
-                            value={sentence}
-                            onChange={(e) => setSentence(e.target.value)}
-                            placeholder="기록할 문장"
-                            rows={4}
-                        />
-                    </div>
-
-                    <div className={styles.fieldGroup}>
-                        <label className={styles.fieldLabel}>메모 (comment)</label>
-                        <textarea
-                            className={recordStyles.textarea}
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            placeholder="메모 (선택사항)"
-                            rows={3}
                         />
                     </div>
 

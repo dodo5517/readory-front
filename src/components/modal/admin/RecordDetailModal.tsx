@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import styles from "../../../styles/AdminModal.module.css";
 import recordStyles from "../../../styles/AdminRecordPage.module.css";
 import * as adminRecord from "../../../api/AdminRecord";
-import {AdminRecordDetailResponse, MatchStatus} from "../../../types/adminRecord";
+import { AdminRecordDetailResponse, MatchStatus } from "../../../types/adminRecord";
 import RecordEditModal from "./RecordEditModal";
-import { XIcon, BooksIcon } from '@phosphor-icons/react';
+import { XIcon, BooksIcon } from "@phosphor-icons/react";
 
 interface Props {
     isOpen: boolean;
@@ -14,36 +14,26 @@ interface Props {
     onUpdated?: () => void;
 }
 
-// 매칭 상태 라벨
 const MATCH_STATUS_LABELS: Record<MatchStatus, string> = {
     PENDING: "대기중",
     RESOLVED_AUTO: "자동 매칭",
     RESOLVED_MANUAL: "수동 매칭",
     NO_CANDIDATE: "후보 없음",
-    MULTIPLE_CANDIDATES: "다중 후보"
+    MULTIPLE_CANDIDATES: "다중 후보",
 };
 
-export default function RecordDetailModal({
-                                              isOpen,
-                                              recordId,
-                                              onClose,
-                                              onDeleted,
-                                              onUpdated,
-                                          }: Props) {
+export default function RecordDetailModal({ isOpen, recordId, onClose, onDeleted, onUpdated }: Props) {
     const [record, setRecord] = useState<AdminRecordDetailResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [openEdit, setOpenEdit] = useState(false);
 
-    // 기록 상세 조회
     const fetchDetail = async () => {
         if (!recordId) return;
-
         try {
             setLoading(true);
             setError(null);
-            const detail = await adminRecord.getRecord(recordId);
-            setRecord(detail);
+            setRecord(await adminRecord.getRecord(recordId));
         } catch (e) {
             setError(e instanceof Error ? e.message : "기록 상세 조회 실패");
         } finally {
@@ -59,11 +49,9 @@ export default function RecordDetailModal({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, recordId]);
 
-    // 삭제
     const handleDelete = async () => {
         if (!recordId) return;
         if (!window.confirm("이 기록을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) return;
-
         try {
             await adminRecord.deleteRecord(recordId);
             alert("삭제되었습니다.");
@@ -74,7 +62,6 @@ export default function RecordDetailModal({
         }
     };
 
-    // 수정 완료 후
     const handleUpdated = (updated: AdminRecordDetailResponse) => {
         setRecord(updated);
         setOpenEdit(false);
@@ -87,24 +74,17 @@ export default function RecordDetailModal({
         if (e.target === e.currentTarget) onClose();
     };
 
-    // 날짜/시간 포맷팅
     const formatDateTime = (dateStr: string | null) => {
         if (!dateStr) return "-";
-        const date = new Date(dateStr);
-        return date.toLocaleString("ko-KR", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
+        return new Date(dateStr).toLocaleString("ko-KR", {
+            year: "numeric", month: "2-digit", day: "2-digit",
+            hour: "2-digit", minute: "2-digit",
         });
     };
 
-    // 매칭 상태 클래스
     const getStatusClass = (status: MatchStatus) => {
         switch (status) {
             case "RESOLVED_AUTO":
-                return styles.statusMatched;
             case "RESOLVED_MANUAL":
                 return styles.statusMatched;
             case "NO_CANDIDATE":
@@ -124,9 +104,7 @@ export default function RecordDetailModal({
                 <div className={styles.modal}>
                     <div className={styles.header}>
                         <h2 className={styles.title}>기록 상세</h2>
-                        <button className={styles.closeBtn} onClick={onClose}>
-                            <XIcon />
-                        </button>
+                        <button className={styles.closeBtn} onClick={onClose}><XIcon /></button>
                     </div>
 
                     {loading ? (
@@ -155,7 +133,7 @@ export default function RecordDetailModal({
                                 </div>
                             </div>
 
-                            {/* 원본 입력 정보 */}
+                            {/* 원본 입력 */}
                             <div className={styles.infoGrid}>
                                 <div className={styles.infoRow}>
                                     <span className={styles.label}>원본 제목</span>
@@ -167,7 +145,7 @@ export default function RecordDetailModal({
                                 </div>
                             </div>
 
-                            {/* 매칭된 책 정보 */}
+                            {/* 매칭된 책 */}
                             {record.bookId && (
                                 <div className={recordStyles.matchedBookSection}>
                                     <span className={recordStyles.sectionLabel}>매칭된 책</span>
@@ -190,22 +168,7 @@ export default function RecordDetailModal({
                                 </div>
                             )}
 
-                            {/* 기록 내용 */}
-                            {record.sentence && (
-                                <div className={recordStyles.contentSection}>
-                                    <span className={recordStyles.sectionLabel}>문장</span>
-                                    <blockquote className={recordStyles.sentenceBlock}>
-                                        "{record.sentence}"
-                                    </blockquote>
-                                </div>
-                            )}
-
-                            {record.comment && (
-                                <div className={recordStyles.contentSection}>
-                                    <span className={recordStyles.sectionLabel}>메모</span>
-                                    <p className={recordStyles.commentBlock}>{record.comment}</p>
-                                </div>
-                            )}
+                            {/* sentence, comment 섹션 제거 */}
 
                             {/* 시간 정보 */}
                             <div className={styles.infoGrid}>
@@ -225,7 +188,7 @@ export default function RecordDetailModal({
                                 )}
                             </div>
 
-                            {/* 액션 버튼 */}
+                            {/* 액션 */}
                             <div className={recordStyles.actionSection}>
                                 <button className={recordStyles.editBtn} onClick={() => setOpenEdit(true)}>
                                     수정하기

@@ -12,7 +12,48 @@
     color: var(--text-main);
     font-size: 1.4rem;
     font-weight: 700;
-    margin: 0 0 14px;
+    margin: 0 0 6px;
+}
+
+.pageDesc {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0 0 16px;
+}
+
+/* userId 필수 입력 영역 */
+.userIdSection {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    align-items: center;
+}
+
+.userIdInputLg {
+    flex: 1;
+    max-width: 300px;
+    height: var(--ctl-h);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 0.95rem;
+    background: var(--card-bg);
+    color: var(--text-main);
+}
+
+.userIdInputLg::placeholder { color: var(--placeholder); }
+.userIdInputLg:focus { outline: none; border-color: var(--link-color, #1976d2); }
+
+.inputError { border-color: var(--danger-border, #ffcdd2); }
+
+.emptyGuide {
+    padding: 24px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border: 1px dashed var(--main-hr);
+    border-radius: 12px;
+    background: var(--bg, #fafafa);
 }
 
 /* 툴바 */
@@ -41,13 +82,8 @@
     color: var(--text-main);
 }
 
-.searchInput::placeholder {
-    color: var(--placeholder);
-}
-
-.searchInput:focus {
-    outline: none;
-}
+.searchInput::placeholder { color: var(--placeholder); }
+.searchInput:focus { outline: none; }
 
 .searchBtn {
     height: var(--ctl-h);
@@ -60,9 +96,8 @@
     color: var(--text-main);
 }
 
-.searchBtn:hover {
-    background: var(--search-btn);
-}
+.searchBtn:hover { background: var(--search-btn); }
+.searchBtn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .segment {
     display: inline-flex;
@@ -90,7 +125,6 @@
     font-weight: 600;
 }
 
-/* 필터 */
 .filters {
     display: flex;
     gap: 10px;
@@ -105,25 +139,6 @@
     background: var(--card-bg);
     color: var(--text-main);
     font-size: 0.95rem;
-}
-
-.userIdInput {
-    width: 120px;
-    height: var(--ctl-h);
-    border: 1px solid var(--input-border);
-    border-radius: 10px;
-    padding: 0 12px;
-    font-size: 0.95rem;
-    background: var(--card-bg);
-    color: var(--text-main);
-}
-
-.userIdInput::placeholder {
-    color: var(--placeholder);
-}
-
-.userIdInput:focus {
-    outline: none;
 }
 
 .error {
@@ -157,9 +172,7 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-.card:hover {
-    background: var(--link-hover);
-}
+.card:hover { background: var(--link-hover); }
 
 .cardHeader {
     display: flex;
@@ -173,7 +186,6 @@
     font-size: 0.9rem;
 }
 
-/* 매칭 상태 뱃지 */
 .statusBadge {
     display: inline-block;
     padding: 4px 10px;
@@ -182,25 +194,10 @@
     border-radius: 6px;
 }
 
-.statusMatched {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
-.statusUnmatched {
-    background: #fff3e0;
-    color: #ef6c00;
-}
-
-.statusPending {
-    background: #e3f2fd;
-    color: #1565c0;
-}
-
-.statusFailed {
-    background: #ffebee;
-    color: #c62828;
-}
+.statusMatched { background: #e8f5e9; color: #2e7d32; }
+.statusUnmatched { background: #fff3e0; color: #ef6c00; }
+.statusPending { background: #e3f2fd; color: #1565c0; }
+.statusFailed { background: #ffebee; color: #c62828; }
 
 .cardBody {
     display: flex;
@@ -225,17 +222,7 @@
     color: var(--text-muted);
 }
 
-.sentence {
-    font-size: 0.9rem;
-    color: var(--text-main);
-    font-style: italic;
-    margin: 0;
-    padding: 10px 14px;
-    background: var(--bg, #fafafa);
-    border-radius: 8px;
-    border-left: 3px solid var(--link-color, #1976d2);
-    line-height: 1.5;
-}
+/* sentence 미리보기 스타일 제거됨 */
 
 .cardFooter {
     display: flex;
@@ -281,14 +268,8 @@
     color: var(--text-main);
 }
 
-.pageBtn:hover {
-    background: var(--search-btn);
-}
-
-.pageBtn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+.pageBtn:hover { background: var(--search-btn); }
+.pageBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .pageInfo {
     color: var(--text-muted);
@@ -297,9 +278,7 @@
     text-align: center;
 }
 
-/* ========================
-   모달 상세 스타일
-   ======================== */
+/* ── 모달 상세 스타일 ── */
 
 .detailHeader {
     display: flex;
@@ -324,7 +303,6 @@
     border-radius: 8px;
 }
 
-/* 섹션 라벨 */
 .sectionLabel {
     display: block;
     font-size: 0.8rem;
@@ -335,7 +313,6 @@
     letter-spacing: 0.02em;
 }
 
-/* 유저 섹션 */
 .userSection {
     padding: 14px;
     background: var(--bg, #fafafa);
@@ -356,17 +333,9 @@
     font-size: 0.95rem;
 }
 
-.userEmail {
-    color: var(--text-main);
-    font-size: 0.9rem;
-}
+.userEmail { color: var(--text-main); font-size: 0.9rem; }
+.userId { color: var(--text-muted); font-size: 0.85rem; }
 
-.userId {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-}
-
-/* 매칭된 책 섹션 */
 .matchedBookSection {
     padding: 14px;
     background: #e8f5e9;
@@ -400,68 +369,20 @@
     font-size: 1.5rem;
 }
 
-.matchedBookInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
+.matchedBookInfo { display: flex; flex-direction: column; gap: 4px; }
+.matchedBookTitle { font-weight: 600; color: var(--text-main); font-size: 0.95rem; }
+.matchedBookAuthor { color: var(--text-muted); font-size: 0.85rem; }
+.matchedBookId { color: var(--text-muted); font-size: 0.8rem; }
 
-.matchedBookTitle {
-    font-weight: 600;
-    color: var(--text-main);
-    font-size: 0.95rem;
-}
+/* sentence, comment 섹션 스타일 제거됨 */
 
-.matchedBookAuthor {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-}
-
-.matchedBookId {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-}
-
-/* 내용 섹션 */
-.contentSection {
-    padding: 14px;
-    background: var(--bg, #fafafa);
-    border: 1px solid var(--main-hr);
-    border-radius: 10px;
-}
-
-.sentenceBlock {
-    margin: 0;
-    padding: 12px 16px;
-    background: var(--card-bg, #fff);
-    border-left: 3px solid var(--link-color, #1976d2);
-    border-radius: 0 8px 8px 0;
-    font-style: italic;
-    font-size: 0.95rem;
-    color: var(--text-main);
-    line-height: 1.6;
-}
-
-.commentBlock {
-    margin: 0;
-    padding: 12px;
-    background: var(--card-bg, #fff);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: var(--text-main);
-    line-height: 1.6;
-    white-space: pre-wrap;
-}
-
-/* 액션 섹션 */
 .actionSection {
     display: flex;
     gap: 10px;
     padding-top: 8px;
 }
 
-.editBtn,
-.deleteBtn {
+.editBtn, .deleteBtn {
     flex: 1;
     padding: 12px 16px;
     font-size: 0.9rem;
@@ -477,9 +398,7 @@
     color: var(--text-main);
 }
 
-.editBtn:hover {
-    background: var(--link-hover, #f5f5f5);
-}
+.editBtn:hover { background: var(--link-hover, #f5f5f5); }
 
 .deleteBtn {
     background: var(--card-bg, #fff);
@@ -487,11 +406,8 @@
     color: var(--danger-color, #d32f2f);
 }
 
-.deleteBtn:hover {
-    background: var(--danger-bg, #fff5f5);
-}
+.deleteBtn:hover { background: var(--danger-bg, #fff5f5); }
 
-/* 수정 폼 textarea */
 .textarea {
     width: 100%;
     padding: 12px;
@@ -505,61 +421,18 @@
     line-height: 1.5;
 }
 
-.textarea::placeholder {
-    color: var(--placeholder, #aaa);
-}
+.textarea::placeholder { color: var(--placeholder, #aaa); }
+.textarea:focus { outline: none; border-color: var(--link-color, #1976d2); }
 
-.textarea:focus {
-    outline: none;
-    border-color: var(--link-color, #1976d2);
-}
-
-/* 모바일 */
 @media (max-width: 768px) {
-    .section {
-        padding: 20px;
-    }
-
-    .container {
-        padding: 20px 0;
-    }
-
-    .toolbar {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .segment {
-        width: 100%;
-    }
-
-    .segBtn {
-        flex: 1 1 50%;
-        padding: 0;
-        text-align: center;
-    }
-
-    .filters {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .userIdInput {
-        width: 100%;
-    }
-
-    .userInfo {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-    }
-
-    .matchedBook {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .actionSection {
-        flex-direction: column;
-    }
+    .section { padding: 20px; }
+    .container { padding: 20px 0; }
+    .toolbar { flex-direction: column; align-items: stretch; }
+    .segment { width: 100%; }
+    .segBtn { flex: 1 1 50%; padding: 0; text-align: center; }
+    .userIdSection { flex-direction: column; align-items: stretch; }
+    .userIdInputLg { max-width: none; }
+    .userInfo { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .matchedBook { flex-direction: column; text-align: center; }
+    .actionSection { flex-direction: column; }
 }
