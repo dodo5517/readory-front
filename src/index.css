@@ -65,6 +65,38 @@
   --cal-badge-text: #1e4d36;
   --hm-empty: #e8e8e8;
   --hm-border: rgba(0, 0, 0, 0.25);
+
+  /* ─── 책장 히트맵 책 색상 (light) — 딥 뮤트 ─────────── */
+  --shelf-wood: #ebe5df;
+  /* Jan — 딥블루·슬레이트 */
+  --book-1-1: #4e6a86; --book-1-2: #6480a0; --book-1-3: #7a96b8; --book-1-4: #92aeca;
+  /* Feb — 더스티로즈 */
+  --book-2-1: #a86878; --book-2-2: #be8090; --book-2-3: #d298a8; --book-2-4: #e4b2be;
+  /* Mar — 포레스트그린 (대표색) */
+  --book-3-1: #3a6b52; --book-3-2: #4e8268; --book-3-3: #649a7e; --book-3-4: #7cb296;
+  /* Apr — 뮤트퍼플 */
+  /* Apr — 라일락·라벤더 미스트 (채도 낮춤) */
+  --book-4-1: #9080a8; --book-4-2: #a898bc; --book-4-3: #c0b0d0; --book-4-4: #d8cce4;
+  /* May — 앰버 */
+  --book-5-1: #b87830; --book-5-2: #cc9048; --book-5-3: #e0a860; --book-5-4: #f0c07a;
+  /* Jun — 틸 */
+  --book-6-1: #3a8890; --book-6-2: #52a0a8; --book-6-3: #6cbac0; --book-6-4: #8cd0d6;
+  /* Jul — 딥그린 */
+  --book-7-1: #2e6246; --book-7-2: #3e7858; --book-7-3: #509068; --book-7-4: #64a87c;
+  /* Aug — 테라코타 */
+  --book-8-1: #9e4838; --book-8-2: #b86050; --book-8-3: #cc7a68; --book-8-4: #de9484;
+  /* Sep — 골드 */
+  --book-9-1: #9c7820; --book-9-2: #b49038; --book-9-3: #caa850; --book-9-4: #e0c46c;
+  /* Oct — 번트오렌지 */
+  --book-10-1: #8e3a20; --book-10-2: #a85030; --book-10-3: #c06848; --book-10-4: #d48060;
+  /* Nov — 버건디 */
+  --book-11-1: #6a2c3c; --book-11-2: #844050; --book-11-3: #9e5868; --book-11-4: #b87080;
+  /* Dec — 아이스블루 */
+  --book-12-1: #7090a8; --book-12-2: #8aaabe; --book-12-3: #a4c4d4; --book-12-4: #bedce8;
+  /* 책장 선반 판 색상 (light) */
+  --shelf-board-top:    #ebe5df;
+  --shelf-board-mid:    #dfd8d0;
+  --shelf-board-shadow: #cec6be;
 }
 
 [data-theme='dark'] {
@@ -134,10 +166,41 @@
   --cal-badge-text: #dceee6;
   --hm-empty: #202020;
   --hm-border: rgba(255, 255, 255, 0.3);
+
+  /* ─── 책장 히트맵 책 색상 (dark) — 딥 뮤트 다크 ──────── */
+  --shelf-wood: #3a3530;
+  /* Jan — 딥블루 */
+  --book-1-1: #2e4460; --book-1-2: #3e5878; --book-1-3: #506e90; --book-1-4: #6484a8;
+  /* Feb — 더스티로즈 */
+  --book-2-1: #7a3c4c; --book-2-2: #925460; --book-2-3: #aa6c78; --book-2-4: #c28490;
+  /* Mar — 포레스트그린 (대표색 어둡게) */
+  --book-3-1: #1e4432; --book-3-2: #2e5a44; --book-3-3: #3e7258; --book-3-4: #508a6c;
+  /* Apr — 뮤트퍼플 */
+  /* Apr — 라일락 다크 */
+  --book-4-1: #5e5070; --book-4-2: #746688; --book-4-3: #8c7ea0; --book-4-4: #a496b8;
+  /* May — 앰버 */
+  --book-5-1: #7a5014; --book-5-2: #946628; --book-5-3: #ae7e3e; --book-5-4: #c89654;
+  /* Jun — 틸 */
+  --book-6-1: #1e5860; --book-6-2: #2e7078; --book-6-3: #408890; --book-6-4: #54a0a8;
+  /* Jul — 딥그린 */
+  --book-7-1: #143a28; --book-7-2: #224e38; --book-7-3: #326448; --book-7-4: #427a5a;
+  /* Aug — 테라코타 */
+  --book-8-1: #6e2818; --book-8-2: #88402c; --book-8-3: #a05842; --book-8-4: #b87058;
+  /* Sep — 골드 */
+  --book-9-1: #644c08; --book-9-2: #7e6018; --book-9-3: #98762a; --book-9-4: #b28e3e;
+  /* Oct — 번트오렌지 */
+  --book-10-1: #601c08; --book-10-2: #7a3018; --book-10-3: #944830; --book-10-4: #ae604a;
+  /* Nov — 버건디 */
+  --book-11-1: #420c20; --book-11-2: #5c2234; --book-11-3: #763848; --book-11-4: #905060;
+  /* Dec — 아이스블루 */
+  --book-12-1: #3a5870; --book-12-2: #4e6e88; --book-12-3: #6486a0; --book-12-4: #7ea0b8;
+  /* 책장 선반 판 색상 (dark) */
+  --shelf-board-top:    #4a3e30;
+  --shelf-board-mid:    #3c3028;
+  --shelf-board-shadow: #28201a;
 }
 
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
