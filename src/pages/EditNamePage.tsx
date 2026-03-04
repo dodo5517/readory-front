@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {useUser} from "../contexts/UserContext";
 import {updateUsername} from "../api/Auth";
 import { XIcon } from '@phosphor-icons/react';
+import {useDemoGuard} from "../hook/useDemoGuard";
 
 export default function EditNamePage() {
     const navigate = useNavigate();
@@ -11,11 +12,13 @@ export default function EditNamePage() {
     const [newUsername, setNewUsername] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false); // submit 연속 요청 방지
 
+    const { demoGuard } = useDemoGuard();
+
 
     const handleClear = () => setNewUsername('');
     
     // 업데이트 핸들러
-    const handleUpdate = async( event: React.FormEvent<HTMLFormElement>) => {
+    const handleUpdate = demoGuard(async( event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (isSubmitting) return;
 
@@ -53,7 +56,7 @@ export default function EditNamePage() {
 
         alert(`이름이 성공적으로 변경되었습니다.: ${newUsername}`);
         navigate('/myPage');
-    };
+    });
 
     return (
         <form onSubmit={handleUpdate} className={styles.container}>

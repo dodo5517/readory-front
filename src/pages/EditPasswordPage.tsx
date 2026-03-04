@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from '../styles/EditPasswordPage.module.css';
 import {useNavigate} from "react-router-dom";
 import {updatePassword} from "../api/Auth";
+import {useDemoGuard} from "../hook/useDemoGuard";
 
 export default function EditPasswordPage() {
     const navigate = useNavigate();
@@ -10,8 +11,9 @@ export default function EditPasswordPage() {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { demoGuard } = useDemoGuard();
 
-    const handleUpdate =  async( event: React.FormEvent<HTMLFormElement>) => {
+    const handleUpdate =  demoGuard(async( event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (isSubmitting) return;
 
@@ -47,7 +49,8 @@ export default function EditPasswordPage() {
 
         alert('비밀번호가 성공적으로 변경되었습니다.');
         navigate('/myPage');
-    }
+    });
+
     return (
         <form onSubmit={handleUpdate} className={styles.container}>
             <h2 className={styles.title}>비밀번호 변경</h2>
