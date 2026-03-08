@@ -3,14 +3,22 @@ import {useNavigate, Link } from 'react-router-dom';
 
 import styles from '../styles/Login.module.css';
 import {loginUser} from "../api/Auth";
-import {ArrowDownIcon} from "@phosphor-icons/react";
+import {ArrowDownIcon, BellIcon} from "@phosphor-icons/react";
+import { getActiveNotice } from "../api/Notice";
 
 export default function Login() {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('demo@example.com');
     const [password, setPassword] = useState('demo1234');
-    const [isSubmitting, setIsSubmitting] = useState(false); // submit 연속 요청 방지
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [noticeBanner, setNoticeBanner] = useState<string | null>(null);
+
+    useEffect(() => {
+        getActiveNotice().then(notice => {
+            if (notice) setNoticeBanner(notice.message);
+        }).catch(() => {});
+    }, []);
 
     // 로그인 핸들러
     const handleLogin = async(event: React.FormEvent<HTMLFormElement>) => {
@@ -44,6 +52,14 @@ export default function Login() {
 
     return (
         <div className={styles.container}>
+            {noticeBanner && (
+                <div className={styles.noticeBanner}>
+                    {/*<MegaphoneSimpleIcon size={14} weight="fill" className={styles.noticeIcon} />*/}
+                    <BellIcon size={14} weight="fill" className={styles.noticeIcon} />
+                    {/*<InfoIcon size={14} weight="fill" className={styles.noticeIcon} />*/}
+                    {noticeBanner}
+                </div>
+            )}
             <div className={styles.card}>
                 {/* 로고 + 서비스 설명 */}
                 <div className={styles.hero}>

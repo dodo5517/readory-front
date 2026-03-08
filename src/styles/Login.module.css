@@ -1,5 +1,6 @@
 .container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -7,6 +8,29 @@
     font-family: sans-serif;
     padding: 24px 16px;
     box-sizing: border-box;
+}
+
+.noticeBanner {
+    width: 100%;
+    max-width: 380px;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: var(--text-main);
+    line-height: 1.5;
+    opacity: 0.75;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.noticeIcon {
+    flex-shrink: 0;
+    margin-top: calc((1.5em - 13px) / 2);
+    color: var(--text-muted);
 }
 
 @media (max-width: 768px) {
