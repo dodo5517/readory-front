@@ -34,7 +34,14 @@ const NAV: AdminNavItem[] = [
         label: "기록 관리",
         children: [
             { key: "records-list", label: "기록 목록", to: "/admin/records" },
-            // { key: "records-reports", label: "신고/검수", to: "/admin/records/reports" },
+            { key: "records-patterns", label: "출처 패턴 분석", to: "/admin/patterns" },
+        ],
+    },
+    {
+        key: "service",
+        label: "서비스",
+        children: [
+            { key: "service-notice", label: "공지 관리", to: "/admin/notice" },
         ],
     },
 ];
