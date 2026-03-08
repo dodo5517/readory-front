@@ -1,0 +1,280 @@
+.section {
+    padding: 20px 40px;
+}
+
+.container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.pageTitle {
+    color: var(--text-main);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.card {
+    border: 1px solid var(--main-hr);
+    border-radius: 14px;
+    padding: 22px 24px;
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cardTitle {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+}
+
+/* 작성 폼 */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    background: var(--card-bg);
+    color: var(--text-main);
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+.textarea:focus {
+    outline: none;
+    border-color: var(--text-muted);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.newBtn {
+    height: 34px;
+    padding: 0 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+.newBtn:hover { color: var(--text-main); border-color: var(--text-main); }
+
+.createBtn {
+    height: 34px;
+    padding: 0 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.createBtn:hover { background: var(--light-bg); }
+.createBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.saveBtn {
+    height: 34px;
+    padding: 0 16px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background: var(--text-main);
+    color: var(--card-bg);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.saveBtn:hover { opacity: 0.85; }
+.saveBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* 이력 */
+.empty {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.historyList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.historyItem {
+    position: relative;
+    padding: 14px 16px;
+    border: 1px solid var(--main-hr);
+    border-radius: 10px;
+    background: var(--bg);
+    transition: border-color 0.15s;
+}
+
+.historyItem.active {
+    border-color: var(--text-main);
+}
+
+.historyItem.editing {
+    background: var(--light-bg);
+}
+
+.historyMeta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.historyId {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-main);
+    background: var(--light-bg);
+    border: 1px solid var(--main-hr);
+    border-radius: 999px;
+    padding: 1px 8px;
+}
+
+.historyDate {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-left: auto;
+}
+
+.historyMessage {
+    font-size: 0.88rem;
+    color: var(--text-main);
+    margin: 0 0 10px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.loadBtn {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: none;
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    padding: 3px 10px;
+    cursor: pointer;
+}
+.loadBtn:hover { color: var(--text-main); border-color: var(--text-main); }
+
+@media (max-width: 768px) {
+    .section { padding: 16px 16px; }
+}
+
+/* 미리보기 */
+.previewWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.previewLabel {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.previewLoginOuter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--main-hr);
+    border-radius: 14px;
+    padding: 24px 16px;
+}
+
+.previewBanner {
+    width: 100%;
+    max-width: 380px;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: var(--text-main);
+    line-height: 1.5;
+    opacity: 0.75;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.previewIcon {
+    flex-shrink: 0;
+    margin-top: calc((1.5em - 13px) / 2);
+    color: var(--text-muted);
+}
+
+.previewLoginCard {
+    width: 100%;
+    max-width: 380px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 36px 36px 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.previewTitle {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--text-main);
+    font-family: 'Georgia', serif;
+    letter-spacing: -0.03em;
+}
+
+.previewDesc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}

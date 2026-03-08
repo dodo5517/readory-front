@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
                 {/* 헤더 */}
                 <div className={styles.header}>
                     <h1 className={styles.title}>개인정보처리방침</h1>
-                    <p className={styles.date}>시행일: 2025년 1월 21일</p>
+                    <p className={styles.date}>시행일: 2025년 1월 21일 · 최종 수정: 2025년 3월 8일</p>
                 </div>
 
                 {/* 소개 */}
