@@ -1,12 +1,12 @@
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
     background-color: var(--bg);
     font-family: sans-serif;
-    padding: 24px 16px;
+    padding: 9vh 16px 24px;
     box-sizing: border-box;
 }
 
@@ -35,8 +35,7 @@
 
 @media (max-width: 768px) {
     .container {
-        align-items: flex-start;
-        padding-top: 10vh;
+        padding-top: 5vh;
     }
 }
 
