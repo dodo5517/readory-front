@@ -32,6 +32,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import AdminStatsPage from "./pages/AdminStatsPage";
 import AdminNoticePage from "./pages/AdminNoticePage";
+import AdminPatternPage from "./pages/AdminPatternPage";
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
                               <Route path="records" element={<AdminRecordPage/>} />
                               <Route path="stats" element={<AdminStatsPage />} />
                               <Route path="notice" element={<AdminNoticePage />} />
+                              <Route path="patterns" element={<AdminPatternPage />} />
                           </Route>
                       </Route>
 

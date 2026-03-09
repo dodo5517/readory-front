@@ -34,7 +34,7 @@ const NAV: AdminNavItem[] = [
         label: "기록 관리",
         children: [
             { key: "records-list", label: "기록 목록", to: "/admin/records" },
-            { key: "records-patterns", label: "출처 패턴 분석", to: "/admin/patterns" },
+            { key: "records-patterns", label: "sentence 출처 일괄 제거", to: "/admin/patterns" }
         ],
     },
     {
