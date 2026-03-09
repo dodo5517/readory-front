@@ -1,0 +1,88 @@
+.section {
+    padding: 20px 40px;
+}
+
+.container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.pageTitle {
+    color: var(--text-main);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.pageDesc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.cleanSection {
+    border: 1px solid var(--main-hr);
+    border-radius: 14px;
+    padding: 22px 24px;
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cleanTitle {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.cleanDesc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.cleanActions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.cleanBtn {
+    height: 36px;
+    padding: 0 18px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background: var(--text-main);
+    color: var(--card-bg);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.cleanBtn:hover { opacity: 0.85; }
+.cleanBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.cleanResultText {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.error {
+    padding: 10px 12px;
+    border: 1px solid var(--danger-border);
+    background: var(--danger-bg);
+    color: var(--danger-color);
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .section { padding: 16px; }
+}

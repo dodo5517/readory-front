@@ -59,6 +59,17 @@ export async function updateRecord(
     return response.json();
 }
 
+// 기존 sentence 일괄 정리 (출처 문구 제거)
+export async function cleanSentences(): Promise<{ total: number; updated: number }> {
+    const response = await fetchWithAuth("/admin/records/clean-sentences", {
+        method: "POST",
+        credentials: "include",
+    });
+
+    if (!response.ok) throw new Error("정리 실패");
+    return response.json();
+}
+
 // 기록 삭제
 export async function deleteRecord(id: number): Promise<void> {
     const response = await fetchWithAuth(`/admin/records/${id}`, {
