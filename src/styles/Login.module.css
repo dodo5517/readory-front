@@ -106,7 +106,8 @@
 }
 
 .button {
-    padding: 10px;
+    padding: 0 10px;
+    height: 41px;
     background-color: var(--btn-bg);
     color: white;
     font-size: 0.92rem;
@@ -116,8 +117,31 @@
     cursor: pointer;
     margin-top: 2px;
     transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 .button:hover { background-color: var(--btn-hover); }
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
 
 /* ── Footer ── */
 .footer {
@@ -183,6 +207,33 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     border-color: var(--input-focus);
+}
+.socialLogin button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+.socialLogin button:disabled:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--border-color);
+}
+
+.socialButtonLoading {
+    opacity: 1 !important;
+}
+
+@keyframes spinDark {
+    to { transform: rotate(360deg); }
+}
+
+.spinnerDark {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--text-muted);
+    border-radius: 50%;
+    animation: spinDark 0.7s linear infinite;
 }
 
 .socialLogin img {

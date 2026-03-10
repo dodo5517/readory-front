@@ -12,6 +12,7 @@ export default function Login() {
     const [email, setEmail] = useState('demo@example.com');
     const [password, setPassword] = useState('demo1234');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [socialLoading, setSocialLoading] = useState<'google' | 'kakao' | 'naver' | null>(null);
     const [noticeBanner, setNoticeBanner] = useState<string | null>(null);
 
     useEffect(() => {
@@ -50,6 +51,12 @@ export default function Login() {
         localStorage.removeItem('accessTokenExpiresAt');
     }, []);
 
+    const handleSocialLogin = (provider: 'google' | 'kakao' | 'naver') => {
+        if (socialLoading) return;
+        setSocialLoading(provider);
+        window.location.href = `/oauth2/authorization/${provider}`;
+    };
+
     return (
         <div className={styles.container}>
             {noticeBanner && (
@@ -86,7 +93,11 @@ export default function Login() {
                         required
                     />
 
-                    <button type="submit" className={styles.button}>로그인</button>
+                    <button type="submit" className={styles.button} disabled={isSubmitting || !!socialLoading}>
+                        {isSubmitting ? (
+                            <span className={styles.spinner} />
+                        ) : '로그인'}
+                    </button>
                 </form>
 
                 <div className={styles.footer}>
@@ -97,15 +108,19 @@ export default function Login() {
                 <div className={styles.socialLogin}>
                     <div className={styles.divider}><span>또는</span></div>
                     <div className={styles.socialButtons}>
-                        <button onClick={() => window.location.href = `/oauth2/authorization/google`}>
-                            <img src="/assets/social/google_login.png" alt="Google Login"/>
-                        </button>
-                        <button onClick={() => window.location.href = `/oauth2/authorization/kakao`}>
-                            <img src="/assets/social/kakao_login.png" alt="Kakao Login"/>
-                        </button>
-                        <button onClick={() => window.location.href = `/oauth2/authorization/naver`}>
-                            <img src="/assets/social/naver_login.png" alt="Naver Login"/>
-                        </button>
+                        {(['google', 'kakao', 'naver'] as const).map(provider => (
+                            <button
+                                key={provider}
+                                onClick={() => handleSocialLogin(provider)}
+                                disabled={!!socialLoading}
+                                className={socialLoading === provider ? styles.socialButtonLoading : undefined}
+                            >
+                                {socialLoading === provider
+                                    ? <span className={styles.spinnerDark} />
+                                    : <img src={`/assets/social/${provider}_login.png`} alt={`${provider} Login`} />
+                                }
+                            </button>
+                        ))}
                     </div>
                 </div>
 
