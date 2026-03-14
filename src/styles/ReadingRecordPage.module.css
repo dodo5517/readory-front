@@ -141,24 +141,17 @@
     background-color: var(--card-bg);
     transition: box-shadow 0.2s;
 }
-.card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+.card:hover { box-shadow: var(--card-hover-shadow); border-color: var(--border-color); }
 
 .coverArea { width: 64px; padding-top: 18px; }
 .coverImg {
     width: 64px;
     aspect-ratio: 2 / 3;
     object-fit: cover;
-    cursor: pointer;
     border-radius: 6px;
     background: var(--light-bg);
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     display: block;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .coverImg:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
-    .coverImg:active { transform: translateY(0); box-shadow: var(--shadow-press); }
 }
 
 .meta { display: grid; gap: 4px; }

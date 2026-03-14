@@ -271,14 +271,18 @@ export default function ReadingRecordPage() {
                 <>
                     <div className={styles.list}>
                         {items.map((record) => (
-                            <div key={record.id} className={styles.card}>
+                            <div
+                                key={record.id}
+                                className={styles.card}
+                                onClick={() => record.bookId && navigate(`/bookRecord/${record.bookId}`)}
+                                style={{ cursor: record.bookId ? 'pointer' : 'default' }}
+                            >
                                 <div className={styles.coverArea}>
                                     {record.bookId ? (
                                         <img
                                             src={record.coverUrl ?? undefined}
                                             alt={`${record.title} 표지`}
                                             className={styles.coverImg}
-                                            onClick={() => navigate(`/bookRecord/${record.bookId}`)}
                                             loading="lazy"
                                             referrerPolicy="no-referrer"
                                         />
@@ -296,7 +300,7 @@ export default function ReadingRecordPage() {
                                         {record.bookId && <span className={styles.badgeLinked}>연결됨</span>}
                                     </div>
                                 </div>
-                                <div className={styles.actions}>
+                                <div className={styles.actions} onClick={(e) => e.stopPropagation()}>
                                     <button
                                         type="button"
                                         className={styles.editBtn}
