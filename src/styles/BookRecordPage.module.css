@@ -136,8 +136,8 @@
 }
 .editRecordBtn:hover {
     border-color: var(--input-focus);
-    background: var(--light-bg);
-    color: var(--text-main);
+    background: var(--input-focus-shadow);
+    color: var(--input-focus);
 }
 .deleteRecordBtn:hover {
     border-color: var(--danger-color);
