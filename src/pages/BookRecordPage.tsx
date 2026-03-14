@@ -5,7 +5,8 @@ import {BookRecord} from "../types/records";
 import {fetchBookRecords, fetchDeleteRecord, fetchDeleteBook} from "../api/ReadingRecord";
 import {useParams, useNavigate} from "react-router-dom";
 import CreateRecordModal from "../components/modal/CreateRecordModal";
-import { TrashIcon } from '@phosphor-icons/react';
+import RecordEditModal, { RecordEditForm } from "../components/modal/EditRecordModal";
+import { TrashIcon, PencilSimpleIcon } from '@phosphor-icons/react';
 import {useDemoGuard} from "../hook/useDemoGuard";
 
 // 날짜 그룹 유틸
@@ -61,6 +62,8 @@ export default function BookRecordPage() {
 
     // 기록 생성 모달 상태
     const [createOpen, setCreateOpen] = useState(false);
+    // 수정 모달 상태
+    const [editTarget, setEditTarget] = useState<RecordEditForm | null>(null);
     // 삭제 상태
     const [deletingRecordId, setDeletingRecordId] = useState<number | null>(null);
     const [deletingAllBooks, setDeletingAllBooks] = useState(false);
@@ -126,6 +129,32 @@ export default function BookRecordPage() {
         setHasMore(true);
         loadNext(true);
     };
+
+    // 기록 수정 저장
+    const handleSaveRecord = async (form: RecordEditForm) => {
+        setRecords(prev => prev.map(r =>
+            r.id === form.id
+                ? { ...r, sentence: form.sentence ?? null, comment: form.comment ?? null }
+                : r
+        ));
+        setEditTarget(null);
+    };
+
+    // 모달 내 삭제 (모바일용)
+    const handleDeleteFromModal = demoGuard(async (id: number | string) => {
+        const recordId = Number(id);
+        if (!window.confirm("이 기록을 삭제할까요?")) return;
+        try {
+            setDeletingRecordId(recordId);
+            await fetchDeleteRecord(recordId);
+            setRecords(prev => prev.filter(r => r.id !== recordId));
+            setEditTarget(null);
+        } catch {
+            alert("삭제에 실패했습니다.");
+        } finally {
+            setDeletingRecordId(null);
+        }
+    });
 
     // 단일 기록 삭제
     const handleDeleteRecord = demoGuard(async (recordId: number) => {
@@ -255,18 +284,50 @@ export default function BookRecordPage() {
                                         return (
                                             <li key={r.id} className={styles.recordItem}>
                                                 <time className={styles.time}>{time}</time>
-                                                <div className={styles.recordCard} data-time={time}>
+                                                <div
+                                                    className={styles.recordCard}
+                                                    data-time={time}
+                                                    onClick={() => {
+                                                        if (window.matchMedia("(hover: none)").matches) {
+                                                            setEditTarget({
+                                                                id: r.id,
+                                                                recordedAt: r.recordedAt,
+                                                                title: book?.title,
+                                                                author: book?.author,
+                                                                sentence: r.sentence ?? undefined,
+                                                                comment: r.comment ?? undefined,
+                                                            });
+                                                        }
+                                                    }}
+                                                >
                                                     {r.sentence && <blockquote className={styles.quote}>{r.sentence}</blockquote>}
                                                     {r.comment && <p className={styles.comment}>{r.comment}</p>}
-                                                    <button
-                                                        className={styles.deleteRecordBtn}
-                                                        onClick={() => handleDeleteRecord(r.id)}
-                                                        disabled={deletingRecordId === Number(r.id)}
-                                                        aria-label="이 기록 삭제"
-                                                        title="이 기록 삭제"
-                                                    >
-                                                        <TrashIcon size={12} />
-                                                    </button>
+                                                    <div className={styles.cardActions}>
+                                                        <button
+                                                            className={styles.editRecordBtn}
+                                                            onClick={() => setEditTarget({
+                                                                id: r.id,
+                                                                recordedAt: r.recordedAt,
+                                                                title: book?.title,
+                                                                author: book?.author,
+                                                                sentence: r.sentence ?? undefined,
+                                                                comment: r.comment ?? undefined,
+                                                            })}
+                                                            aria-label="이 기록 수정"
+                                                            title="이 기록 수정"
+                                                        >
+                                                            <PencilSimpleIcon size={12} />
+                                                        </button>
+                                                        <button
+                                                            className={styles.deleteRecordBtn}
+                                                            onClick={() => handleDeleteRecord(r.id)}
+                                                            disabled={deletingRecordId === Number(r.id)}
+                                                            aria-label="이 기록 삭제"
+                                                            title="이 기록 삭제"
+                                                        >
+                                                            <TrashIcon size={12} />
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </li>
                                         );
@@ -283,6 +344,17 @@ export default function BookRecordPage() {
                         )}
                     </div>
                 </div>
+            )}
+
+            {/* 기록 수정 모달 */}
+            {editTarget && (
+                <RecordEditModal
+                    open={true}
+                    initial={editTarget}
+                    onSave={handleSaveRecord}
+                    onClose={() => setEditTarget(null)}
+                    onDelete={window.matchMedia("(hover: none)").matches ? handleDeleteFromModal : undefined}
+                />
             )}
 
             {/* 기록 생성 모달 */}

@@ -382,7 +382,6 @@ export default function ReadingRecordPage() {
                         const updated = await fetchMyRecords({ page, size, q });
                         setData(updated);
                     }}
-                    onDelete={async () => handleDeleteRecord(editing)}
                     onClose={() => setEditOpen(false)}
                 />
             )}

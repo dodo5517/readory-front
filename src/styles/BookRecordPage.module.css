@@ -108,27 +108,39 @@
 }
 .deleteAllBtn:disabled { cursor: not-allowed; opacity: 0.5; }
 
-/* 단일 기록 삭제 버튼 — 카드 우하단, 호버 시 등장 */
-.deleteRecordBtn {
+/* 단일 기록 수정/삭제 버튼 — 카드 우하단에 떠 있는 툴바, 호버 시 등장 */
+.cardActions {
     position: absolute;
-    bottom: 10px;
-    right: 12px;
+    bottom: 8px;
+    right: 10px;
+    display: flex;
+    gap: 2px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.recordCard:hover .cardActions { opacity: 1; }
+
+.editRecordBtn,
+.deleteRecordBtn {
     width: 26px;
     height: 26px;
     border-radius: 5px;
-    border: none;
-    background: transparent;
+    border: 1px solid var(--border-color);
+    background: var(--bg);
     color: var(--text-muted);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.2s, background 0.2s, color 0.2s;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
-.recordCard:hover .deleteRecordBtn { opacity: 1; }
+.editRecordBtn:hover {
+    border-color: var(--input-focus);
+    background: var(--light-bg);
+    color: var(--text-main);
+}
 .deleteRecordBtn:hover {
-    border: 1px solid var(--danger-color);
+    border-color: var(--danger-color);
     background: var(--danger-bg);
     color: var(--danger-color);
 }
@@ -177,7 +189,16 @@
 
 @media (max-width: 768px) {
     .wrap { padding: 16px 12px 40px; margin: 0 auto; }
-    .deleteRecordBtn { opacity: 1; }  /* 모바일: 항상 노출 */
+    .cardActions {
+        position: static;
+        opacity: 1;
+        justify-content: flex-end;
+        padding-top: 8px;
+        margin-top: 6px;
+        border-top: 1px solid var(--border-color);
+        display: none;  /* 모바일: 버튼 숨김, 카드 탭으로 대체 */
+    }
+    .recordCard { cursor: pointer; }
     .header { grid-template-columns: 80px 1fr; gap: 14px; }
     .coverBox { width: 80px; border-radius: 6px; }
     .title { font-size: 1.1rem; }
@@ -197,7 +218,8 @@
 @media (min-width: 1024px) { .wrap { padding: 32px 24px 64px; } }
 /* 터치 디바이스: 호버 고착 방지 */
 @media (hover: none) {
-    .deleteRecordBtn:hover { background: transparent; color: var(--text-muted); }
+    .editRecordBtn:hover { background: var(--bg); color: var(--text-muted); border-color: var(--border-color); }
+    .deleteRecordBtn:hover { background: var(--bg); color: var(--text-muted); border-color: var(--border-color); }
     .deleteAllBtn:hover { background: transparent; color: var(--text-muted); border-color: var(--input-border); }
     .recordCard:hover { box-shadow: none; }
 }
