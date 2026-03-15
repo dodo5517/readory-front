@@ -59,3 +59,9 @@ export type PageResult<T> = {
     hasPrev: boolean;
     hasNext: boolean;
 };
+export type BookComment = {
+    id: number;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+};

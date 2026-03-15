@@ -1,3 +1,5 @@
+import {BookComment} from "./books";
+
 export interface Record {
     id: number;
     title: string;
@@ -42,6 +44,7 @@ export interface BookRecord {
 
 export type BookRecordsPage<T, A> = {
     book: T;
+    bookComment: BookComment | null;
     content: A[];
     nextCursor: string | null;
     hasMore: boolean;
