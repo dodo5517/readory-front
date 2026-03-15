@@ -59,14 +59,10 @@ export default function Login() {
 
     return (
         <div className={styles.container}>
-            {noticeBanner && (
-                <div className={styles.noticeBanner}>
-                    {/*<MegaphoneSimpleIcon size={14} weight="fill" className={styles.noticeIcon} />*/}
-                    <BellIcon size={14} weight="fill" className={styles.noticeIcon} />
-                    {/*<InfoIcon size={14} weight="fill" className={styles.noticeIcon} />*/}
-                    {noticeBanner}
-                </div>
-            )}
+            <div className={styles.noticeBanner} style={noticeBanner ? undefined : {visibility: 'hidden'}}>
+                <BellIcon size={14} weight="fill" className={styles.noticeIcon} />
+                {noticeBanner}
+            </div>
             <div className={styles.card}>
                 {/* 로고 + 서비스 설명 */}
                 <div className={styles.hero}>
