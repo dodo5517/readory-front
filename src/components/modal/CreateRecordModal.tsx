@@ -20,6 +20,12 @@ export default function CreateRecordModal({ open, onClose, onCreated, initialTit
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const autoResize = (el: HTMLTextAreaElement | null) => {
+        if (!el) return;
+        el.style.height = 'auto';
+        el.style.height = el.scrollHeight + 'px';
+    };
+
     // 초기화
     useEffect(() => {
         if (!open) return;
@@ -105,8 +111,8 @@ export default function CreateRecordModal({ open, onClose, onCreated, initialTit
                             className={`${styles.textarea} ${styles.quoteArea}`}
                             placeholder="책에서 인용하고 싶은 문장"
                             value={sentence}
-                            onChange={(e) => setSentence(e.target.value)}
-                            rows={4}
+                            onChange={(e) => { setSentence(e.target.value); autoResize(e.target); }}
+                            ref={el => { if (el) autoResize(el); }}
                             maxLength={1000}
                         />
                         <div className={styles.counter}>{sentence.length}/1000</div>
@@ -118,8 +124,8 @@ export default function CreateRecordModal({ open, onClose, onCreated, initialTit
                             className={styles.textarea}
                             placeholder="당신의 생각, 느낌을 적어주세요"
                             value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            rows={5}
+                            onChange={(e) => { setComment(e.target.value); autoResize(e.target); }}
+                            ref={el => { if (el) autoResize(el); }}
                             maxLength={2000}
                         />
                         <div className={styles.counter}>{comment.length}/2000</div>

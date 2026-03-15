@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "../../styles/EditRecordModal.module.css";
 import {UpdateRecord} from "../../types/records";
 import {fetchUpdateRecord} from "../../api/ReadingRecord";
+import { XIcon } from '@phosphor-icons/react';
 
 export type RecordEditForm = {
     id: number;
@@ -31,6 +32,12 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
         comment: initial.comment ?? "",
     });
     const [saving, setSaving] = useState(false);
+
+    const autoResize = (el: HTMLTextAreaElement | null) => {
+        if (!el) return;
+        el.style.height = 'auto';
+        el.style.height = el.scrollHeight + 'px';
+    };
 
     // 초기화
     useEffect(() => {
@@ -75,7 +82,10 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
             <section className={styles.modal}>
                 <header className={styles.header}>
                     <h2 className={styles.title}>기록 수정</h2>
-                    <div className={styles.dateChip} aria-label="기록 시각">{date}</div>
+                    <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
+                        <div className={styles.dateChip} aria-label="기록 시각">{date}</div>
+                        <button type="button" className={styles.closeBtn} onClick={onClose}><XIcon size={14}/></button>
+                    </div>
                 </header>
 
                 <form className={styles.form} onSubmit={handleSubmit}>
@@ -109,8 +119,8 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
                             className={`${styles.textarea} ${styles.quoteArea}`}
                             placeholder="책에서 인용하고 싶은 문장"
                             value={record.sentence ?? ""}
-                            onChange={(e) => setRecord({...record, sentence: e.target.value})}
-                            rows={4}
+                            onChange={(e) => { setRecord({...record, sentence: e.target.value}); autoResize(e.target); }}
+                            ref={el => { if (el) autoResize(el); }}
                             maxLength={1000}
                         />
                         <div className={styles.counter}>{record.sentence?.length}/1000</div>
@@ -122,8 +132,8 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
                             className={styles.textarea}
                             placeholder="당신의 생각, 느낌을 적어주세요"
                             value={record.comment ?? ""}
-                            onChange={(e) => setRecord({...record, comment: e.target.value})}
-                            rows={5}
+                            onChange={(e) => { setRecord({...record, comment: e.target.value}); autoResize(e.target); }}
+                            ref={el => { if (el) autoResize(el); }}
                             maxLength={1000}
                         />
                         <div className={styles.counter}>{record.comment?.length}/2000</div>
