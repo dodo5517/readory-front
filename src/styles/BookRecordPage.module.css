@@ -11,6 +11,7 @@
     grid-template-columns: 112px 1fr;
     gap: 20px;
     align-items: start;
+    position: relative;
 }
 .coverBox {
     width: 112px;
@@ -57,7 +58,6 @@
 .periodValue { font-size: 0.92rem; font-weight: 500; color: var(--text-main); font-variant-numeric: tabular-nums; }
 
 .addRecordBtn {
-    align-self: flex-end;        /* 세로 flex의 맨 아래 */
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -79,9 +79,9 @@
 .actionBtns {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 8px;
-    margin-top: 16px;
-    align-self: flex-end;
+    margin-top: 12px;
 }
 
 /* 전체 삭제 버튼 */
@@ -187,6 +187,12 @@
 .helper { text-align: center; color: var(--text-muted); font-size: 0.88rem; padding: 20px 0; }
 .sentinel { height: 1px; }
 
+/* ── 모바일 탭/패널 기본값 ── */
+.commentMobileTab { display: none; }
+.commentMobileOverlay { display: none; }
+.commentMobilePanel { display: none; }
+.commentMobilePanelBody { display: contents; }
+
 @media (max-width: 768px) {
     .wrap { padding: 16px 12px 40px; margin: 0 auto; }
     .cardActions {
@@ -211,9 +217,32 @@
     .periodCard { padding: 8px 10px; }
     .periodValue { font-size: 0.9rem; }
     .bookInfo { flex-direction: column; }
-    .actionBtns { align-self: flex-start; margin-top: 12px; width: 100%; }
-    .addRecordBtn { flex: 1; justify-content: center; height: 38px; }
+    .actionBtns { justify-content: flex-end; margin-top: 10px; }
+    .addRecordBtn { height: 38px; }
     .deleteAllBtn { height: 38px; }
+
+    .bookCommentSection { padding-left: 0; display: none; }
+    .commentMobileTab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        width: 30px;
+        height: 38px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-right: none;
+        border-radius: 8px 0 0 8px;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+        padding: 0;
+    }
+    .commentMobileTab:hover { background: var(--light-bg); color: var(--text-main); }
+    .commentEditBtn { opacity: 1; }
 }
 @media (min-width: 1024px) { .wrap { padding: 32px 24px 64px; } }
 /* 터치 디바이스: 호버 고착 방지 */
@@ -222,4 +251,271 @@
     .deleteRecordBtn:hover { background: var(--bg); color: var(--text-muted); border-color: var(--border-color); }
     .deleteAllBtn:hover { background: transparent; color: var(--text-muted); border-color: var(--input-border); }
     .recordCard:hover { box-shadow: none; }
+}
+/* ── 모바일 탭/패널 기본값 (데스크탑에서 숨김) ── */
+
+/* ── 책 감상 섹션 ── */
+.bookCommentSection {
+    margin-top: 14px;
+    padding-left: 132px; /* 커버(112px) + gap(20px) */
+}
+
+/* ── 책 감상 ── */
+.commentCard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 2px 0 6px;
+    width: 100%;
+    cursor: pointer;
+}
+.commentCardRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-muted);
+    transition: border-color 0.15s, color 0.15s;
+}
+.commentCard:hover .commentCardRow {
+    border-bottom-color: var(--text-muted);
+}
+.commentCardText {
+    flex: 1;
+    margin: 0;
+    font-size: 0.9rem;
+    font-family: Georgia, serif;
+    color: var(--text-main);
+    white-space: pre-line;
+    line-height: 1.6;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+}
+.commentEditBtn {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s;
+    padding: 0;
+    margin-top: 2px;
+}
+.commentCard:hover .commentEditBtn { opacity: 0.6; }
+.commentEditBtn:hover { opacity: 1 !important; }
+
+.commentAddBtn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 2px 0 6px;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+}
+.commentAddRow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-muted);
+    transition: border-color 0.15s, color 0.15s;
+}
+.commentAddBtn:hover .commentAddRow {
+    border-bottom-color: var(--text-muted);
+    color: var(--text-main);
+}
+.commentAddPlaceholder {
+    flex: 1;
+    font-size: 0.9rem;
+    font-family: Georgia, serif;
+    color: var(--text-muted);
+    opacity: 0.6;
+    transition: opacity 0.15s;
+}
+.commentAddBtn:hover .commentAddPlaceholder {
+    opacity: 1;
+    color: var(--text-main);
+}
+
+.commentEditBox {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 2px 0 6px;
+    width: 100%;
+}
+.commentEditRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--text-muted);
+}
+.commentTextarea {
+    flex: 1;
+    padding: 0;
+    font-size: 0.9rem;
+    font-family: Georgia, serif;
+    line-height: 1.6;
+    color: var(--text-main);
+    background: transparent;
+    border: none;
+    resize: none;
+    box-sizing: border-box;
+    outline: none;
+    min-height: 64px;
+    height: auto;
+    white-space: pre-wrap;
+}
+.commentEditActions {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 6px;
+    align-items: center;
+}
+.commentSaveBtn {
+    padding: 4px 12px;
+    height: 28px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid var(--input-border);
+    background: var(--card-bg);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.commentSaveBtn:not(:disabled):hover { background: var(--light-bg); border-color: var(--text-muted); }
+.commentSaveBtn:disabled { opacity: 0.45; cursor: not-allowed; }
+.commentCancelBtn {
+    padding: 4px 10px;
+    height: 28px;
+    font-size: 0.82rem;
+    border-radius: 6px;
+    border: 1px solid var(--input-border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.commentCancelBtn:hover { background: var(--light-bg); color: var(--text-main); }
+.commentDeleteBtn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--input-border);
+    background: transparent;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.commentDeleteBtn:hover {
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+    background: var(--danger-bg);
+}
+
+
+
+/* ── 모바일 슬라이드 패널 (1B) ── */
+
+
+@media (max-width: 768px) {
+    .commentMobileOverlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: 40;
+    }
+    .commentMobilePanel {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 320px;
+        height: 100%;
+        background: var(--bg);
+        border-left: 1px solid var(--border-color);
+        z-index: 50;
+        transition: right 0.25s ease;
+        overflow-y: auto;
+    }
+    .commentMobilePanelOpen {
+        right: 0;
+    }
+    .commentMobilePanelHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 16px 12px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .commentMobilePanelTitle {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-main);
+    }
+    .commentMobilePanelClose {
+        width: 28px;
+        height: 28px;
+        border: none;
+        background: none;
+        color: var(--text-muted);
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .commentMobilePanelBody {
+        display: flex;
+        flex-direction: column;
+        padding: 16px 16px 80px;
+        flex: 1;
+        overflow-y: auto;
+    }
+    .commentMobilePanelBody .commentAddBtn,
+    .commentMobilePanelBody .commentCard,
+    .commentMobilePanelBody .commentEditBox {
+        width: 100%;
+    }
+    .commentMobilePanelBody .commentEditActions {
+        padding-bottom: 8px;
+    }
+
+    .commentMobilePanelBody .commentEditBtn { display: none; width: 0; height: 0; padding: 0; margin: 0; border: none; overflow: hidden; }
+    .commentMobilePanelBody .commentCard { padding-right: 0; }
+    .commentMobilePanelBody .commentCardRow { padding-right: 0; }
+}
+/* ── 탭 점 인디케이터 (A3) ── */
+.commentTabDot {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3a6b52;
+    border: 2px solid var(--card-bg);
+    display: block;
 }

@@ -263,8 +263,11 @@ export async function fetchBookRecords(bookId: number, cursor: string|null, size
         comment: r.comment,
     }));
 
+    const bookComment = data.bookComment ?? null;
+
     return {
         book,
+        bookComment,
         content,
         nextCursor: data.nextCursor,
         hasMore: data.hasMore
@@ -310,4 +313,28 @@ export async function fetchDeleteBook(bookId: number): Promise<void> {
     if (!response.ok) {
         throw new Error("기록 삭제 실패");
     }
+}
+// 책 감상 조회
+export async function fetchBookComment(bookId: number): Promise<{ id: number; content: string; createdAt: string; updatedAt: string } | null> {
+    const response = await fetchWithAuth(`/records/books/${bookId}/comment`, { method: 'GET' });
+    if (response.status === 204) return null;
+    if (!response.ok) throw new Error('감상 조회 실패');
+    return response.json();
+}
+
+// 책 감상 저장/수정 (upsert)
+export async function upsertBookComment(bookId: number, content: string): Promise<{ id: number; content: string; createdAt: string; updatedAt: string }> {
+    const response = await fetchWithAuth(`/records/books/${bookId}/comment`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+    });
+    if (!response.ok) throw new Error('감상 저장 실패');
+    return response.json();
+}
+
+// 책 감상 삭제
+export async function deleteBookComment(bookId: number): Promise<void> {
+    const response = await fetchWithAuth(`/records/books/${bookId}/comment`, { method: 'DELETE' });
+    if (!response.ok) throw new Error('감상 삭제 실패');
 }

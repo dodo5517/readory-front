@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../styles/BookRecordPage.module.css";
-import {BookMeta} from "../types/books";
+import {BookComment, BookMeta} from "../types/books";
 import {BookRecord} from "../types/records";
-import {fetchBookRecords, fetchDeleteRecord, fetchDeleteBook} from "../api/ReadingRecord";
+import {deleteBookComment, fetchBookRecords, fetchDeleteBook, fetchDeleteRecord, upsertBookComment} from "../api/ReadingRecord";
 import {useParams, useNavigate} from "react-router-dom";
 import CreateRecordModal from "../components/modal/CreateRecordModal";
 import RecordEditModal, { RecordEditForm } from "../components/modal/EditRecordModal";
@@ -56,6 +56,12 @@ export default function BookRecordPage() {
 
     const { demoGuard } = useDemoGuard();
 
+    const autoResize = (el: HTMLTextAreaElement | null) => {
+        if (!el) return;
+        el.style.height = 'auto';
+        el.style.height = el.scrollHeight + 'px';
+    };
+
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingMore, setLoadingMore] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -67,6 +73,13 @@ export default function BookRecordPage() {
     // 삭제 상태
     const [deletingRecordId, setDeletingRecordId] = useState<number | null>(null);
     const [deletingAllBooks, setDeletingAllBooks] = useState(false);
+
+    // 책 감상 상태
+    const [bookComment, setBookComment] = useState<BookComment | null>(null);
+    const [commentPanelOpen, setCommentPanelOpen] = useState(false);
+    const [commentEditing, setCommentEditing] = useState(false);
+    const [commentDraft, setCommentDraft] = useState('');
+    const [commentSaving, setCommentSaving] = useState(false);
 
     const PAGE_SIZE = 10;
     const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -90,6 +103,8 @@ export default function BookRecordPage() {
         setCursor(null);
         setHasMore(true);
         setError(null);
+        setBookComment(null);
+        setCommentEditing(false);
         loadNext(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [bookId]);
@@ -114,6 +129,7 @@ export default function BookRecordPage() {
             setRecords(prev => mergeUniqueById(prev, data.content));
             setCursor(data.nextCursor ?? null);
             setHasMore(Boolean(data.hasMore));
+            if (isInitial) setBookComment(data.bookComment ?? null);
         } catch (e: any) {
             setError(e?.message ?? "불러오기 실패");
         } finally {
@@ -186,6 +202,41 @@ export default function BookRecordPage() {
         }
     });
 
+    // 책 감상 저장
+    const handleCommentSave = demoGuard(async () => {
+        if (commentSaving) return;
+        const trimmed = commentDraft.trim();
+        if (!trimmed) return;
+        try {
+            setCommentSaving(true);
+            const saved = await upsertBookComment(id, trimmed);
+            setBookComment(saved);
+            setCommentEditing(false);
+        } catch {
+            alert('감상 저장에 실패했습니다.');
+        } finally {
+            setCommentSaving(false);
+        }
+    });
+
+    // 책 감상 삭제
+    const handleCommentDelete = demoGuard(async () => {
+        if (!window.confirm('감상을 삭제할까요?')) return;
+        try {
+            await deleteBookComment(id);
+            setBookComment(null);
+            setCommentEditing(false);
+        } catch {
+            alert('감상 삭제에 실패했습니다.');
+        }
+    });
+
+    // 감상 편집 시작
+    const handleCommentEditStart = () => {
+        setCommentDraft(bookComment?.content ?? '');
+        setCommentEditing(true);
+    };
+
     // IntersectionObserver로 센티널 진입 시 다음 페이지 로드
     useEffect(() => {
         const target = sentinelRef.current;
@@ -243,28 +294,199 @@ export default function BookRecordPage() {
                                 </div>
                             </div>
                         ) : null}
-                    </div>
 
-                    {/* 액션 버튼 */}
-                    <div className={styles.actionBtns}>
-                        <button
-                            className={styles.addRecordBtn}
-                            onClick={() => setCreateOpen(true)}
-                        >
-                            기록 추가
-                        </button>
-                        <button
-                            className={styles.deleteAllBtn}
-                            onClick={handleDeleteBook}
-                            disabled={deletingAllBooks}
-                            title="이 책의 모든 기록 삭제"
-                        >
-                            <TrashIcon size={14} />
-                            {deletingAllBooks ? "삭제 중…" : "전체 삭제"}
-                        </button>
                     </div>
                 </div>
+                {/* 모바일 북마크 탭 */}
+                <button
+                    className={styles.commentMobileTab}
+                    onClick={() => setCommentPanelOpen(v => !v)}
+                    aria-label="감상 열기"
+                >
+                    <svg width="14" height="18" viewBox="0 0 14 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round">
+                        <path d="M1.5 1.5h11v14.5l-5.5-3.5-5.5 3.5V1.5z"/>
+                    </svg>
+                    {bookComment && <span className={styles.commentTabDot} />}
+                </button>
+
             </header>
+
+            {/* 모바일 슬라이드 패널 */}
+            {commentPanelOpen && (
+                <div className={styles.commentMobileOverlay} onClick={() => setCommentPanelOpen(false)} />
+            )}
+            {/* 모바일 패널 */}
+            <div className={`${styles.commentMobilePanel} ${commentPanelOpen ? styles.commentMobilePanelOpen : ''}`}>
+                <div className={styles.commentMobilePanelHeader}>
+                    <span className={styles.commentMobilePanelTitle}>감상</span>
+                    <button className={styles.commentMobilePanelClose} onClick={() => setCommentPanelOpen(false)}>✕</button>
+                </div>
+                <div className={styles.commentMobilePanelBody}>
+                    {commentEditing ? (
+                        <div className={styles.commentEditBox}>
+                            <div className={styles.commentEditRow}>
+                                <svg width="13" height="17" viewBox="0 0 13 17" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" style={{flexShrink: 0, marginTop: 4, color: 'var(--text-muted)'}}>
+                                    <path d="M1.5 1.5h10v13.5l-5-3.2-5 3.2V1.5z"/>
+                                </svg>
+                                <textarea
+                                    className={styles.commentTextarea}
+                                    value={commentDraft}
+                                    onChange={e => { setCommentDraft(e.target.value); autoResize(e.target); }}
+                                    placeholder="이 책, 어땠나요?"
+                                    ref={el => { if (el) { el.focus(); autoResize(el); } }}
+                                />
+                            </div>
+                            <div className={styles.commentEditActions}>
+                                <button
+                                    className={styles.commentSaveBtn}
+                                    onClick={handleCommentSave}
+                                    disabled={commentSaving || !commentDraft.trim()}
+                                >
+                                    {commentSaving ? '저장 중…' : '저장'}
+                                </button>
+                                <button
+                                    className={styles.commentCancelBtn}
+                                    onClick={() => setCommentEditing(false)}
+                                >
+                                    취소
+                                </button>
+                                {bookComment && (
+                                    <button
+                                        className={styles.commentDeleteBtn}
+                                        onClick={handleCommentDelete}
+                                        title="감상 삭제"
+                                        aria-label="감상 삭제"
+                                    >
+                                        <TrashIcon size={13} />
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    ) : bookComment ? (
+                        <div className={styles.commentCard} onClick={handleCommentEditStart}>
+                            <div className={styles.commentCardRow}>
+                                <svg width="13" height="17" viewBox="0 0 13 17" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" style={{flexShrink: 0, marginTop: 2}}>
+                                    <path d="M1.5 1.5h10v13.5l-5-3.2-5 3.2V1.5z"/>
+                                </svg>
+                                <p className={styles.commentCardText}>{bookComment.content}</p>
+                                <button
+                                    className={styles.commentEditBtn}
+                                    onClick={e => { e.stopPropagation(); handleCommentEditStart(); }}
+                                    title="감상 수정"
+                                    aria-label="감상 수정"
+                                >
+                                    <PencilSimpleIcon size={12} />
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <button className={styles.commentAddBtn} onClick={handleCommentEditStart}>
+                            <div className={styles.commentAddRow}>
+                                <svg width="13" height="17" viewBox="0 0 13 17" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" style={{flexShrink: 0}}>
+                                    <path d="M1.5 1.5h10v13.5l-5-3.2-5 3.2V1.5z"/>
+                                </svg>
+                                <span className={styles.commentAddPlaceholder}>이 책, 어땠나요?</span>
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink: 0, opacity: 0.3}}>
+                                    <path d="M8.5 1l2.5 2.5-6 6H2.5V7L8.5 1z"/>
+                                </svg>
+                            </div>
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {/* 책 감상 (데스크탑) */}
+            <div className={styles.bookCommentSection}>
+                {commentEditing ? (
+                    <div className={styles.commentEditBox}>
+                        <div className={styles.commentEditRow}>
+                            <svg width="13" height="17" viewBox="0 0 13 17" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" style={{flexShrink: 0, marginTop: 4, color: 'var(--text-muted)'}}>
+                                <path d="M1.5 1.5h10v13.5l-5-3.2-5 3.2V1.5z"/>
+                            </svg>
+                            <textarea
+                                className={styles.commentTextarea}
+                                value={commentDraft}
+                                onChange={e => { setCommentDraft(e.target.value); autoResize(e.target); }}
+                                placeholder="이 책, 어땠나요?"
+                                ref={el => { if (el) { el.focus(); autoResize(el); } }}
+                            />
+                        </div>
+                        <div className={styles.commentEditActions}>
+                            <button
+                                className={styles.commentSaveBtn}
+                                onClick={handleCommentSave}
+                                disabled={commentSaving || !commentDraft.trim()}
+                            >
+                                {commentSaving ? '저장 중…' : '저장'}
+                            </button>
+                            <button
+                                className={styles.commentCancelBtn}
+                                onClick={() => setCommentEditing(false)}
+                            >
+                                취소
+                            </button>
+                            {bookComment && (
+                                <button
+                                    className={styles.commentDeleteBtn}
+                                    onClick={handleCommentDelete}
+                                    title="감상 삭제"
+                                    aria-label="감상 삭제"
+                                >
+                                    <TrashIcon size={13} />
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                ) : bookComment ? (
+                    <div className={styles.commentCard} onClick={handleCommentEditStart}>
+                        <div className={styles.commentCardRow}>
+                            <svg width="13" height="17" viewBox="0 0 13 17" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" style={{flexShrink: 0, marginTop: 2}}>
+                                <path d="M1.5 1.5h10v13.5l-5-3.2-5 3.2V1.5z"/>
+                            </svg>
+                            <p className={styles.commentCardText}>{bookComment.content}</p>
+                            <button
+                                className={styles.commentEditBtn}
+                                onClick={e => { e.stopPropagation(); handleCommentEditStart(); }}
+                                title="감상 수정"
+                                aria-label="감상 수정"
+                            >
+                                <PencilSimpleIcon size={12} />
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <button className={styles.commentAddBtn} onClick={handleCommentEditStart}>
+                        <div className={styles.commentAddRow}>
+                            <svg width="13" height="17" viewBox="0 0 13 17" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" style={{flexShrink: 0}}>
+                                <path d="M1.5 1.5h10v13.5l-5-3.2-5 3.2V1.5z"/>
+                            </svg>
+                            <span className={styles.commentAddPlaceholder}>이 책, 어땠나요?</span>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink: 0, opacity: 0.3}}>
+                                <path d="M8.5 1l2.5 2.5-6 6H2.5V7L8.5 1z"/>
+                            </svg>
+                        </div>
+                    </button>
+                )}
+            </div>
+
+            {/* 액션 버튼 */}
+            <div className={styles.actionBtns}>
+                <button
+                    className={styles.addRecordBtn}
+                    onClick={() => setCreateOpen(true)}
+                >
+                    기록 추가
+                </button>
+                <button
+                    className={styles.deleteAllBtn}
+                    onClick={handleDeleteBook}
+                    disabled={deletingAllBooks}
+                    title="이 책의 모든 기록 삭제"
+                >
+                    <TrashIcon size={14} />
+                    {deletingAllBooks ? "삭제 중…" : "전체 삭제"}
+                </button>
+            </div>
 
             <hr className={styles.divider} />
 
