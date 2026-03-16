@@ -315,12 +315,12 @@ export async function fetchDeleteBook(bookId: number): Promise<void> {
     }
 }
 // 책 감상 조회
-export async function fetchBookComment(bookId: number): Promise<{ id: number; content: string; createdAt: string; updatedAt: string } | null> {
-    const response = await fetchWithAuth(`/records/books/${bookId}/comment`, { method: 'GET' });
-    if (response.status === 204) return null;
-    if (!response.ok) throw new Error('감상 조회 실패');
-    return response.json();
-}
+// export async function fetchBookComment(bookId: number): Promise<{ id: number; content: string; createdAt: string; updatedAt: string } | null> {
+//     const response = await fetchWithAuth(`/records/books/${bookId}/comment`, { method: 'GET' });
+//     if (response.status === 204) return null;
+//     if (!response.ok) throw new Error('감상 조회 실패');
+//     return response.json();
+// }
 
 // 책 감상 저장/수정 (upsert)
 export async function upsertBookComment(bookId: number, content: string): Promise<{ id: number; content: string; createdAt: string; updatedAt: string }> {
