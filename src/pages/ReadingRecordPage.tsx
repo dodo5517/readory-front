@@ -291,7 +291,7 @@ export default function ReadingRecordPage() {
                                     )}
                                 </div>
                                 <div className={styles.meta}>
-                                    <div className={styles.date}>{record.recordedAt}</div>
+                                    <div className={styles.date}>{record.createdAt}</div>
                                     <div className={styles.info}>
                                         <h3 className={styles.bookTitle}>{record.title}</h3>
                                         <div className={styles.author}>{record.author?.length ? record.author + "(작가)" : ""}</div>
@@ -376,7 +376,7 @@ export default function ReadingRecordPage() {
                     open={editOpen}
                     initial={{
                         id: editing.id,
-                        recordedAt: editing.recordedAt,
+                        createdAt: editing.createdAt,
                         title: editing.title ?? "",
                         author: editing.author ?? "",
                         sentence: editing.sentence ?? "",

@@ -78,7 +78,7 @@ export async function fetchMyMonth(opts: {
         matched: Boolean(r.matched),
         bookId: r.bookId ?? null,
         coverUrl: r.coverUrl ?? null,
-        recordedAt: formatYMDhm(r.recordedAt), // "YYYY-MM-DD HH:mm" 같은 포맷
+        createdAt: formatYMDhm(r.createdAt), // "YYYY-MM-DD HH:mm" 같은 포맷
     }));
 
     return {
@@ -127,7 +127,7 @@ export async function fetchMyDay(opts: {
         matched: Boolean(r.matched),
         bookId: r.bookId ?? null,
         coverUrl: r.coverUrl ?? null,
-        recordedAt: formatYMDhm(r.recordedAt), // "YYYY-MM-DD HH:mm" 같은 포맷
+        createdAt: formatYMDhm(r.createdAt), // "YYYY-MM-DD HH:mm" 같은 포맷
     }));
 
     return {

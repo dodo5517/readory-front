@@ -55,7 +55,7 @@ export default function AdminRecordsPage() {
                 matchStatus: matchStatus === "ALL" ? undefined : matchStatus,
                 page,
                 size,
-                sort: `recordedAt,${sort}`,
+                sort: `createdAt,${sort}`,
             });
             setData(res);
         } catch (e) {
@@ -229,7 +229,7 @@ export default function AdminRecordsPage() {
 
                                         <div className={styles.cardFooter}>
                                             <span className={styles.username}>@{record.username}</span>
-                                            <span className={styles.date}>{formatDate(record.recordedAt)}</span>
+                                            <span className={styles.date}>{formatDate(record.createdAt)}</span>
                                         </div>
                                     </button>
                                 ))

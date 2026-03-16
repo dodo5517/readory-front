@@ -13,7 +13,7 @@ export interface AdminRecordListResponse {
     rawTitle: string;
     rawAuthor: string;
     matchStatus: MatchStatus;
-    recordedAt: string;
+    createdAt: string;
 }
 
 // 상세용 응답 - sentence, comment 제거
@@ -29,7 +29,7 @@ export interface AdminRecordDetailResponse {
     rawTitle: string;
     rawAuthor: string;
     matchStatus: MatchStatus;
-    recordedAt: string;
+    createdAt: string;
     updatedAt: string | null;
     matchedAt: string | null;
 }

@@ -7,7 +7,7 @@ import {formatYMDhm} from "../../utils/datetime";
 
 export type RecordEditForm = {
     id: number;
-    recordedAt: string;        // ISO
+    createdAt: string;        // ISO
     title?: string;
     author?: string;
     sentence?: string;
@@ -25,7 +25,7 @@ type Props = {
 export default function RecordEditModal({ open, initial, onSave, onClose, onDelete }: Props) {
     const overlayRef = useRef<HTMLDivElement>(null);
     const recordId: number = initial.id;
-    const date = formatYMDhm(initial.recordedAt);
+    const date = formatYMDhm(initial.createdAt);
     const [record, setRecord] = useState<UpdateRecord>({
         rawTitle: initial.title ?? "",
         rawAuthor: initial.author ?? "",
@@ -59,7 +59,7 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
             await fetchUpdateRecord(recordId, record);
             await onSave({
                 id: initial.id,
-                recordedAt: initial.recordedAt,
+                createdAt: initial.createdAt,
                 title: record.rawTitle ?? undefined,
                 author: record.rawAuthor ?? undefined,
                 sentence: record.sentence ?? undefined,
