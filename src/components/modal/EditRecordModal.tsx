@@ -3,6 +3,7 @@ import styles from "../../styles/EditRecordModal.module.css";
 import {UpdateRecord} from "../../types/records";
 import {fetchUpdateRecord} from "../../api/ReadingRecord";
 import { XIcon } from '@phosphor-icons/react';
+import {formatYMDhm} from "../../utils/datetime";
 
 export type RecordEditForm = {
     id: number;
@@ -24,7 +25,7 @@ type Props = {
 export default function RecordEditModal({ open, initial, onSave, onClose, onDelete }: Props) {
     const overlayRef = useRef<HTMLDivElement>(null);
     const recordId: number = initial.id;
-    const date = initial.recordedAt;
+    const date = formatYMDhm(initial.recordedAt);
     const [record, setRecord] = useState<UpdateRecord>({
         rawTitle: initial.title ?? "",
         rawAuthor: initial.author ?? "",
