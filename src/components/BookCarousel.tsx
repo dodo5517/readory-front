@@ -5,6 +5,8 @@ import {fetchMySummaryBooks} from "../api/ReadingRecord";
 import {Link, useNavigate} from "react-router-dom";
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 
+const MIN_BOOKS = 6;
+
 export default function BookCarousel() {
     const [list, setList] = useState<SummaryBook[]>([]);
     const [, setLoading] = useState(true);
@@ -37,6 +39,8 @@ export default function BookCarousel() {
         })();
     }, []);
 
+    const placeholderCount = Math.max(0, MIN_BOOKS - list.length);
+
     return (
         <section className={styles.carousel}>
             <div className={styles.left}>
@@ -60,6 +64,13 @@ export default function BookCarousel() {
                             <div className={styles.bookAuthor}>{book.author}</div>
                         </div>
                     ))}
+                    {Array.from({ length: placeholderCount }).map((_, i) => (
+                        <div key={`placeholder-${i}`} className={`${styles.bookItem} ${styles.placeholder}`}>
+                            <div className={styles.bookImage} />
+                            <div className={styles.bookTitle}>&nbsp;</div>
+                            <div className={styles.bookAuthor}>&nbsp;</div>
+                        </div>
+                    ))}
                 </div>
 
                 <button className={styles.navBtn} onClick={() => scroll('right')}>
@@ -67,5 +78,5 @@ export default function BookCarousel() {
                 </button>
             </div>
         </section>
-);
+    );
 }

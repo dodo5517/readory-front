@@ -5,6 +5,8 @@ import {Link, useNavigate} from "react-router-dom";
 import {SummaryRecord} from "../types/records";
 import { ChatIcon } from '@phosphor-icons/react';
 
+const MIN_RECORDS = 3;
+
 export default function ReadingList() {
     const [list, setList] = useState<SummaryRecord[]>([]);
     const [, setLoading] = useState(true);
@@ -27,6 +29,8 @@ export default function ReadingList() {
         })();
     }, []);
 
+    const placeholderCount = Math.max(0, MIN_RECORDS - list.length);
+
     return (
         <section className={styles.container}>
             <div className={styles.left}>
@@ -35,20 +39,31 @@ export default function ReadingList() {
             </div>
 
             <div className={styles.right}>
-                {list.map((list, index) => (
+                {list.map((item, index) => (
                     <div key={index}
                          className={styles.list}
                          onClick={() => navigate(`/readingRecords`)}
                     >
-                        <span className={styles.date}>{list.date}</span>
+                        <span className={styles.date}>{item.date}</span>
                         <div className={styles.content}>
                             <div className={styles.main}>
-                                <h3 className={styles.title}>{list.title}</h3>
-                                <div className={styles.sentence}>{list.sentence}</div>
+                                <h3 className={styles.title}>{item.title}</h3>
+                                <div className={styles.sentence}>{item.sentence}</div>
                             </div>
                             <div className={styles.comments}>
                                 <span className={styles.commentIcon}><ChatIcon /></span>
-                                <span className={styles.commentText}>{list.comment}</span>
+                                <span className={styles.commentText}>{item.comment}</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                {Array.from({ length: placeholderCount }).map((_, i) => (
+                    <div key={`placeholder-${i}`} className={`${styles.list} ${styles.placeholder}`}>
+                        <span className={styles.date}>&nbsp;</span>
+                        <div className={styles.content}>
+                            <div className={styles.main}>
+                                <h3 className={styles.title}>&nbsp;</h3>
+                                <div className={styles.sentence}>&nbsp;</div>
                             </div>
                         </div>
                     </div>
