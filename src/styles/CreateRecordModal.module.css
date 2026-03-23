@@ -190,6 +190,8 @@
         padding: 0;
         align-items: flex-end;
         overflow-y: hidden;
+        overscroll-behavior: contain;
+        touch-action: none;
     }
 
     .modal {
@@ -202,6 +204,9 @@
         border-top: 1px solid var(--border-color);
         box-shadow: 0 -4px 24px rgba(0,0,0,0.18);
         margin: 0;
+        overscroll-behavior: contain;
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
     }
 
 

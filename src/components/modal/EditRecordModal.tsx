@@ -76,11 +76,14 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
         <div
             className={styles.overlay}
             ref={overlayRef}
+            onTouchMove={(e) => e.stopPropagation()}
             tabIndex={-1}
             role="dialog"
             aria-modal="true"
         >
-            <section className={styles.modal}>
+            <section className={styles.modal}
+                     onTouchStart={(e) => e.stopPropagation()}
+            >
                 <header className={styles.header}>
                     <h2 className={styles.title}>기록 수정</h2>
                     <div style={{display:'flex', alignItems:'center', gap:'8px'}}>

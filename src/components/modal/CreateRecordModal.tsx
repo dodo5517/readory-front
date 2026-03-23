@@ -69,12 +69,15 @@ export default function CreateRecordModal({ open, onClose, onCreated, initialTit
         <div
             className={styles.overlay}
             ref={overlayRef}
+            onTouchMove={(e) => e.stopPropagation()}
             onClick={handleOverlayClick}
             tabIndex={-1}
             role="dialog"
             aria-modal="true"
         >
-            <section className={styles.modal}>
+            <section className={styles.modal}
+                     onTouchStart={(e) => e.stopPropagation()}
+            >
                 <header className={styles.header}>
                     <h2 className={styles.title}>새 기록 추가</h2>
                     <button type="button" className={styles.closeBtn} onClick={onClose}><XIcon/></button>
