@@ -58,9 +58,7 @@
     flex-shrink: 0;
 }
 @media (hover: hover) {
-    .searchBtn:hover {
-        background: var(--light-bg);
-    }
+    .searchBtn:hover { background: var(--light-bg); }
 }
 .searchBtn:active, .cardBtn:active {
     background: var(--light-bg);
@@ -101,6 +99,22 @@
     .toolbar > :first-child { order: 2; flex: 1; }
 }
 
+/* ── Year Group ── */
+.yearGroup {
+    margin-bottom: 32px;
+}
+
+.yearLabel {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+    font-family: 'Georgia', serif;
+}
+
 /* ── Grid ── */
 .grid {
     display: grid;
@@ -126,32 +140,96 @@
     flex-direction: column;
 }
 
-/* 삭제 버튼 — 카드 우상단, 호버 시 등장 */
-.deleteBtn {
+/* 데스크탑 전용: 핀된 책 좌상단 하트 뱃지 */
+.pinnedHeart {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(196, 54, 54, 0.9);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: 0 0 0 2px #fff;
+}
+
+/* 다크모드: index.css [data-theme='dark'] 기준 */
+[data-theme='dark'] .pinnedHeart {
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
+}
+[data-theme='dark'] .menuBtnPinned {
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
+}
+
+/* ··· / 하트 메뉴 버튼 — 우상단 */
+.menuBtn {
     position: absolute;
     top: 8px;
     right: 8px;
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
     border: none;
-    background: var(--card-bg);
-    color: var(--text-muted);
+    background: rgba(0,0,0,0.38);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.2s, background 0.2s, color 0.2s;
+    transition: opacity 0.15s, background 0.15s;
     z-index: 2;
 }
-.card:hover .deleteBtn { opacity: 1; }
-.deleteBtn:hover {
-    border: 1px solid var(--danger-color);
-    background: var(--danger-bg);
-    color: var(--danger-color);
+.card:hover .menuBtn { opacity: 1; }
+@media (hover: hover) {
+    .menuBtn:hover { background: rgba(0,0,0,0.6); }
 }
-.deleteBtn:disabled { cursor: not-allowed; opacity: 0.5; }
+
+/* 아이콘 토글: 기본은 ··· 표시 */
+.menuIconHeart { display: none; }
+.menuIconDots  { display: flex; }
+
+/* 드롭다운 */
+.dropdown {
+    position: absolute;
+    top: 36px;
+    right: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 10;
+    min-width: 120px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.dropdownItem {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    font-size: 0.82rem;
+    color: var(--text-main);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+}
+.dropdownItem:last-child { border-bottom: none; }
+@media (hover: hover) {
+    .dropdownItem:hover { background: var(--light-bg); }
+}
+.dropdownItem:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.dropdownDanger { color: var(--danger-color); }
 
 .cardBtn {
     width: 100%;
@@ -228,7 +306,6 @@
 @media (max-width: 768px) {
     .container { padding: 8px 12px 40px; }
     .title { margin-bottom: 16px; }
-    /*.deleteBtn { opacity: 1; }  !* 모바일: 항상 노출 *!*/
 
     .toolbar {
         flex-direction: column;
@@ -241,10 +318,23 @@
 
     .bookTitle { font-size: 0.84rem; }
     .author { font-size: 0.76rem; }
-    .deleteBtn { display: none; }
+
+    /* 모바일: ··· 버튼 항상 표시 */
+    .menuBtn { opacity: 1; }
+
+    /* 모바일 핀된 책: 붉은 하트 버튼으로 교체 */
+    .menuBtnPinned { background: rgba(196, 54, 54, 0.9); box-shadow: 0 0 0 2px #fff; }
+    .menuBtnPinned .menuIconHeart { display: flex; }
+    .menuBtnPinned .menuIconDots  { display: none; }
+
+    /* 모바일: 좌상단 하트 뱃지 숨김 */
+    .pinnedHeart { display: none; }
+
+    .yearGroup { margin-bottom: 24px; }
+    .yearLabel { font-size: 0.92rem; }
 }
+
 /* 터치 디바이스: 호버 고착 방지 */
 @media (hover: none) {
-    /*.deleteBtn:hover { background: var(--card-bg); color: var(--text-muted); }*/
     .cardBtn:hover { background: var(--card-bg); transform: none; box-shadow: none; }
 }

@@ -26,7 +26,9 @@ export type SummaryBook = {
     title: string;
     author: string;
     coverUrl: string;
-}
+    year: number | null;
+    pinned: boolean;
+};
 
 export type BookMeta = {
     id: number;

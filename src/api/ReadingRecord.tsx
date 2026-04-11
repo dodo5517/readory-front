@@ -139,6 +139,8 @@ export async function fetchMyBooks(opts: {
         title: b.title || "(제목 없음)",
         author: b.author ?? "",
         coverUrl: b.coverUrl ?? "",
+        year: b.year ?? null,
+        pinned: b.pinned ?? false,
     }));
 
     // PageResult로 매핑
@@ -314,6 +316,18 @@ export async function fetchDeleteBook(bookId: number): Promise<void> {
         throw new Error("기록 삭제 실패");
     }
 }
+// 책 즐겨찾기 등록
+export async function fetchPinBook(bookId: number): Promise<void> {
+    const response = await fetchWithAuth(`/books/${bookId}/pin`, { method: "POST" });
+    if (!response.ok) throw new Error("즐겨찾기 등록 실패");
+}
+
+// 책 즐겨찾기 해제
+export async function fetchUnpinBook(bookId: number): Promise<void> {
+    const response = await fetchWithAuth(`/books/${bookId}/pin`, { method: "DELETE" });
+    if (!response.ok) throw new Error("즐겨찾기 해제 실패");
+}
+
 // 책 감상 조회
 // export async function fetchBookComment(bookId: number): Promise<{ id: number; content: string; createdAt: string; updatedAt: string } | null> {
 //     const response = await fetchWithAuth(`/records/books/${bookId}/comment`, { method: 'GET' });

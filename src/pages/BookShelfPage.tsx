@@ -1,14 +1,31 @@
 import React, {useEffect, useState} from "react";
 import styles from "../styles/BookShelfPage.module.css";
 import {PageResult, SummaryBook} from "../types/books";
-import {fetchMyBooks, fetchDeleteBook} from "../api/ReadingRecord";
+import {fetchMyBooks, fetchDeleteBook, fetchPinBook, fetchUnpinBook} from "../api/ReadingRecord";
 import {useNavigate} from "react-router-dom";
 import Pagination from "../components/pagination/Pagination";
-import { MagnifyingGlassIcon, TrashIcon } from '@phosphor-icons/react';
+import { MagnifyingGlassIcon, HeartIcon, DotsThreeIcon, TrashIcon } from '@phosphor-icons/react';
 import {useDemoGuard} from "../hook/useDemoGuard";
 
+// year 기준으로 그룹핑: [ { year, books[] }, ... ] 내림차순
+function groupByYear(books: SummaryBook[]): { year: number | null; books: SummaryBook[] }[] {
+    const map = new Map<number | null, SummaryBook[]>();
+    for (const b of books) {
+        const y = b.year ?? null;
+        if (!map.has(y)) map.set(y, []);
+        map.get(y)!.push(b);
+    }
+    // null(년도 미상)은 맨 뒤로
+    const sorted = Array.from(map.entries()).sort(([a], [b]) => {
+        if (a === null) return 1;
+        if (b === null) return -1;
+        return b - a;
+    });
+    return sorted.map(([year, books]) => ({ year, books }));
+}
+
 export default function BookShelfPage() {
-    const [data, setData] = useState<PageResult<SummaryBook >| null>(null);
+    const [data, setData] = useState<PageResult<SummaryBook> | null>(null);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10); // 데스크탑(10), 모바일(6)
     const [sort, setSort] = useState<"recent" | "title">("recent");
@@ -16,9 +33,10 @@ export default function BookShelfPage() {
     const [queryInput, setQueryInput] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [pinningId, setPinningId] = useState<number | null>(null);
+    const [menuOpenId, setMenuOpenId] = useState<number | null>(null);
 
     const { demoGuard } = useDemoGuard();
-
     const navigate = useNavigate();
     const [deletingId, setDeletingId] = useState<number | null>(null);
 
@@ -40,6 +58,32 @@ export default function BookShelfPage() {
         }
     });
 
+    const handleTogglePin = async (e: React.MouseEvent, bookId: number, pinned: boolean) => {
+        e.stopPropagation();
+        if (pinningId === bookId) return;
+        try {
+            setPinningId(bookId);
+            if (pinned) {
+                await fetchUnpinBook(bookId);
+            } else {
+                await fetchPinBook(bookId);
+            }
+            await loadBooks();
+        } catch {
+            alert("즐겨찾기 변경에 실패했습니다.");
+        } finally {
+            setPinningId(null);
+        }
+    };
+
+
+    // 바깥 클릭 시 메뉴 닫기
+    useEffect(() => {
+        const handleClickOutside = () => setMenuOpenId(null);
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
+
     // 화면 크기에 따라 페이지 사이즈 설정
     useEffect(() => {
         const mql = window.matchMedia("(max-width: 768px)");
@@ -47,11 +91,9 @@ export default function BookShelfPage() {
         const apply = (matches: boolean) => {
             const next = matches ? 6 : 10;
             setSize((prev) => (prev === next ? prev : next));
-            // 화면 크기 바뀌면 첫 페이지로
             setPage(0);
         };
 
-        // 초기 1회 동기화 (혹시 hydration 뒤 값이 달라졌을 경우)
         apply(mql.matches);
 
         const handler = (e: MediaQueryListEvent) => apply(e.matches);
@@ -59,20 +101,22 @@ export default function BookShelfPage() {
         return () => mql.removeEventListener("change", handler);
     }, []);
 
+    const loadBooks = async () => {
+        try {
+            setLoading(true);
+            const json = await fetchMyBooks({page, size, sort, q});
+            setData(json);
+        } catch (e: any) {
+            console.error(e);
+            setError("불러오기 실패");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        (async () => {
-            try {
-                const json = await fetchMyBooks({page, size, sort, q});
-                setData(json);
-                console.log("fetchMyBooks");
-            } catch (e: any){
-                console.error(e);
-                setError("불러오기 실패");
-            } finally {
-                setLoading(false);
-            }
-        })();
-    },[page, sort, size, q]);
+        loadBooks();
+    }, [page, sort, size, q]);
 
     if (loading) {
         return <div className={styles.container} aria-live="polite"></div>;
@@ -82,6 +126,7 @@ export default function BookShelfPage() {
     }
 
     const books = data?.items ?? [];
+    const groups = groupByYear(books);
 
     return (
         <section className={styles.container} aria-label="책장">
@@ -97,7 +142,7 @@ export default function BookShelfPage() {
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 setPage(0);
-                                setQ(queryInput.trim());           // Enter 시 API 트리거
+                                setQ(queryInput.trim());
                             }
                         }}
                         placeholder="책 제목, 저자 검색..."
@@ -107,7 +152,7 @@ export default function BookShelfPage() {
                         className={styles.searchBtn}
                         onClick={() => {
                             setPage(0);
-                            setQ(queryInput.trim()); /* 검색 실행 */
+                            setQ(queryInput.trim());
                         }}
                     >
                         <MagnifyingGlassIcon />
@@ -117,58 +162,96 @@ export default function BookShelfPage() {
                 <div className={styles.segment}>
                     <button
                         className={`${styles.segBtn} ${sort === "recent" ? styles.isActive : ""}`}
-                        onClick={() => {
-                            setSort("recent");
-                            setPage(0);
-                        }}
+                        onClick={() => { setSort("recent"); setPage(0); }}
                     >
                         최근순
                     </button>
                     <button
                         className={`${styles.segBtn} ${sort === "title" ? styles.isActive : ""}`}
-                        onClick={() => {
-                            setSort("title");
-                            setPage(0);
-                        }}
+                        onClick={() => { setSort("title"); setPage(0); }}
                     >
                         제목순
                     </button>
                 </div>
             </div>
 
-            {/* 그리드 */}
-            <ul className={styles.grid}>
-                {books.map(b => (
-                    <li key={b.id} className={styles.card}>
-                        <button
-                            className={styles.cardBtn}
-                            onClick={() => navigate(`/bookRecord/${b.id}`)}
-                            aria-label={`${b.title}${b.author ? `, ${b.author}` : ""}`}
-                        >
-                            <div className={styles.coverWrap}>
-                                {b.coverUrl ? (
-                                    <img className={styles.cover} src={b.coverUrl} alt={`${b.title} 표지`} loading="lazy" />
-                                ) : (
-                                    <div className={styles.coverPlaceholder}>No Image</div>
+            {/* 년도별 그룹 */}
+            {groups.map(({ year, books: groupBooks }) => (
+                <div key={year ?? "unknown"} className={styles.yearGroup}>
+                    <div className={styles.yearLabel}>{year ?? "날짜 없음"}</div>
+                    <ul className={styles.grid}>
+                        {groupBooks.map(b => (
+                            <li key={b.id} className={`${styles.card} ${b.pinned ? styles.isPinned : ""}`}>
+                                <button
+                                    className={styles.cardBtn}
+                                    onClick={() => navigate(`/bookRecord/${b.id}`)}
+                                    aria-label={`${b.title}${b.author ? `, ${b.author}` : ""}`}
+                                >
+                                    <div className={styles.coverWrap}>
+                                        {b.coverUrl ? (
+                                            <img className={styles.cover} src={b.coverUrl} alt={`${b.title} 표지`} loading="lazy" />
+                                        ) : (
+                                            <div className={styles.coverPlaceholder}>No Image</div>
+                                        )}
+                                    </div>
+                                    <div style={{ marginTop: "auto" }}>
+                                        <div className={styles.bookTitle} title={b.title}>{b.title}</div>
+                                        {b.author && <div className={styles.author}>{b.author}</div>}
+                                    </div>
+                                </button>
+
+                                {/* 데스크탑 전용: 핀된 책 좌상단 하트 뱃지 */}
+                                {b.pinned && (
+                                    <div className={styles.pinnedHeart}>
+                                        <HeartIcon size={12} weight="fill" />
+                                    </div>
                                 )}
-                            </div>
-                            <div style={{ marginTop: "auto" }}>
-                                <div className={styles.bookTitle} title={b.title}>{b.title}</div>
-                                {b.author && <div className={styles.author}>{b.author}</div>}
-                            </div>
-                        </button>
-                        <button
-                            className={styles.deleteBtn}
-                            onClick={(e) => handleDeleteBook(e, b.id, b.title)}
-                            disabled={deletingId === b.id}
-                            aria-label={`${b.title} 모든 기록 삭제`}
-                            title="모든 기록 삭제"
-                        >
-                            {deletingId === b.id ? "…" : <TrashIcon size={13} />}
-                        </button>
-                    </li>
-                ))}
-            </ul>
+
+                                {/* 메뉴 트리거 버튼
+                                    - 데스크탑: 항상 ··· (호버 시 표시)
+                                    - 모바일 핀됨: 하트 버튼 (항상 표시)
+                                    - 모바일 핀 안됨: ··· (항상 표시) */}
+                                <button
+                                    className={`${styles.menuBtn} ${b.pinned ? styles.menuBtnPinned : ""}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setMenuOpenId(menuOpenId === b.id ? null : b.id);
+                                    }}
+                                    aria-label="더보기"
+                                    title="더보기"
+                                >
+                                    {/* 모바일 핀된 책: 하트 아이콘 / 나머지: ··· */}
+                                    <span className={styles.menuIconDots}><DotsThreeIcon size={16} weight="bold" /></span>
+                                    <span className={styles.menuIconHeart}><HeartIcon size={13} weight="fill" /></span>
+                                </button>
+
+                                {/* 드롭다운 */}
+                                {menuOpenId === b.id && (
+                                    <div className={styles.dropdown} onClick={(e) => e.stopPropagation()}>
+                                        <button
+                                            className={styles.dropdownItem}
+                                            onClick={(e) => { handleTogglePin(e, b.id, b.pinned); setMenuOpenId(null); }}
+                                            disabled={pinningId === b.id}
+                                        >
+                                            <HeartIcon size={13} weight={b.pinned ? "fill" : "regular"} />
+                                            {b.pinned ? "즐겨찾기 해제" : "즐겨찾기"}
+                                        </button>
+                                        <button
+                                            className={`${styles.dropdownItem} ${styles.dropdownDanger}`}
+                                            onClick={(e) => { handleDeleteBook(e, b.id, b.title); setMenuOpenId(null); }}
+                                            disabled={deletingId === b.id}
+                                        >
+                                            <TrashIcon size={13} />
+                                            {deletingId === b.id ? "삭제 중…" : "삭제"}
+                                        </button>
+                                    </div>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+
             {/* 페이지네이션 */}
             <Pagination
                 page={data?.page ?? page}
