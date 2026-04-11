@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import styles from "../styles/BookShelfPage.module.css";
 import {PageResult, SummaryBook} from "../types/books";
 import {fetchMyBooks, fetchDeleteBook, fetchPinBook, fetchUnpinBook} from "../api/ReadingRecord";
@@ -101,7 +101,7 @@ export default function BookShelfPage() {
         return () => mql.removeEventListener("change", handler);
     }, []);
 
-    const loadBooks = async () => {
+    const loadBooks = useCallback(async () => {
         try {
             setLoading(true);
             const json = await fetchMyBooks({page, size, sort, q});
@@ -112,11 +112,11 @@ export default function BookShelfPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [page, size, sort, q]);
 
     useEffect(() => {
         loadBooks();
-    }, [page, sort, size, q]);
+    }, [loadBooks]);
 
     if (loading) {
         return <div className={styles.container} aria-live="polite"></div>;
