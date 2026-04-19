@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "../../styles/CreateRecordModal.module.css";
 import { createReadingRecord } from "../../api/ReadingRecord";
 import { XIcon } from '@phosphor-icons/react';
+import { nowDatetimeLocal } from "../../utils/datetime";
 
 interface Props {
     open: boolean;
@@ -17,6 +18,7 @@ export default function CreateRecordModal({ open, onClose, onCreated, initialTit
     const [rawAuthor, setRawAuthor] = useState("");
     const [sentence, setSentence] = useState("");
     const [comment, setComment] = useState("");
+    const [recordedAt, setRecordedAt] = useState(() => nowDatetimeLocal());
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -33,6 +35,7 @@ export default function CreateRecordModal({ open, onClose, onCreated, initialTit
         setRawAuthor(initialAuthor ?? "");
         setSentence("");
         setComment("");
+        setRecordedAt(nowDatetimeLocal());
         setError(null);
     }, [open, initialTitle, initialAuthor]);
 
@@ -49,6 +52,7 @@ export default function CreateRecordModal({ open, onClose, onCreated, initialTit
                 rawAuthor: rawAuthor.trim(),
                 sentence: sentence.trim(),
                 comment: comment.trim(),
+                recordedAt,
             });
         } catch (e: any) {
             setError(e?.message ?? "기록 생성을 실패했습니다.");
@@ -107,6 +111,16 @@ export default function CreateRecordModal({ open, onClose, onCreated, initialTit
                             />
                         </label>
                     </div>
+
+                    <label className={styles.field}>
+                        <span className={styles.fieldLabel}>날짜</span>
+                        <input
+                            type="datetime-local"
+                            value={recordedAt}
+                            onChange={(e) => setRecordedAt(e.target.value)}
+                            className={styles.input}
+                        />
+                    </label>
 
                     <label className={styles.field}>
                         <span className={styles.fieldLabel}>문장</span>
