@@ -173,8 +173,12 @@ export default function RecordDetailModal({ isOpen, recordId, onClose, onDeleted
                             {/* 시간 정보 */}
                             <div className={styles.infoGrid}>
                                 <div className={styles.infoRow}>
-                                    <span className={styles.label}>기록일</span>
+                                    <span className={styles.label}>생성일 (createdAt)</span>
                                     <span className={styles.value}>{formatDateTime(record.createdAt)}</span>
+                                </div>
+                                <div className={styles.infoRow}>
+                                    <span className={styles.label}>기록일 (recordedAt)</span>
+                                    <span className={styles.value}>{formatDateTime(record.recordedAt ?? null)}</span>
                                 </div>
                                 <div className={styles.infoRow}>
                                     <span className={styles.label}>수정일</span>
