@@ -36,7 +36,7 @@ export async function fetchMySummaryRecords(): Promise<SummaryRecord[]> {
     return data
         .map((r) => ({
             id: r.id,
-            date: formatYMDhm(r.createdAt),
+            date: formatYMDhm(r.recordedAt),
             title: r.title || "(제목 없음)",
             sentence: r.sentence ?? "",
             comment: r.comment ?? "",
@@ -76,7 +76,7 @@ export async function fetchMyRecords(opts: {
         matched: Boolean(r.matched),
         bookId: r.bookId ?? null,
         coverUrl: r.coverUrl ?? null,
-        createdAt: formatYMDhm(r.createdAt), // "YYYY-MM-DD HH:mm" 같은 포맷
+        recordedAt: formatYMDhm(r.recordedAt), // "YYYY-MM-DD HH:mm" 같은 포맷
     }));
 
     return {
@@ -260,7 +260,7 @@ export async function fetchBookRecords(bookId: number, cursor: string|null, size
     // 기록 저장
     const content: BookRecord[] = data.content.map((r: any) => ({
         id: r.id,
-        createdAt: r.createdAt,     // "YYYY.MM.DD HH:mm"
+        recordedAt: r.recordedAt, // "YYYY.MM.DD HH:mm"
         sentence: r.sentence,
         comment: r.comment,
     }));
@@ -286,6 +286,7 @@ export async function fetchUpdateRecord(recordId: number, record : UpdateRecord 
             rawAuthor: record.rawAuthor,
             sentence: record.sentence,
             comment: record.comment,
+            recordedAt: record.recordedAt ?? null,
         })
     });
 
