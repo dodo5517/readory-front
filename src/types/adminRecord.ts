@@ -30,6 +30,7 @@ export interface AdminRecordDetailResponse {
     rawAuthor: string;
     matchStatus: MatchStatus;
     createdAt: string;
+    recordedAt: string | null;
     updatedAt: string | null;
     matchedAt: string | null;
 }
