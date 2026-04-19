@@ -9,7 +9,7 @@ import {
 } from "../types/adminRecord";
 import { PageResponse } from "../types/books";
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
 import { BooksIcon } from "@phosphor-icons/react";
 
@@ -55,15 +55,23 @@ export default function AdminStatsPage() {
 
     const goToUserRecords = (userId: number) => navigate(`/admin/records?userId=${userId}`);
 
-    const buildChartData = (dailyCounts: { date: string; count: number }[]) => {
-        const countMap = new Map(dailyCounts.map((d) => [d.date, d.count]));
+    const buildChartData = (
+        recordedAtCounts: { date: string; count: number }[],
+        createdAtCounts?: { date: string; count: number }[]
+    ) => {
+        const recordedMap = new Map((recordedAtCounts ?? []).map((d) => [d.date, d.count]));
+        const createdMap = new Map((createdAtCounts ?? []).map((d) => [d.date, d.count]));
         const result = [];
         for (let i = 29; i >= 0; i--) {
             const d = new Date();
             d.setDate(d.getDate() - i);
             const key = d.toISOString().slice(0, 10);
             const label = `${d.getMonth() + 1}/${d.getDate()}`;
-            result.push({ date: label, count: countMap.get(key) ?? 0 });
+            result.push({
+                date: label,
+                독서기준: recordedMap.get(key) ?? 0,
+                입력기준: createdMap.get(key) ?? 0,
+            });
         }
         return result;
     };
@@ -85,19 +93,52 @@ export default function AdminStatsPage() {
                         <div className={styles.summaryGrid}>
                             <div className={styles.summaryCard}>
                                 <span className={styles.summaryLabel}>전체 기록</span>
-                                <span className={styles.summaryValue}>{stats.totalRecords.toLocaleString()}</span>
+                                <span className={styles.summaryValue}>{(stats.totalRecords ?? 0).toLocaleString()}</span>
                             </div>
                             <div className={styles.summaryCard}>
                                 <span className={styles.summaryLabel}>오늘 기록</span>
-                                <span className={styles.summaryValue}>{stats.todayRecords.toLocaleString()}</span>
+                                <div className={styles.dualValues}>
+                                    <div className={styles.dualEntry}>
+                                        <span className={`${styles.dualBadge} ${styles.badgeRecorded}`}>독서 기준</span>
+                                        <span className={styles.dualValue}>{(stats.todayRecords ?? 0).toLocaleString()}</span>
+                                    </div>
+                                    {stats.todayRecordsByCreatedAt !== undefined && (
+                                        <div className={styles.dualEntry}>
+                                            <span className={`${styles.dualBadge} ${styles.badgeCreated}`}>입력 기준</span>
+                                            <span className={styles.dualValue}>{(stats.todayRecordsByCreatedAt ?? 0).toLocaleString()}</span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <div className={styles.summaryCard}>
                                 <span className={styles.summaryLabel}>활성 유저 (7일)</span>
-                                <span className={styles.summaryValue}>{stats.activeUsersLast7Days.toLocaleString()}</span>
+                                <div className={styles.dualValues}>
+                                    <div className={styles.dualEntry}>
+                                        <span className={`${styles.dualBadge} ${styles.badgeRecorded}`}>독서 기준</span>
+                                        <span className={styles.dualValue}>{(stats.activeUsersLast7Days ?? 0).toLocaleString()}</span>
+                                    </div>
+                                    {stats.activeAppInputUsersLast7Days !== undefined && (
+                                        <div className={styles.dualEntry}>
+                                            <span className={`${styles.dualBadge} ${styles.badgeCreated}`}>입력 기준</span>
+                                            <span className={styles.dualValue}>{(stats.activeAppInputUsersLast7Days ?? 0).toLocaleString()}</span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <div className={styles.summaryCard}>
                                 <span className={styles.summaryLabel}>활성 유저 (30일)</span>
-                                <span className={styles.summaryValue}>{stats.activeUsersLast30Days.toLocaleString()}</span>
+                                <div className={styles.dualValues}>
+                                    <div className={styles.dualEntry}>
+                                        <span className={`${styles.dualBadge} ${styles.badgeRecorded}`}>독서 기준</span>
+                                        <span className={styles.dualValue}>{(stats.activeUsersLast30Days ?? 0).toLocaleString()}</span>
+                                    </div>
+                                    {stats.activeAppInputUsersLast30Days !== undefined && (
+                                        <div className={styles.dualEntry}>
+                                            <span className={`${styles.dualBadge} ${styles.badgeCreated}`}>입력 기준</span>
+                                            <span className={styles.dualValue}>{(stats.activeAppInputUsersLast30Days ?? 0).toLocaleString()}</span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
@@ -105,9 +146,9 @@ export default function AdminStatsPage() {
                         <div className={styles.section2}>
                             <h2 className={styles.sectionTitle}>최근 30일 일별 기록 수</h2>
                             <div className={styles.chartWrap}>
-                                <ResponsiveContainer width="100%" height={220}>
+                                <ResponsiveContainer width="100%" height={240}>
                                     <LineChart
-                                        data={buildChartData(stats.dailyCounts)}
+                                        data={buildChartData(stats.dailyCounts ?? [], stats.dailyAppInputCounts)}
                                         margin={{ top: 8, right: 16, left: -16, bottom: 0 }}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" stroke="var(--main-hr, #eee)" />
@@ -130,16 +171,32 @@ export default function AdminStatsPage() {
                                                 border: "1px solid var(--main-hr, #eee)",
                                                 fontSize: "0.85rem",
                                             }}
-                                            formatter={(value: number | undefined) => [value ?? 0, "기록 수"]}
+                                            formatter={(value: number | undefined) => [value ?? 0, ""]}
+                                        />
+                                        <Legend
+                                            wrapperStyle={{ fontSize: "0.82rem", paddingTop: "8px" }}
                                         />
                                         <Line
                                             type="monotone"
-                                            dataKey="count"
-                                            stroke="var(--link-color, #1976d2)"
+                                            dataKey="독서기준"
+                                            name="독서 기준 (recordedAt)"
+                                            stroke="#1976d2"
                                             strokeWidth={2}
                                             dot={false}
                                             activeDot={{ r: 4 }}
                                         />
+                                        {stats.dailyAppInputCounts !== undefined && (
+                                            <Line
+                                                type="monotone"
+                                                dataKey="입력기준"
+                                                name="입력 기준 (createdAt)"
+                                                stroke="#e67e22"
+                                                strokeWidth={2}
+                                                dot={false}
+                                                activeDot={{ r: 4 }}
+                                                strokeDasharray="5 3"
+                                            />
+                                        )}
                                     </LineChart>
                                 </ResponsiveContainer>
                             </div>
@@ -151,23 +208,23 @@ export default function AdminStatsPage() {
                             <div className={styles.statusGrid}>
                                 <div className={`${styles.statusCard} ${styles.matched}`}>
                                     <span className={styles.statusLabel}>자동 매칭</span>
-                                    <span className={styles.statusValue}>{stats.resolvedAutoCount.toLocaleString()}</span>
+                                    <span className={styles.statusValue}>{(stats.resolvedAutoCount ?? 0).toLocaleString()}</span>
                                 </div>
                                 <div className={`${styles.statusCard} ${styles.matched}`}>
                                     <span className={styles.statusLabel}>수동 매칭</span>
-                                    <span className={styles.statusValue}>{stats.resolvedManualCount.toLocaleString()}</span>
+                                    <span className={styles.statusValue}>{(stats.resolvedManualCount ?? 0).toLocaleString()}</span>
                                 </div>
                                 <div className={`${styles.statusCard} ${styles.pending}`}>
                                     <span className={styles.statusLabel}>대기중</span>
-                                    <span className={styles.statusValue}>{stats.pendingCount.toLocaleString()}</span>
+                                    <span className={styles.statusValue}>{(stats.pendingCount ?? 0).toLocaleString()}</span>
                                 </div>
                                 <div className={`${styles.statusCard} ${styles.unmatched}`}>
                                     <span className={styles.statusLabel}>후보 없음</span>
-                                    <span className={styles.statusValue}>{stats.noCandidateCount.toLocaleString()}</span>
+                                    <span className={styles.statusValue}>{(stats.noCandidateCount ?? 0).toLocaleString()}</span>
                                 </div>
                                 <div className={`${styles.statusCard} ${styles.failed}`}>
                                     <span className={styles.statusLabel}>다중 후보</span>
-                                    <span className={styles.statusValue}>{stats.multipleCandidatesCount.toLocaleString()}</span>
+                                    <span className={styles.statusValue}>{(stats.multipleCandidatesCount ?? 0).toLocaleString()}</span>
                                 </div>
                             </div>
                         </div>
