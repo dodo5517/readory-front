@@ -3,11 +3,11 @@ import styles from "../../styles/EditRecordModal.module.css";
 import {UpdateRecord} from "../../types/records";
 import {fetchUpdateRecord} from "../../api/ReadingRecord";
 import { XIcon } from '@phosphor-icons/react';
-import {formatYMDhm} from "../../utils/datetime";
+import { toDatetimeLocal } from "../../utils/datetime";
 
 export type RecordEditForm = {
     id: number;
-    createdAt: string;        // ISO
+    recordedAt: string;        // 원본값 그대로 저장 (ISO, "YYYY.MM.DD HH:mm" 등)
     title?: string;
     author?: string;
     sentence?: string;
@@ -25,7 +25,7 @@ type Props = {
 export default function RecordEditModal({ open, initial, onSave, onClose, onDelete }: Props) {
     const overlayRef = useRef<HTMLDivElement>(null);
     const recordId: number = initial.id;
-    const date = formatYMDhm(initial.createdAt);
+    const [dateValue, setDateValue] = useState(() => toDatetimeLocal(initial.recordedAt));
     const [record, setRecord] = useState<UpdateRecord>({
         rawTitle: initial.title ?? "",
         rawAuthor: initial.author ?? "",
@@ -43,6 +43,7 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
     // 초기화
     useEffect(() => {
         if (!open) return;
+        setDateValue(toDatetimeLocal(initial.recordedAt));
         setRecord({
             rawTitle: initial.title ?? "",
             rawAuthor: initial.author ?? "",
@@ -56,10 +57,10 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
         let ok = false;
         try {
             setSaving(true);
-            await fetchUpdateRecord(recordId, record);
+            await fetchUpdateRecord(recordId, { ...record, recordedAt: dateValue });
             await onSave({
                 id: initial.id,
-                createdAt: initial.createdAt,
+                recordedAt: dateValue,
                 title: record.rawTitle ?? undefined,
                 author: record.rawAuthor ?? undefined,
                 sentence: record.sentence ?? undefined,
@@ -86,10 +87,7 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
             >
                 <header className={styles.header}>
                     <h2 className={styles.title}>기록 수정</h2>
-                    <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
-                        <div className={styles.dateChip} aria-label="기록 시각">{date}</div>
-                        <button type="button" className={styles.closeBtn} onClick={onClose}><XIcon size={14}/></button>
-                    </div>
+                    <button type="button" className={styles.closeBtn} onClick={onClose}><XIcon size={14}/></button>
                 </header>
 
                 <form className={styles.form} onSubmit={handleSubmit}>
@@ -116,6 +114,16 @@ export default function RecordEditModal({ open, initial, onSave, onClose, onDele
                             />
                         </label>
                     </div>
+
+                    <label className={styles.field}>
+                        <span className={styles.fieldLabel}>날짜</span>
+                        <input
+                            type="datetime-local"
+                            value={dateValue}
+                            onChange={(e) => setDateValue(e.target.value)}
+                            className={styles.input}
+                        />
+                    </label>
 
                     <label className={styles.field}>
                         <span className={styles.fieldLabel}>문장 <span className={styles.muted}></span></span>

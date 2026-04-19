@@ -9,7 +9,7 @@ export interface Record {
     matched: boolean;
     bookId: number | null;
     coverUrl: string | null;
-    createdAt: string; // ISO 문자열
+    recordedAt: string;
 }
 
 export interface SummaryRecord {
@@ -25,6 +25,7 @@ export interface UpdateRecord {
     rawAuthor: string;
     sentence: string | null;
     comment: string | null;
+    recordedAt?: string | null;
 }
 
 export interface CreateRecordRequest {
@@ -32,12 +33,13 @@ export interface CreateRecordRequest {
     rawAuthor?: string | null;
     sentence?: string | null;
     comment?: string | null;
+    recordedAt?: string | null;
 }
 
 
 export interface BookRecord {
     id: number;
-    createdAt: string;
+    recordedAt: string;
     sentence: string | null;
     comment: string | null;
 }

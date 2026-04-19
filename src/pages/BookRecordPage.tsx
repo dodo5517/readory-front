@@ -31,7 +31,7 @@ function formatYMD(iso: string): string {
 function groupByDay(items: BookRecord[]) {
     const map = new Map<string, BookRecord[]>();
     for (const r of items) {
-        const { day } = formatDateTime(r.createdAt);
+        const { day } = formatDateTime(r.recordedAt);
         if (!map.has(day)) map.set(day, []);
         map.get(day)!.push(r);
     }
@@ -39,7 +39,7 @@ function groupByDay(items: BookRecord[]) {
     const groups = Array.from(map.entries()).sort((a, b) => (a[0] < b[0] ? 1 : -1));
     // 각 그룹 내부를 미리 정렬(시간 내림차순)
     for (const [, arr] of groups) {
-        arr.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+        arr.sort((a, b) => (a.recordedAt < b.recordedAt ? 1 : -1));
     }
     return groups;
 }
@@ -150,7 +150,7 @@ export default function BookRecordPage() {
     const handleSaveRecord = async (form: RecordEditForm) => {
         setRecords(prev => prev.map(r =>
             r.id === form.id
-                ? { ...r, sentence: form.sentence ?? null, comment: form.comment ?? null }
+                ? { ...r, recordedAt: form.recordedAt, sentence: form.sentence ?? null, comment: form.comment ?? null }
                 : r
         ));
         setEditTarget(null);
@@ -502,7 +502,7 @@ export default function BookRecordPage() {
                                 <h2 className={styles.dayHeading}>{day}</h2>
                                 <ul className={styles.recordUl}>
                                     {recs.map((r) => {
-                                        const { time } = formatDateTime(r.createdAt);
+                                        const { time } = formatDateTime(r.recordedAt);
                                         return (
                                             <li key={r.id} className={styles.recordItem}>
                                                 <time className={styles.time}>{time}</time>
@@ -513,7 +513,7 @@ export default function BookRecordPage() {
                                                         if (window.matchMedia("(hover: none)").matches) {
                                                             setEditTarget({
                                                                 id: r.id,
-                                                                createdAt: r.createdAt,
+                                                                recordedAt: r.recordedAt,
                                                                 title: book?.title,
                                                                 author: book?.author,
                                                                 sentence: r.sentence ?? undefined,
@@ -529,7 +529,7 @@ export default function BookRecordPage() {
                                                             className={styles.editRecordBtn}
                                                             onClick={() => setEditTarget({
                                                                 id: r.id,
-                                                                createdAt: r.createdAt,
+                                                                recordedAt: r.recordedAt,
                                                                 title: book?.title,
                                                                 author: book?.author,
                                                                 sentence: r.sentence ?? undefined,

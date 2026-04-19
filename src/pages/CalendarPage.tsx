@@ -311,7 +311,7 @@ export default function CalendarPage() {
                             )}
                         </div>
                         <div className={styles.meta}>
-                            <div className={styles.date}>{record.createdAt}</div>
+                            <div className={styles.date}>{record.recordedAt}</div>
                             <div className={styles.info}>
                                 <h3 className={styles.bookTitle}>{record.title}</h3>
                                 <div className={styles.author}>{record.author?.length ? record.author + "(작가)" : ""}</div>
