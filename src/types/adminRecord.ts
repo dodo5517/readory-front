@@ -55,14 +55,18 @@ export interface GetRecordsParams {
 export interface AdminRecordStatsResponse {
     totalRecords: number;
     todayRecords: number;
+    todayRecordsByCreatedAt?: number;
     pendingCount: number;
     resolvedAutoCount: number;
     resolvedManualCount: number;
     noCandidateCount: number;
     multipleCandidatesCount: number;
     dailyCounts: { date: string; count: number }[];
+    dailyAppInputCounts?: { date: string; count: number }[];
     activeUsersLast7Days: number;
     activeUsersLast30Days: number;
+    activeAppInputUsersLast7Days?: number;
+    activeAppInputUsersLast30Days?: number;
 }
 
 // 유저 활동 현황
