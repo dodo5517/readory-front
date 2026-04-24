@@ -95,6 +95,17 @@
     box-sizing: border-box;
     font-family: inherit;
 }
+/* datetime-local 모바일 대응 */
+.input[type="datetime-local"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: auto;
+    min-height: var(--ctl-h);
+    padding: 0 12px;
+    line-height: var(--ctl-h);
+    text-align: left;
+    text-align-last: left;
+}
 .input:focus { outline: none; border-color: var(--input-focus); }
 .input::placeholder { color: var(--placeholder); }
 
