@@ -92,7 +92,7 @@ export async function fetchMyRecords(opts: {
 
 // 메인에 쓸 최근 8개의 책(매핑된) 조회
 export async function fetchMySummaryBooks(): Promise<SummaryBook[]> {
-    const response = await fetchWithAuth(`/records/me/books?size=8`, { method: "GET" });
+    const response = await fetchWithAuth(`/records/me/books/main?size=8`, { method: "GET" });
     if (!response.ok) {
         throw new Error(`요청 실패: ${response.status}`);
     }
