@@ -33,6 +33,9 @@ import Terms from "./pages/Terms";
 import AdminStatsPage from "./pages/AdminStatsPage";
 import AdminNoticePage from "./pages/AdminNoticePage";
 import AdminPatternPage from "./pages/AdminPatternPage";
+import PrivacyPolicyMobile from "./pages/PrivacyPolicyMobile";
+import TermsMobile from "./pages/TermsMobile";
+
 
 function App() {
   return (
@@ -49,6 +52,8 @@ function App() {
                       <Route path="/notice" element={<FaqPage />} />
                       <Route path="/privacy" element={<PrivacyPolicy />} />
                       <Route path="/terms" element={<Terms />} />
+                      <Route path="/privacy-mobile" element={<PrivacyPolicyMobile />} />
+                      <Route path="/terms-mobile" element={<TermsMobile />} />
 
                       <Route element={<AdminLayout />}>
                           <Route path="/admin" element={<AdminNav title="Readory Admin" />}>

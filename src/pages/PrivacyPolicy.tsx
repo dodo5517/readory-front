@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
                 {/* 헤더 */}
                 <div className={styles.header}>
                     <h1 className={styles.title}>개인정보처리방침</h1>
-                    <p className={styles.date}>시행일: 2025년 1월 21일 · 최종 수정: 2025년 3월 8일</p>
+                    <p className={styles.date}>시행일: 2025년 1월 21일 · 최종 수정: 2026년 6월 6일</p>
                 </div>
 
                 {/* 소개 */}
@@ -61,9 +61,8 @@ export default function PrivacyPolicy() {
 
                     <h3>독서 기록</h3>
                     <p>
-                        이용자가 작성한 독서 기록(책 제목, 저자)은 서비스 품질 향상 및 통계 분석 목적으로 탈퇴 후에도 익명화하여 보관될 수 있습니다.
-                        발췌 문장 및 감상 메모는 통계 분석에 사용되지 않으며, 탈퇴 시 지체 없이 파기됩니다.
-                        완전한 삭제를 원하시는 경우 탈퇴 전 개인정보 보호책임자에게 요청해 주시기 바랍니다.
+                        이용자가 작성한 모든 독서 기록(책 제목, 저자, 발췌 문장, 감상 메모 등)은
+                        회원 탈퇴 시 지체 없이 전부 파기합니다.
                     </p>
 
                     <p>
@@ -96,8 +95,16 @@ export default function PrivacyPolicy() {
                             <td>Supabase Inc.</td>
                             <td>데이터베이스 저장 및 관리</td>
                         </tr>
+                        <tr>
+                            <td>Anthropic, PBC</td>
+                            <td>발췌 문장의 텍스트 정제 분석 (AI 도구 Claude 활용)</td>
+                        </tr>
                         </tbody>
                     </table>
+                    <p>
+                        Anthropic 위탁은 발췌 문장의 출처 표시·불필요한 문자열 등을 정제하기 위한 목적에 한하며,
+                        모델 학습이나 기타 용도로는 사용되지 않습니다.
+                    </p>
                 </section>
 
                 {/* 6. 이용자의 권리 */}
@@ -137,7 +144,7 @@ export default function PrivacyPolicy() {
 
                 {/* 푸터 */}
                 <div className={styles.footer}>
-                    <Link to="/login" className={styles.backLink}>← 로그인으로 돌아가기</Link>
+                    <Link to="/login" className={styles.backLink}>← 돌아가기</Link>
                 </div>
             </div>
         </div>
