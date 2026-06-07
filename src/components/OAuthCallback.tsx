@@ -18,7 +18,9 @@ export default function OAuthCallback() {
             localStorage.setItem('accessTokenExpiresAt', String(expiresAt));
         }
 
-        navigate("/main", { replace: true }); // 저장 후 메인으로 리디렉션
+        const redirectTo = sessionStorage.getItem('loginRedirectTo') || '/main';
+        sessionStorage.removeItem('loginRedirectTo');
+        navigate(redirectTo, { replace: true });
     }, [location, navigate]);
 
     return <div>로그인 중입니다...</div>;

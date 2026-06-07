@@ -8,6 +8,9 @@ import { getActiveNotice } from "../api/Notice";
 
 export default function Login() {
     const navigate = useNavigate();
+    const stored = sessionStorage.getItem('loginRedirectTo');
+    // 저장된 경로가 없거나 루트(/)면 메인으로, 그 외엔 원래 경로로
+    const redirectTo = (!stored || stored === '/') ? '/main' : stored;
 
     const [email, setEmail] = useState('demo@example.com');
     const [password, setPassword] = useState('demo1234');
@@ -36,7 +39,8 @@ export default function Login() {
             localStorage.setItem('accessToken', data.accessToken);
             const expiresAt = (data.serverTime ?? Date.now()) + (data.expiresIn ?? 0) * 1000;
             localStorage.setItem('accessTokenExpiresAt', String(expiresAt));
-            navigate('/main');
+            sessionStorage.removeItem('loginRedirectTo');
+            navigate(redirectTo);
         } catch (err: any) {
             console.log("로그인 실패: ", err);
             alert("로그인 실패");
@@ -54,6 +58,7 @@ export default function Login() {
     const handleSocialLogin = (provider: 'google' | 'kakao' | 'naver') => {
         if (socialLoading) return;
         setSocialLoading(provider);
+        sessionStorage.setItem('loginRedirectTo', redirectTo);
         window.location.href = `/oauth2/authorization/${provider}`;
     };
 
