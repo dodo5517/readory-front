@@ -4,14 +4,6 @@ import { useEffect, useState } from 'react';
 import { fetchCurrentUser } from '../api/Auth';
 import { useUser } from '../contexts/UserContext';
 
-// 로그인 화면으로 보내기 전, 돌아올 경로를 저장
-const saveRedirectPath = () => {
-    const path = window.location.pathname;
-    if (path !== '/login' && path !== '/') {
-        sessionStorage.setItem('loginRedirectTo', path);
-    }
-};
-
 const Layout = () => {
     const [checking, setChecking] = useState(true);
     const { setUser } = useUser();
@@ -40,8 +32,12 @@ const Layout = () => {
     // checking이 끝난 뒤 토큰 상태를 다시 확인 (catch에서 지워졌을 수 있음)
     const authed = !!localStorage.getItem('accessToken');
     if (!authed) {
-        saveRedirectPath();
-        return <Navigate to="/login" replace />;
+        const path = window.location.pathname + window.location.search;
+        sessionStorage.setItem('loginRedirectTo', path);
+        const to = (path === '/login' || path === '/')
+            ? '/login'
+            : `/login?redirect=${encodeURIComponent(path)}`;
+        return <Navigate to={to} replace />;
     }
 
     return (
