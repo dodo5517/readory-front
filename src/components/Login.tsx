@@ -6,11 +6,22 @@ import {loginUser} from "../api/Auth";
 import {ArrowDownIcon, BellIcon} from "@phosphor-icons/react";
 import { getActiveNotice } from "../api/Notice";
 
+// 내부 경로만 허용 (오픈 리다이렉트 방지)
+// '/'로 시작하되 '//' 또는 '/\'로 시작하는 외부 주소 우회는 차단
+function safeInternalPath(path: string | null): string {
+    if (!path || path === '/') return '/main';
+    if (!path.startsWith('/')) return '/main';
+    if (path.startsWith('//') || path.startsWith('/\\')) return '/main';
+    return path;
+}
+
 export default function Login() {
     const navigate = useNavigate();
-    const stored = sessionStorage.getItem('loginRedirectTo');
-    // 저장된 경로가 없거나 루트(/)면 메인으로, 그 외엔 원래 경로로
-    const redirectTo = (!stored || stored === '/') ? '/main' : stored;
+    // 1순위: URL 쿼리(?redirect=), 2순위: sessionStorage (PrivateRoute/Layout이 저장한 값)
+    const queryRedirect = new URLSearchParams(window.location.search).get('redirect');
+    const stored = queryRedirect || sessionStorage.getItem('loginRedirectTo');
+    // 외부 주소로의 리다이렉트를 막기 위해 내부 경로만 허용
+    const redirectTo = safeInternalPath(stored);
 
     const [email, setEmail] = useState('demo@example.com');
     const [password, setPassword] = useState('demo1234');

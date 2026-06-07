@@ -1,6 +1,14 @@
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+// 내부 경로만 허용 (오픈 리다이렉트 방지)
+function safeInternalPath(path: string | null): string {
+    if (!path || path === '/') return '/main';
+    if (!path.startsWith('/')) return '/main';
+    if (path.startsWith('//') || path.startsWith('/\\')) return '/main';
+    return path;
+}
+
 export default function OAuthCallback() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -18,7 +26,8 @@ export default function OAuthCallback() {
             localStorage.setItem('accessTokenExpiresAt', String(expiresAt));
         }
 
-        const redirectTo = sessionStorage.getItem('loginRedirectTo') || '/main';
+        const stored = sessionStorage.getItem('loginRedirectTo');
+        const redirectTo = safeInternalPath(stored);
         sessionStorage.removeItem('loginRedirectTo');
         navigate(redirectTo, { replace: true });
     }, [location, navigate]);

@@ -6,8 +6,12 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     const location = useLocation();
 
     if (!isAuthenticated) {
-        sessionStorage.setItem('loginRedirectTo', location.pathname);
-        return <Navigate to="/login" replace />;
+        const path = location.pathname + location.search;
+        sessionStorage.setItem('loginRedirectTo', path);
+        const to = (path === '/login' || path === '/')
+            ? '/login'
+            : `/login?redirect=${encodeURIComponent(path)}`;
+        return <Navigate to={to} replace />;
     }
 
     return children;

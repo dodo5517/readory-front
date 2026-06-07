@@ -51,11 +51,13 @@ export async function fetchWithAuth(input: string, init: RequestInit = {}): Prom
             // 재발급 실패 → 로그아웃 처리
             console.error("RefreshToken 만료 또는 유효하지 않음");
             localStorage.removeItem("accessToken");
-            const path = window.location.pathname;
+            const path = window.location.pathname + window.location.search;
             if (path !== '/login' && path !== '/') {
                 sessionStorage.setItem('loginRedirectTo', path);
+                window.location.href = `/login?redirect=${encodeURIComponent(path)}`;
+            } else {
+                window.location.href = "/login";
             }
-            window.location.href = "/login";
             throw new Error("토큰 재발급 실패");
         }
     }
