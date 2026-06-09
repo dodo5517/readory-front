@@ -245,7 +245,7 @@ export default function AdminRecordsPage() {
                                 이전
                             </button>
                             <span className={styles.pageInfo}>
-                                {data ? `${data.number + 1} / ${totalPages}` : "-"}
+                                {data ? `${data.page + 1} / ${totalPages}` : "-"}
                             </span>
                             <button
                                 className={styles.pageBtn}

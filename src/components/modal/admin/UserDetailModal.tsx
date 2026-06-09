@@ -64,14 +64,14 @@ export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList
         if (!userId) return;
         if (!window.confirm("API Key를 재발급 하시겠습니까?")) return;
         const res = await adminUser.reissueApiKey(userId);
-        alert(`${res.message}\n${res.maskedApiKey}`);
+        alert(`API Key 재발급 완료\n${res.maskedApiKey}`);
         await refreshAll();
     };
 
     const handleGetRawApiKey = async () => {
         if (!userId) return;
         const res = await adminUser.getRawApiKey(userId);
-        alert(`${res.message}\n${res.apiKey}`);
+        alert(`API Key 조회 완료\n${res.apiKey}`);
     };
 
     const handleResetUser = async () => {

@@ -184,7 +184,7 @@ export default function AdminUserPage() {
                     </button>
 
                     <span className={styles.pageInfo}>
-            {data ? `${data.number + 1} / ${totalPages}` : "-"}
+            {data ? `${data.page + 1} / ${totalPages}` : "-"}
           </span>
 
                     <button
