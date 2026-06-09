@@ -29,7 +29,7 @@ export default function BookCarousel() {
             try {
                 const books = await fetchMySummaryBooks();
                 setList(books);
-                console.log("fetchMySummaryBooks");
+                // console.log("fetchMySummaryBooks");
             } catch (e: any){
                 console.error(e);
                 setError("불러오기 실패")

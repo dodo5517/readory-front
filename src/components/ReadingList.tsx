@@ -19,7 +19,7 @@ export default function ReadingList() {
             try {
                 const items = await fetchMySummaryRecords();
                 setList(items);
-                console.log("fetchMySummaryRecords");
+                // console.log("fetchMySummaryRecords");
             } catch (e: any) {
                 console.error(e);
                 setError("불러오기 실패");

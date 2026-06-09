@@ -18,7 +18,7 @@ export default function EditPasswordPage() {
         if (isSubmitting) return;
 
         setIsSubmitting(true);
-        console.log('유저이름 수정 시도');
+        // console.log('유저이름 수정 시도');
 
         if (!currentPassword || !newPassword || !confirmPassword) {
             alert('모든 항목을 입력해주세요.');
@@ -40,7 +40,7 @@ export default function EditPasswordPage() {
             // authService
             await updatePassword(currentPassword, newPassword);
         } catch (err: any) {
-            console.log("유저이름 수정 실패: ", err)
+            // console.log("유저이름 수정 실패: ", err)
             alert(err.message);
             return;
         } finally {

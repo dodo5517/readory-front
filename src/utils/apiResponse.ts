@@ -20,7 +20,7 @@ export async function unwrap<T>(res: Response): Promise<T> {
   const text = await res.text();
   const body: ApiResponse<T> | null = text ? JSON.parse(text) : null;
 
-  if (!res.ok || (body && body.success === false)) {
+  if (!res.ok || (body && !body.success)) {
     throw new ApiError(
       body?.message ?? `요청 실패: ${res.status}`,
       body?.code,
@@ -33,7 +33,7 @@ export async function unwrap<T>(res: Response): Promise<T> {
 export async function unwrapVoid(res: Response): Promise<string | undefined> {
   const text = await res.text();
   const body: ApiResponse<unknown> | null = text ? JSON.parse(text) : null;
-  if (!res.ok || (body && body.success === false)) {
+  if (!res.ok || (body && !body.success)) {
     throw new ApiError(
       body?.message ?? `요청 실패: ${res.status}`,
       body?.code,

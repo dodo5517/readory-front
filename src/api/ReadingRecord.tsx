@@ -1,7 +1,7 @@
-import { fetchWithAuth } from "../utils/fetchWithAuth";
-import { unwrap, unwrapVoid } from "../utils/apiResponse";
+import {fetchWithAuth} from "../utils/fetchWithAuth";
+import {unwrap, unwrapVoid} from "../utils/apiResponse";
 import {BookRecord, BookRecordsPage, CreateRecordRequest, Record, SummaryRecord, UpdateRecord} from "../types/records";
-import { formatYMDhm } from "../utils/datetime";
+import {formatYMDhm} from "../utils/datetime";
 import {BookCandidate, BookComment, BookMeta, PageResponse, PageResult, SummaryBook} from "../types/books";
 
 
@@ -56,7 +56,7 @@ export async function fetchMyRecords(opts: {
     const response = await fetchWithAuth(`/records/me?${params.toString()}`, { method: "GET" });
 
     const pageData = await unwrap<PageResponse<any>>(response);
-    console.log(pageData);
+    // console.log(pageData);
 
     const items: Record[] = (pageData.content ?? []).map((r: any) => ({
         id: r.id,
@@ -86,7 +86,7 @@ export async function fetchMySummaryBooks(): Promise<SummaryBook[]> {
     const response = await fetchWithAuth(`/records/me/books/main?size=8`, { method: "GET" });
 
     const pageData = await unwrap<PageResponse<SummaryBook>>(response);
-    console.log(pageData);
+    // console.log(pageData);
 
     return pageData.content
         .map((b: SummaryBook) => ({
@@ -117,7 +117,7 @@ export async function fetchMyBooks(opts: {
     const response = await fetchWithAuth(`/records/me/books?${params.toString()}`, { method: "GET" });
 
     const pageData = await unwrap<PageResponse<any>>(response);
-    console.log(pageData);
+    // console.log(pageData);
 
     const items: SummaryBook[] = pageData.content.map((b: any) => ({
         id: b.id,
@@ -145,10 +145,9 @@ export async function fetchCandidatesLocal(rawTitle : string, rawAuthor: string)
 
     const response = await fetchWithAuth(`/books/candidates/local?${params}`, { method: "GET" });
 
-    const bookCandidates = await unwrap<BookCandidate[]>(response);
-    console.log(bookCandidates);
+    // console.log(bookCandidates);
 
-    return bookCandidates;
+    return await unwrap<BookCandidate[]>(response);
 }
 
 // 외부에서 책 후보 요청
@@ -157,15 +156,14 @@ export async function fetchCandidatesExternal(rawTitle : string, rawAuthor: stri
 
     const response = await fetchWithAuth(`/books/candidates/external?${params}`, { method: "GET" });
 
-    const bookCandidates = await unwrap<BookCandidate[]>(response);
-    console.log(bookCandidates);
+    // console.log(bookCandidates);
 
-    return bookCandidates;
+    return await unwrap<BookCandidate[]>(response);
 }
 
 // 기록-책 연결
 export async function linkRecord(recordId: number, book: BookCandidate):Promise<void> {
-    console.log("author:", book.author);
+    // console.log("author:", book.author);
     const response = await fetchWithAuth(`/records/${recordId}/link`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -203,7 +201,7 @@ export async function fetchBookRecords(bookId: number, cursor: string|null, size
     const response = await fetchWithAuth(url, {method: "GET"});
 
     const data = await unwrap<BookRecordsPage<BookMeta, BookRecord>>(response);
-    console.log(data);
+    // console.log(data);
 
     const book: BookMeta = {
         id: data.book.id,

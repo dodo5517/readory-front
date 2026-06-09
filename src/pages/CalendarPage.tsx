@@ -86,7 +86,7 @@ export default function CalendarPage() {
                 size: String(size),
             }, { replace: true } as any);
             didInitURL.current = true;
-            console.log("setSearchParams에 month 설정됨.");
+            // console.log("setSearchParams에 month 설정됨.");
             return;
         }
         if (mode === "day" && !date) {
@@ -102,7 +102,7 @@ export default function CalendarPage() {
                 size: String(size),
             }, { replace: true } as any);
             didInitURL.current = true;
-            console.log("setSearchParams에 date 설정됨.");
+            // console.log("setSearchParams에 date 설정됨.");
             return;
         }
 
@@ -126,13 +126,13 @@ export default function CalendarPage() {
                     const res = await fetchMyDay({ date, page, sort, size, q });
                     if (!cancelled) {
                         setData(res);
-                        console.log("fetchMyDay 실행됨.");
+                        // console.log("fetchMyDay 실행됨.");
                     }
                 } else if (mode === "month" && year && month) {
                     const res = await fetchMyMonth({ year, month, page, sort, size, q });
                     if (!cancelled) {
                         setData(res);
-                        console.log("fetchMyMonth 실행됨.");
+                        // console.log("fetchMyMonth 실행됨.");
                     }
                 }
             } catch {
@@ -147,7 +147,7 @@ export default function CalendarPage() {
 
     // 책 후보 검색 후 모달 띄움
     const openSelectModal = async (rec: Record) => {
-        console.log("openSelectModal");
+        // console.log("openSelectModal");
         setSelectedRecordId(rec.id);
         // 기록에 있는 제목/작가를 초기 키워드로 사용 (없으면 빈 문자열)
         const rawTitle = rec.title ?? "";
@@ -166,7 +166,7 @@ export default function CalendarPage() {
             // 처음엔 로컬로 후보 검색
             const list = await fetchCandidatesLocal(rawTitle, rawAuthor);
             setCandidates(list);
-            console.log("fetchCandidates candidates: ", candidates);
+            // console.log("fetchCandidates candidates: ", candidates);
         } catch (e: any) {
             console.error(e);
             setCandidates([]);
@@ -197,7 +197,7 @@ export default function CalendarPage() {
             const author = modalSortKey === 'author' ? modalKeyword : "";
             const list = await fetchCandidatesLocal(title, author);
             setCandidates(list);
-            console.log("searched candidates: ", list);
+            // console.log("searched candidates: ", list);
         } catch (e) {
             console.error(e);
             setCandidates([]);
@@ -214,7 +214,7 @@ export default function CalendarPage() {
             const author = modalSortKey === 'author' ? modalKeyword : "";
             const list = await fetchCandidatesExternal(title, author);
             setCandidates(list);
-            console.log("searched candidates: ", list);
+            // console.log("searched candidates: ", list);
         } catch (e) {
             console.error(e);
             setCandidates([]);
@@ -266,7 +266,7 @@ export default function CalendarPage() {
                 size: String(p.size),
             });
         }
-        console.log("handleToolbarSubmit 실행됨");
+        // console.log("handleToolbarSubmit 실행됨");
     };
 
     return (

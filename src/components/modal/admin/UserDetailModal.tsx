@@ -79,7 +79,7 @@ export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList
         const ok = window.confirm("정말 초기화 할까요? 이 작업은 되돌릴 수 없습니다.");
         if (!ok) return;
         const newPwd = await adminUser.resetUser(userId);
-        console.log(newPwd);
+        // console.log(newPwd);
         prompt("초기화된 비밀번호입니다. 복사하세요.", newPwd);
         await refreshAll();
     };
