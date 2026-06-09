@@ -1,4 +1,5 @@
 import { fetchWithAuth } from "../utils/fetchWithAuth";
+import { unwrap, unwrapVoid } from "../utils/apiResponse";
 import {PageResponse} from "../types/books";
 import {
     ApiKeyResponse, ChangeUserStatusRequest,
@@ -26,11 +27,7 @@ export async function getUsers(params: GetUsersParams = {}): Promise<PageRespons
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("유저 목록 조회 실패");
-    }
-
-    return await response.json();
+    return unwrap<PageResponse<AdminPageUserResponse>>(response);
 }
 
 // 특정 유저 조회
@@ -40,11 +37,7 @@ export async function getUser(id: number): Promise<AdminPageUserResponse> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("유저 조회 실패");
-    }
-
-    return await response.json();
+    return unwrap<AdminPageUserResponse>(response);
 }
 
 // 유저 이름 수정
@@ -56,9 +49,7 @@ export async function updateUsername(id: number, request: UpdateUsernameRequest)
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("유저 이름 수정 실패");
-    }
+    await unwrapVoid(response);
 }
 
 // 유저 비밀번호 수정 (관리자)
@@ -70,9 +61,7 @@ export async function updatePassword(id: number, request: UpdatePasswordAdminReq
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("비밀번호 수정 실패");
-    }
+    await unwrapVoid(response);
 }
 
 // 프로필 이미지 업로드
@@ -86,11 +75,7 @@ export async function uploadProfileImage(id: number, image: File): Promise<strin
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("프로필 이미지 업로드 실패");
-    }
-
-    return await response.text();
+    return unwrap<string>(response);
 }
 
 // 프로필 이미지 삭제
@@ -100,9 +85,7 @@ export async function deleteProfileImage(id: number): Promise<void> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("프로필 이미지 삭제 실패");
-    }
+    await unwrapVoid(response);
 }
 
 // API Key 재발급
@@ -112,11 +95,7 @@ export async function reissueApiKey(id: number): Promise<MaskedApiKeyResponse> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("API Key 재발급 실패");
-    }
-
-    return await response.json();
+    return unwrap<MaskedApiKeyResponse>(response);
 }
 
 // API Key 전체 조회 (마스킹 안 된)
@@ -126,11 +105,7 @@ export async function getRawApiKey(id: number): Promise<ApiKeyResponse> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("API Key 조회 실패");
-    }
-
-    return await response.json();
+    return unwrap<ApiKeyResponse>(response);
 }
 
 // 유저 초기화
@@ -140,15 +115,8 @@ export async function resetUser(id: number): Promise<string> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("유저 초기화 실패");
-    }
-    const newPwd = await response.text(); // json() 말고 text()
-    console.log("response:", newPwd);
-
-    return newPwd
+    return unwrap<string>(response);
 }
-
 
 // 유저 삭제
 export async function deleteUser(id: number): Promise<boolean> {
@@ -157,11 +125,7 @@ export async function deleteUser(id: number): Promise<boolean> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("유저 삭제 실패");
-    }
-
-    return await response.json();
+    return unwrap<boolean>(response);
 }
 
 // 유저 상태 변경
@@ -173,9 +137,7 @@ export async function changeUserStatus(id: number, request: ChangeUserStatusRequ
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("유저 상태 변경 실패");
-    }
+    await unwrapVoid(response);
 }
 
 // 유저 역할 변경
@@ -187,9 +149,7 @@ export async function changeUserRole(id: number, role: string): Promise<void> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("유저 역할 변경 실패");
-    }
+    await unwrapVoid(response);
 }
 
 // 유저 전체 기기 로그아웃
@@ -199,7 +159,5 @@ export async function logoutAllDevices(id: number): Promise<void> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("로그아웃 실패");
-    }
+    await unwrapVoid(response);
 }

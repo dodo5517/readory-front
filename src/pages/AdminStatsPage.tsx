@@ -329,7 +329,7 @@ export default function AdminStatsPage() {
                                     이전
                                 </button>
                                 <span className={styles.pageInfo}>
-                                    {activity.number + 1} / {activity.totalPages}
+                                    {activity.page + 1} / {activity.totalPages}
                                 </span>
                                 <button
                                     className={styles.pageBtn}

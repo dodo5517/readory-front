@@ -36,11 +36,9 @@ export interface ChangeUserStatusRequest {
 }
 
 export interface MaskedApiKeyResponse {
-    message: string;
     maskedApiKey: string;
 }
 
 export interface ApiKeyResponse {
-    message: string;
     apiKey: string;
 }

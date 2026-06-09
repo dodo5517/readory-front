@@ -43,13 +43,11 @@ export type BookMeta = {
 
 export type PageResponse<T> = {
     content: T[];
-    totalPages: number;
+    page: number;          // 0-base (구 number)
+    size: number;
     totalElements: number;
-    size: number;         // 페이지 크기
-    number: number;       // 현재 페이지(0-base)
-    first: boolean;
+    totalPages: number;
     last: boolean;
-    numberOfElements: number;
 };
 
 export type PageResult<T> = {

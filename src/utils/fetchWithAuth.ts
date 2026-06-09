@@ -33,7 +33,7 @@ export async function fetchWithAuth(input: string, init: RequestInit = {}): Prom
 
         if (reissueResponse.ok) {
             const data = await reissueResponse.json();
-            const newAccessToken = data.accessToken;
+            const newAccessToken = data.data?.accessToken ?? data.accessToken;
             localStorage.setItem("accessToken", newAccessToken);
 
             // Authorization 헤더 갱신 후 재요청

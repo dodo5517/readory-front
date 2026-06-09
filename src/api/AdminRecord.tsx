@@ -9,6 +9,7 @@ import {
 } from "../types/adminRecord";
 import { PageResponse } from "../types/books";
 import { fetchWithAuth } from "../utils/fetchWithAuth";
+import { unwrap, unwrapVoid } from "../utils/apiResponse";
 
 // 특정 유저의 기록 목록 조회 (userId 필수)
 export async function getRecords(
@@ -28,8 +29,7 @@ export async function getRecords(
         credentials: "include",
     });
 
-    if (!response.ok) throw new Error("기록 목록 조회 실패");
-    return response.json();
+    return unwrap<PageResponse<AdminRecordListResponse>>(response);
 }
 
 // 특정 기록 상세 조회
@@ -39,8 +39,7 @@ export async function getRecord(id: number): Promise<AdminRecordDetailResponse> 
         credentials: "include",
     });
 
-    if (!response.ok) throw new Error("기록 상세 조회 실패");
-    return response.json();
+    return unwrap<AdminRecordDetailResponse>(response);
 }
 
 // 기록 수정
@@ -55,8 +54,7 @@ export async function updateRecord(
         credentials: "include",
     });
 
-    if (!response.ok) throw new Error("기록 수정 실패");
-    return response.json();
+    return unwrap<AdminRecordDetailResponse>(response);
 }
 
 // 기존 sentence 일괄 정리 (출처 문구 제거)
@@ -66,8 +64,7 @@ export async function cleanSentences(): Promise<{ total: number; updated: number
         credentials: "include",
     });
 
-    if (!response.ok) throw new Error("정리 실패");
-    return response.json();
+    return unwrap<{ total: number; updated: number }>(response);
 }
 
 // 기록 삭제
@@ -77,7 +74,7 @@ export async function deleteRecord(id: number): Promise<void> {
         credentials: "include",
     });
 
-    if (!response.ok) throw new Error("기록 삭제 실패");
+    await unwrapVoid(response);
 }
 
 // 통계 조회
@@ -87,8 +84,7 @@ export async function getStats(): Promise<AdminRecordStatsResponse> {
         credentials: "include",
     });
 
-    if (!response.ok) throw new Error("통계 조회 실패");
-    return response.json();
+    return unwrap<AdminRecordStatsResponse>(response);
 }
 
 // 유저 활동 현황
@@ -107,8 +103,7 @@ export async function getUserActivity(
         credentials: "include",
     });
 
-    if (!response.ok) throw new Error("유저 활동 현황 조회 실패");
-    return response.json();
+    return unwrap<PageResponse<AdminUserActivityResponse>>(response);
 }
 
 // 책 통계 조회
@@ -118,6 +113,5 @@ export async function getBookStats(): Promise<AdminBookStatsResponse> {
         credentials: "include",
     });
 
-    if (!response.ok) throw new Error("책 통계 조회 실패");
-    return response.json();
+    return unwrap<AdminBookStatsResponse>(response);
 }
