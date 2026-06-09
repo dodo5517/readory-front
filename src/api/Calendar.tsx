@@ -61,7 +61,7 @@ export async function fetchMyMonth(opts: {
     const response = await fetchWithAuth(`/records/month?${params.toString()}`, { method: "GET" });
 
     const pageData = await unwrap<PageResponse<any>>(response);
-    console.log(pageData);
+    // console.log(pageData);
 
     const items: Record[] = (pageData.content ?? []).map((r: any) => ({
         id: r.id,
@@ -107,7 +107,7 @@ export async function fetchMyDay(opts: {
     const response = await fetchWithAuth(`/records/day?${params.toString()}`, { method: "GET" });
 
     const pageData = await unwrap<PageResponse<any>>(response);
-    console.log(pageData);
+    // console.log(pageData);
 
     const items: Record[] = (pageData.content ?? []).map((r: any) => ({
         id: r.id,

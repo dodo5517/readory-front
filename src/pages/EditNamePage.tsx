@@ -23,7 +23,7 @@ export default function EditNamePage() {
         if (isSubmitting) return;
 
         setIsSubmitting(true);
-        console.log('유저이름 수정 시도');
+        // console.log('유저이름 수정 시도');
 
         if (!newUsername.trim()) {
             alert('이름을 입력해주세요.');
@@ -42,7 +42,7 @@ export default function EditNamePage() {
             await updateUsername(newUsername);
 
         } catch (err: any) {
-            console.log("유저이름 수정 실패: ", err);
+            // console.log("유저이름 수정 실패: ", err);
             alert("이름 변경 실패");
             return;
         } finally {

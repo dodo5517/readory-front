@@ -31,7 +31,7 @@ export default function Header(){
         month,
     }).toString()}`;
 
-    console.log(user);
+    // console.log(user);
 
     const handleExtend = React.useCallback(async () => {
         setRefreshing(true);

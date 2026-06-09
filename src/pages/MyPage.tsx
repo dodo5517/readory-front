@@ -39,7 +39,7 @@ export default function MyPage() {
                 ...user!,
                 maskedApiKey: result.maskedApiKey
             });
-            console.log("마스킹된 키:", result.maskedApiKey);
+            // console.log("마스킹된 키:", result.maskedApiKey);
             alert('API Key를 새로 만들었습니다. \n \nAPI Key는 외부 서비스와의 인증에 사용되며, 노출되지 않도록 주의해주세요.');
         } catch (error) {
             alert('새로 만드는 중 오류가 발생했습니다.');
@@ -52,7 +52,7 @@ export default function MyPage() {
     const handleLogoutAllDevices = async(e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log("모든 기기에서 로그아웃 시도");
+        // console.log("모든 기기에서 로그아웃 시도");
 
         try {
             await logoutAllDevices();
@@ -75,7 +75,7 @@ export default function MyPage() {
         if (!file || !user) return;
 
         try {
-            const imageUrl = await uploadProfileImage(user.id, file);
+            const imageUrl = await uploadProfileImage(file);
             setUser({
                 ...user!,
                 profileImageUrl: imageUrl
@@ -96,7 +96,7 @@ export default function MyPage() {
         if (!confirmed) return;
 
         try {
-            await deleteProfileImage(user.id);
+            await deleteProfileImage();
             setUser({
                 ...user!,
                 profileImageUrl: null

@@ -112,9 +112,9 @@ export default function Login() {
                     </button>
                 </form>
 
-                <div className={styles.footer}>
-                    계정이 없으신가요? <Link to="/signUp" className={styles.a}>회원가입</Link>
-                </div>
+                {/*<div className={styles.footer}>*/}
+                {/*    계정이 없으신가요? <Link to="/signUp" className={styles.a}>회원가입</Link>*/}
+                {/*</div>*/}
                 <p className={styles.googleHint}>현재 구글, 네이버로 가입할 수 있어요 <ArrowDownIcon className={styles.icon}/></p>
 
                 <div className={styles.socialLogin}>
