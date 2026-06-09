@@ -1,4 +1,5 @@
 import { fetchWithAuth } from "../utils/fetchWithAuth";
+import { unwrap } from "../utils/apiResponse";
 import {PageResponse} from "../types/books";
 import {
     ApiLogDetailResponse,
@@ -25,11 +26,7 @@ export async function getLogs(params: GetLogsParams = {}): Promise<PageResponse<
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("로그 목록 조회 실패");
-    }
-
-    return await response.json();
+    return unwrap<PageResponse<LogListResponse>>(response);
 }
 
 // 특정 인증 로그 상세 조회
@@ -39,11 +36,7 @@ export async function getLogDetail(id: number): Promise<LogDetailResponse> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("로그 상세 조회 실패");
-    }
-
-    return await response.json();
+    return unwrap<LogDetailResponse>(response);
 }
 
 // 전체 API 로그 조회 (목록)
@@ -63,11 +56,7 @@ export async function getApiLogs(params: GetApiLogsParams = {}): Promise<PageRes
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("API 로그 목록 조회 실패");
-    }
-
-    return await response.json();
+    return unwrap<PageResponse<ApiLogListResponse>>(response);
 }
 
 // 특정 API 로그 상세 조회
@@ -77,9 +66,5 @@ export async function getApiLogDetail(id: number): Promise<ApiLogDetailResponse>
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("API 로그 상세 조회 실패");
-    }
-
-    return await response.json();
+    return unwrap<ApiLogDetailResponse>(response);
 }

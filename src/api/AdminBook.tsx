@@ -1,6 +1,7 @@
 import {PageResponse} from "../types/books";
 import {BookDetailResponse, BookListResponse, GetBooksParams} from "../types/adminLog";
 import {fetchWithAuth} from "../utils/fetchWithAuth";
+import { unwrap, unwrapVoid } from "../utils/apiResponse";
 
 export async function getBooks(params: GetBooksParams = {}): Promise<PageResponse<BookListResponse>> {
     const query = new URLSearchParams();
@@ -16,11 +17,7 @@ export async function getBooks(params: GetBooksParams = {}): Promise<PageRespons
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("책 목록 조회 실패");
-    }
-
-    return await response.json();
+    return unwrap<PageResponse<BookListResponse>>(response);
 }
 
 // 특정 책 상세 조회
@@ -30,11 +27,7 @@ export async function getBook(id: number): Promise<BookDetailResponse> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("책 상세 조회 실패");
-    }
-
-    return await response.json();
+    return unwrap<BookDetailResponse>(response);
 }
 
 // 책 소프트 삭제
@@ -44,9 +37,7 @@ export async function softDeleteBook(id: number): Promise<void> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("책 삭제 실패");
-    }
+    await unwrapVoid(response);
 }
 
 // 책 영구 삭제
@@ -56,9 +47,7 @@ export async function hardDeleteBook(id: number): Promise<void> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("책 영구 삭제 실패");
-    }
+    await unwrapVoid(response);
 }
 
 // 삭제된 책 복구
@@ -68,7 +57,5 @@ export async function restoreBook(id: number): Promise<void> {
         credentials: "include",
     });
 
-    if (!response.ok) {
-        throw new Error("책 복구 실패");
-    }
+    await unwrapVoid(response);
 }
