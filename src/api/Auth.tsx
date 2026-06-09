@@ -113,7 +113,7 @@ export async function getFullApiKey(): Promise<{ apiKey: string }> {
 }
 
 // 프로필 이미지 업로드
-export async function uploadProfileImage(userId: number, file: File): Promise<string> {
+export async function uploadProfileImage(file: File): Promise<string> {
     const formData = new FormData();
     formData.append("image", file);
 
@@ -127,7 +127,7 @@ export async function uploadProfileImage(userId: number, file: File): Promise<st
 }
 
 // 프로필 이미지 삭제
-export async function deleteProfileImage(userId: number): Promise<void> {
+export async function deleteProfileImage(): Promise<void> {
     const res = await fetchWithAuth(`/users/me/profile-image`, {
         method: "DELETE",
         credentials: "include"
