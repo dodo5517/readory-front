@@ -1,5 +1,6 @@
 import {CalendarRangeResponse, CalendarSummary, DayCount} from "../types/calendar";
 import {fetchWithAuth} from "../utils/fetchWithAuth";
+import { unwrap } from "../utils/apiResponse";
 import {PageResponse, PageResult} from "../types/books";
 import {Record} from "../types/records";
 import {formatYMDhm} from "../utils/datetime";
@@ -8,18 +9,14 @@ import {formatYMDhm} from "../utils/datetime";
 export async function fetchCalendarRange(year: number, month: number)
     : Promise<CalendarRangeResponse> {
 
-    // Url 매개변수 설정
     const params = new URLSearchParams({
         year: String(year),
         month: String(month),
     }).toString();
 
     const response = await fetchWithAuth(`/records/calendar?${params}`, { method: "GET" });
-    if (!response.ok) {
-        throw new Error(`요청 실패: ${response.status}`);
-    }
 
-    const data = await response.json();
+    const data = await unwrap<CalendarRangeResponse>(response);
 
     const days: DayCount[] = data.days.map((d: any) =>({
         date: d.date,
@@ -62,11 +59,8 @@ export async function fetchMyMonth(opts: {
     if (q && q.trim()) params.set("q", q.trim());
 
     const response = await fetchWithAuth(`/records/month?${params.toString()}`, { method: "GET" });
-    if (!response.ok) {
-        throw new Error(`요청 실패: ${response.status}`);
-    }
 
-    const pageData: PageResponse<any> = await response.json(); // Page 객체
+    const pageData = await unwrap<PageResponse<any>>(response);
     console.log(pageData);
 
     const items: Record[] = (pageData.content ?? []).map((r: any) => ({
@@ -83,12 +77,12 @@ export async function fetchMyMonth(opts: {
 
     return {
         items,
-        page: pageData.number ?? page,
+        page: pageData.page ?? page,
         size: pageData.size ?? size,
         totalPages: pageData.totalPages ?? 0,
         totalElements: pageData.totalElements ?? items.length,
-        hasPrev: !(pageData.first ?? page === 0),
-        hasNext: !(pageData.last ?? page + 1 >= (pageData.totalPages ?? 0)),
+        hasPrev: (pageData.page ?? page) > 0,
+        hasNext: !(pageData.last ?? false),
     };
 }
 
@@ -111,11 +105,8 @@ export async function fetchMyDay(opts: {
     if (q && q.trim()) params.set("q", q.trim());
 
     const response = await fetchWithAuth(`/records/day?${params.toString()}`, { method: "GET" });
-    if (!response.ok) {
-        throw new Error(`요청 실패: ${response.status}`);
-    }
 
-    const pageData: PageResponse<any> = await response.json(); // Page 객체
+    const pageData = await unwrap<PageResponse<any>>(response);
     console.log(pageData);
 
     const items: Record[] = (pageData.content ?? []).map((r: any) => ({
@@ -132,11 +123,11 @@ export async function fetchMyDay(opts: {
 
     return {
         items,
-        page: pageData.number ?? page,
+        page: pageData.page ?? page,
         size: pageData.size ?? size,
         totalPages: pageData.totalPages ?? 0,
         totalElements: pageData.totalElements ?? items.length,
-        hasPrev: !(pageData.first ?? page === 0),
-        hasNext: !(pageData.last ?? page + 1 >= (pageData.totalPages ?? 0)),
+        hasPrev: (pageData.page ?? page) > 0,
+        hasNext: !(pageData.last ?? false),
     };
 }
