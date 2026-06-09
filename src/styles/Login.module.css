@@ -328,7 +328,7 @@
 .googleHint {
     font-size: 0.78rem;
     color: var(--text-muted);
-    margin: 4px 0 0;
+    margin: 10px 0 0;
     display: inline-flex;
     align-items: center;
     gap: 4px;

@@ -3,18 +3,18 @@ import { unwrap, unwrapVoid } from "../utils/apiResponse";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL!;
 
 // 일반 회원가입(POST)
-export async function registerUser(email: string, username: string, password: string) {
-    console.log('RegisterUser');
-
-    const response = await fetch(`${API_BASE_URL}/users`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, username, password }),
-        credentials: 'include',
-    });
-
-    await unwrapVoid(response);
-}
+// export async function registerUser(email: string, username: string, password: string) {
+//     // console.log('RegisterUser');
+//
+//     const response = await fetch(`${API_BASE_URL}/users`, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ email, username, password }),
+//         credentials: 'include',
+//     });
+//
+//     await unwrapVoid(response);
+// }
 
 // 로그인(POST)
 export async function loginUser(email: string, password: string) {
