@@ -1,54 +1,40 @@
 import {fetchWithAuth} from "../utils/fetchWithAuth";
+import { unwrap, unwrapVoid } from "../utils/apiResponse";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL!;
 
 // 일반 회원가입(POST)
 export async function registerUser(email: string, username: string, password: string) {
     console.log('RegisterUser');
 
-    const response = await fetch(`${API_BASE_URL}/users`, {  // 일반 fetch
+    const response = await fetch(`${API_BASE_URL}/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, username, password }),
         credentials: 'include',
     });
 
-    if (!response.ok) {
-        throw new Error("회원가입 실패");
-    }
-
-    return await response.json();
+    await unwrapVoid(response);
 }
 
 // 로그인(POST)
 export async function loginUser(email: string, password: string) {
     console.log("loginUser")
 
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {  // 일반 fetch
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
         credentials: 'include',
     });
 
-    if (!response.ok) {
-        throw new Error("로그인 실패");
-    }
-
-    return await response.json(); // accessToken 반환 포함한 상태임
+    return unwrap<{ accessToken: string; serverTime?: number; expiresIn?: number }>(response);
 }
 
-// 현재 로그인한 유저 정보 조희
+// 현재 로그인한 유저 정보 조회
 export async function fetchCurrentUser(){
     console.log("fetchCurrentUser")
     const response = await fetchWithAuth(`/users/me`);
-
-    if (!response.ok) {
-        console.log("유저 정보 조회 실패");
-        throw new Error("유저 정보 조회 실패");
-    }
-    console.log("response", response);
-
-    return await response.json();
+    return unwrap<any>(response);
 }
 
 // 유저이름 수정(PATCH)
@@ -59,13 +45,9 @@ export async function updateUsername(newUsername : string) {
         body: JSON.stringify({ newUsername: newUsername }),
     });
 
-    if (!response.ok) {
-        throw new Error("유저이름 수정 실패");
-    }
-
+    await unwrapVoid(response);
     return null;
 }
-
 
 // 유저 비밀번호 수정(PATCH)
 export async function updatePassword(currentPassword : string, newPassword : string) {
@@ -75,11 +57,7 @@ export async function updatePassword(currentPassword : string, newPassword : str
         body: JSON.stringify({ currentPassword, newPassword }),
     });
 
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "비밀번호 수정 실패");
-    }
-
+    await unwrapVoid(response);
     return null;
 }
 
@@ -87,14 +65,12 @@ export async function updatePassword(currentPassword : string, newPassword : str
 export async function reissueAccessToken() {
     const response = await fetchWithAuth(`/auth/reissue`, {
         method: 'POST',
-        credentials: 'include', // refreshToken 쿠키 전송
+        credentials: 'include',
     });
 
     if (response.ok) {
-        const data = await response.json();
+        const data = await unwrap<{ accessToken: string; expiresIn?: number }>(response);
         localStorage.setItem('accessToken', data.accessToken);
-        // const expiresAt = (data.serverTime ?? Date.now()) + (data.expiresIn ?? 0) * 1000;
-        // expiresAt을 클라이언트 시각 기준으로 고정
         const expiresAt = Date.now() + (data.expiresIn ?? 1800) * 1000;
         localStorage.setItem('accessTokenExpiresAt', String(expiresAt));
         return true;
@@ -118,11 +94,7 @@ export async function reissueApiKey(): Promise<{ maskedApiKey: string }> {
         credentials: 'include',
     });
 
-    if (!response.ok) {
-        throw new Error('API Key 재발급 실패');
-    }
-
-    return await response.json(); // { maskedApiKey: "************abcd" }
+    return unwrap<{ maskedApiKey: string }>(response);
 }
 
 // api_key 전체(마스킹 안 된) 조회(GET)
@@ -137,11 +109,7 @@ export async function getFullApiKey(): Promise<{ apiKey: string }> {
         credentials: 'include',
     });
 
-    if (!response.ok) {
-        throw new Error('API Key 조회 실패');
-    }
-
-    return await response.json(); // { apiKey: "abcd1234..." }
+    return unwrap<{ apiKey: string }>(response);
 }
 
 // 프로필 이미지 업로드
@@ -155,11 +123,7 @@ export async function uploadProfileImage(userId: number, file: File): Promise<st
         credentials: "include",
     });
 
-    if (!res.ok) {
-        throw new Error("프로필 이미지 업로드 실패");
-    }
-
-    return await res.text(); // 백엔드에서 imageUrl string을 반환함
+    return unwrap<string>(res);
 }
 
 // 프로필 이미지 삭제
@@ -169,22 +133,17 @@ export async function deleteProfileImage(userId: number): Promise<void> {
         credentials: "include"
     });
 
-    if (!res.ok) {
-        throw new Error("프로필 이미지 삭제 실패");
-    }
+    await unwrapVoid(res);
 }
-
 
 // 현재 기기에서 로그아웃(POST)
 export async function logoutUser() {
-    // 백엔드에 로그아웃 요청 보내고 쿠키 제거
     try {
         await fetchWithAuth(`/auth/logout`, {
             method: 'POST',
             credentials: 'include',
         }).catch(() => {});
     } finally {
-        // accessToken 삭제
         localStorage.removeItem('accessToken');
         localStorage.removeItem('accessTokenExpiresAt');
         window.location.replace('/login');
@@ -193,14 +152,12 @@ export async function logoutUser() {
 
 // 모든 기기에서 로그아웃(POST)
 export async function logoutAllDevices() {
-    // 백엔드에 로그아웃 요청 보내고 쿠키 제거
     try {
         await fetchWithAuth(`/auth/logout/all`, {
             method: 'POST',
             credentials: 'include',
         }).catch(() => {});
     } finally {
-        // accessToken 삭제
         localStorage.removeItem('accessToken');
         localStorage.removeItem('accessTokenExpiresAt');
         window.location.replace('/login');
@@ -214,7 +171,5 @@ export async function deleteUser():Promise<void> {
         credentials: "include"
     });
 
-    if (!res.ok) {
-        throw new Error("탈퇴 실패");
-    }
+    await unwrapVoid(res);
 }
