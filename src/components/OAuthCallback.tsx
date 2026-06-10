@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // 내부 경로만 허용 (오픈 리다이렉트 방지)
 function safeInternalPath(path: string | null): string {
@@ -11,11 +11,11 @@ function safeInternalPath(path: string | null): string {
 
 export default function OAuthCallback() {
     const navigate = useNavigate();
-    const location = useLocation();
 
     useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        // console.log(params);
+        const params = new URLSearchParams(window.location.hash.slice(1));
+        // fragment를 히스토리에서 제거 (토큰이 브라우저 히스토리에 남지 않도록)
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
         const accessToken = params.get("accessToken");
         const serverTime = Number(params.get("serverTime"));
         const expiresIn = Number(params.get("expiresIn"));
@@ -30,7 +30,7 @@ export default function OAuthCallback() {
         const redirectTo = safeInternalPath(stored);
         sessionStorage.removeItem('loginRedirectTo');
         navigate(redirectTo, { replace: true });
-    }, [location, navigate]);
+    }, [navigate]);
 
     return <div>로그인 중입니다...</div>;
 }
