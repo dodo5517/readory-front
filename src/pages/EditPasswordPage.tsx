@@ -47,8 +47,10 @@ export default function EditPasswordPage() {
             setIsSubmitting(false);
         }
 
-        alert('비밀번호가 성공적으로 변경되었습니다.');
-        navigate('/myPage');
+        alert('비밀번호가 변경되었습니다. 보안을 위해 다시 로그인해주세요.');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('accessTokenExpiresAt');
+        navigate('/login', { replace: true });
     });
 
     return (
