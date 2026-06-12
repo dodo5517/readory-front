@@ -16,6 +16,19 @@ export default function OAuthCallback() {
         const params = new URLSearchParams(window.location.hash.slice(1));
         // fragment를 히스토리에서 제거 (토큰이 브라우저 히스토리에 남지 않도록)
         window.history.replaceState(null, '', window.location.pathname + window.location.search);
+
+        const error = params.get("error");
+        if (error) {
+            const messages: Record<string, string> = {
+                account_blocked: "차단된 계정입니다. 관리자에게 문의해주세요.",
+                email_already_registered: "이미 다른 방식으로 가입된 이메일입니다. 기존 로그인 방식을 이용해주세요.",
+            };
+            alert(messages[error] ?? "소셜 로그인에 실패했습니다. 다시 시도해주세요.");
+            sessionStorage.removeItem('loginRedirectTo');
+            navigate('/login', { replace: true });
+            return;
+        }
+
         const accessToken = params.get("accessToken");
         const serverTime = Number(params.get("serverTime"));
         const expiresIn = Number(params.get("expiresIn"));
