@@ -211,11 +211,11 @@ export default function Calendar() {
     };
 
     const goDay = (fullDate: string) => {
-        navigate({ pathname: "/calendar", search: `?${createSearchParams({ mode: "day", date: fullDate })}` });
+        navigate({ pathname: "/readingRecords", search: `?${createSearchParams({ mode: "day", date: fullDate })}` });
     };
     const goMonth = (year: number, month1: number) => {
         const mm = String(month1).padStart(2, "0");
-        navigate({ pathname: "/calendar", search: `?${createSearchParams({ mode: "month", year: String(year), month: mm })}` });
+        navigate({ pathname: "/readingRecords", search: `?${createSearchParams({ mode: "month", year: String(year), month: mm })}` });
     };
 
     const days: React.ReactNode[] = [];

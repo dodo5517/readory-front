@@ -18,7 +18,6 @@ import EditNamePage from "./pages/EditNamePage";
 import EditPasswordPage from "./pages/EditPasswordPage";
 import OAuthCallback from "./components/OAuthCallback";
 import BookRecordPage from "./pages/BookRecordPage";
-import CalendarPage from "./pages/CalendarPage";
 import AdminUserPage from "./pages/AdminUserPage";
 import AdminNav from "./layouts/AdminNav";
 import AdminLayout from "./layouts/AdminLayout"
@@ -78,7 +77,6 @@ function App() {
                           <Route path={"/readingRecords"} element={<PrivateRoute><ReadingRecordPage/></PrivateRoute>}/>
                           <Route path={"/bookshelf"} element={<PrivateRoute><BookShelfPage /></PrivateRoute>} />
                           <Route path={"/bookRecord/:bookId"} element={<PrivateRoute><BookRecordPage /></PrivateRoute>} />
-                          <Route path={"/calendar"} element={<PrivateRoute><CalendarPage /></PrivateRoute>} />
                       </Route>
                   </Routes>
                 {/*<Footer />*/}
