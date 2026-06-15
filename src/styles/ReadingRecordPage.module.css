@@ -245,4 +245,66 @@
         gap: 6px;
     }
     .editBtn, .linkBtn, .dangerBtn { min-width: 64px; font-size: 0.8rem; }
+
+    .dateBannerLabel { font-size: 0.82rem; }
+}
+
+/* ── Date Context Banner ── */
+.dateBanner {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 10px;
+}
+
+.dateBannerLabel {
+    flex: 1;
+    text-align: center;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+}
+
+.dateNavBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+.dateNavBtn:hover:not(:disabled) {
+    background: var(--light-bg);
+    color: var(--text-main);
+}
+.dateNavBtn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.clearDateBtn {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-sub);
+    font-size: 0.80rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.clearDateBtn:hover {
+    background: var(--light-bg);
+    color: var(--text-main);
 }
