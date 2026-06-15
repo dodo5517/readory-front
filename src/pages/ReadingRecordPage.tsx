@@ -299,7 +299,7 @@ export default function ReadingRecordPage() {
                         <CaretLeftIcon size={14} />
                     </button>
                     <span className={styles.dateBannerLabel}>
-                        📅 {mode === "day" ? dayLabel : monthLabel}
+                        {mode === "day" ? dayLabel : monthLabel}
                     </span>
                     <button
                         type="button"
@@ -316,7 +316,7 @@ export default function ReadingRecordPage() {
                         onClick={handleClearDate}
                         aria-label="전체 보기"
                     >
-                        전체 보기 ×
+                        전체 보기
                     </button>
                 </div>
             )}
@@ -350,8 +350,8 @@ export default function ReadingRecordPage() {
                             setQ(queryInput.trim());
                         }
                     }}
-                    placeholder={PLACEHOLDER[scope]}
-                    aria-label={PLACEHOLDER[scope]}
+                    placeholder={isDateMode ? '기록 검색...' : PLACEHOLDER[scope]}
+                    aria-label={isDateMode ? '기록 검색...' : PLACEHOLDER[scope]}
                     className={styles.searchInput}
                 />
 
