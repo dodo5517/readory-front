@@ -181,6 +181,9 @@ export default function Calendar() {
     const isCurrentMonth = y === thisYear && m0 === thisMonth;
     const isFutureMonth = y > thisYear || (y === thisYear && m0 > thisMonth);
 
+    const monthPickerValue = `${y}-${String(m0 + 1).padStart(2, "0")}`;
+    const monthPickerMax = `${thisYear}-${String(thisMonth + 1).padStart(2, "0")}`;
+
     useEffect(() => {
         if (isFutureMonth) setCurrentDate(new Date(thisYear, thisMonth, 1));
     }, [isFutureMonth, thisYear, thisMonth]);
@@ -208,6 +211,16 @@ export default function Calendar() {
         const ny = d.getFullYear(), nm = d.getMonth();
         if (ny > thisYear || (ny === thisYear && nm > thisMonth)) return;
         setCurrentDate(d);
+    };
+
+    const onMonthPick = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        if (!val) return;
+        const [yearStr, monthStr] = val.split("-");
+        const pickedYear = parseInt(yearStr, 10);
+        const pickedMonth = parseInt(monthStr, 10) - 1;
+        if (pickedYear > thisYear || (pickedYear === thisYear && pickedMonth > thisMonth)) return;
+        setCurrentDate(new Date(pickedYear, pickedMonth, 1));
     };
 
     const goDay = (fullDate: string) => {
@@ -340,10 +353,19 @@ export default function Calendar() {
                                 <button onClick={() => changeMonth(-1)} aria-label="이전 달">
                                     <CaretLeftIcon size={12} />
                                 </button>
-                                <span className={styles.main} onClick={() => goMonth(y, m0 + 1)}>
+                                <span className={[styles.main, styles.monthLabelWrap].join(" ")}>
                                     <span className={styles.monthLabel}>{y}</span>
                                     <span className={styles.monthSep}>/</span>
                                     <span className={styles.monthLabel}>{String(m0 + 1).padStart(2, "0")}</span>
+                                    <input
+                                        type="month"
+                                        value={monthPickerValue}
+                                        max={monthPickerMax}
+                                        onChange={onMonthPick}
+                                        className={styles.monthPickerInput}
+                                        aria-label="월 선택"
+                                        tabIndex={-1}
+                                    />
                                 </span>
                                 <button
                                     onClick={() => changeMonth(1)}
@@ -446,8 +468,17 @@ export default function Calendar() {
                         </button>
 
                         {view === "calendar" && (
-                            <span className={styles.mobileDateTitle} onClick={() => goMonth(y, m0 + 1)}>
+                            <span className={[styles.mobileDateTitle, styles.monthLabelWrap].join(" ")}>
                                 {y} / {String(m0 + 1).padStart(2, "0")}
+                                <input
+                                    type="month"
+                                    value={monthPickerValue}
+                                    max={monthPickerMax}
+                                    onChange={onMonthPick}
+                                    className={styles.monthPickerInput}
+                                    aria-label="월 선택"
+                                    tabIndex={-1}
+                                />
                             </span>
                         )}
                         {view === "heatmap" && (
