@@ -48,11 +48,11 @@ export default function Header(){
     const handleLogout = React.useCallback(async (e?: React.SyntheticEvent) => {
         e?.preventDefault?.();
         if (isSubmitting) return;
+        if (!window.confirm("로그아웃 하시겠습니까?")) return;
 
         setIsSubmitting(true);
         try {
             await logoutUser();
-            alert("로그아웃 되었습니다.");
             navigate('/login');
         } catch (err) {
             console.error("로그아웃 실패: ", err);
