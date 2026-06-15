@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {createSearchParams, Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useUser } from '../contexts/UserContext';
 import {logoutUser, reissueAccessToken} from "../api/Auth";
 import TokenHUD from "./TokenHUD";
@@ -20,16 +20,6 @@ export default function Header(){
     const navRef = useRef<HTMLElement | null>(null);
 
     const [refreshing, setRefreshing] = useState(false);
-
-    // 이번 달 자동 설정
-    const now = new Date();
-    const year = String(now.getFullYear());
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const search = `?${createSearchParams({
-        mode: "month",
-        year,
-        month,
-    }).toString()}`;
 
     // console.log(user);
 
@@ -141,7 +131,7 @@ export default function Header(){
                 <Link to="/" role="menuitem" data-text="Home" className={`${styles.desktopOnly} ${currentPath === '/main' ? styles.active : ''}`}>Home</Link>
                 <Link to="/readingRecords" role="menuitem" data-text="Recent Records" className={`${styles.navItem} ${currentPath === '/readingRecords' ? styles.active : ''}`}>Recent Records</Link>
                 <a href="/bookshelf" role="menuitem" data-text="My Shelf" className={`${styles.navItem} ${currentPath === '/bookshelf' ? styles.active : ''}`}>My Shelf</a>
-                <Link to={{ pathname: "/calendar", search }} role="menuitem" data-text="Reading Calendar" className={`${styles.navItem} ${currentPath === '/calendar' ? styles.active : ''}`}>Reading Calendar</Link>
+                {/*<Link to={{ pathname: "/calendar", search }} role="menuitem" data-text="Reading Calendar" className={`${styles.navItem} ${currentPath === '/calendar' ? styles.active : ''}`}>Reading Calendar</Link>*/}
 
                 {/*모바일일 때는 보임*/}
                 <Link to="/myPage" className={`${styles.mobileOnly} ${currentPath === '/myPage' ? styles.active : ''}`} data-text="My Page">My Page</Link>
