@@ -5,6 +5,7 @@ import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 import { formatYMD, getMonthMeta, toCountMap } from "../utils/calendar";
 import { fetchCalendarRange } from "../api/Calendar";
 import { CalendarRangeResponse } from "../types/calendar";
+import GridPickerPopover from "./calendar/GridPickerPopover";
 
 const HM_MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
@@ -119,7 +120,7 @@ export default function Calendar() {
     const [mobileDaysPerBook, setMobileDaysPerBook] = useState(3);
     const [shelfCellWidth, setShelfCellWidth] = useState(999);
     const [mobileBookMaxH, setMobileBookMaxH] = useState(95);
-    const [mobileBookW, setMobileBookW] = useState(18); // 모바일 책 균등 너비
+    const [mobileBookW, setMobileBookW] = useState(18);
 
     useEffect(() => {
         if (!shelfAreaRef.current) return;
@@ -144,23 +145,14 @@ export default function Calendar() {
         const measure = () => {
             const el = mobileShelfAreaRef.current;
             if (!el) return;
-
-            // ── 셀 너비 기반으로 책 권수 & 너비 계산 ──
-            // bookshelfAreaMobile은 3칸 그리드
             const cellW = el.clientWidth / 3;
-            // shelf 좌우 padding 4px*2 + shelfInner padding 3px*2 = 14px
             const CELL_PADDING = 14;
             const usableW = cellW - CELL_PADDING;
-            // gap=3px 포함한 책 한 권 최소 너비: 18px + 3px gap = 21px
             const BOOK_SLOT = 21;
             const booksPerCell = Math.max(2, Math.floor(usableW / BOOK_SLOT));
-            // 실제 책 너비: 남은 공간을 booksPerCell로 균등 분할, gap 제외
             const bookW = Math.floor((usableW - (booksPerCell - 1) * 3) / booksPerCell);
             setMobileBookW(Math.max(11, bookW));
-            // 30일을 booksPerCell 권으로 나누면 권당 일수
             setMobileDaysPerBook(Math.max(1, Math.ceil(30 / booksPerCell)));
-
-            // ── 행 높이 기반으로 책 최대 높이 계산 ──
             const rowH = el.clientHeight;
             const labelH = 24;
             const bookAreaH = rowH - labelH - 4;
@@ -180,9 +172,6 @@ export default function Calendar() {
     const thisMonth = today.getMonth();
     const isCurrentMonth = y === thisYear && m0 === thisMonth;
     const isFutureMonth = y > thisYear || (y === thisYear && m0 > thisMonth);
-
-    const monthPickerValue = `${y}-${String(m0 + 1).padStart(2, "0")}`;
-    const monthPickerMax = `${thisYear}-${String(thisMonth + 1).padStart(2, "0")}`;
 
     useEffect(() => {
         if (isFutureMonth) setCurrentDate(new Date(thisYear, thisMonth, 1));
@@ -211,16 +200,6 @@ export default function Calendar() {
         const ny = d.getFullYear(), nm = d.getMonth();
         if (ny > thisYear || (ny === thisYear && nm > thisMonth)) return;
         setCurrentDate(d);
-    };
-
-    const onMonthPick = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value;
-        if (!val) return;
-        const [yearStr, monthStr] = val.split("-");
-        const pickedYear = parseInt(yearStr, 10);
-        const pickedMonth = parseInt(monthStr, 10) - 1;
-        if (pickedYear > thisYear || (pickedYear === thisYear && pickedMonth > thisMonth)) return;
-        setCurrentDate(new Date(pickedYear, pickedMonth, 1));
     };
 
     const goDay = (fullDate: string) => {
@@ -282,7 +261,6 @@ export default function Calendar() {
 
     const renderMobileBook = (b: BookSpine, i: number) => {
         const ratio = b.height / 106;
-        // 40~80% 범위로 높낮이 표현
         const mH = Math.round(mobileBookMaxH * (0.24 + ratio * 0.32));
         return b.ghost ? (
             <div key={i} style={{ width: mobileBookW, height: 1, flexShrink: 0 }} />
@@ -353,20 +331,20 @@ export default function Calendar() {
                                 <button onClick={() => changeMonth(-1)} aria-label="이전 달">
                                     <CaretLeftIcon size={12} />
                                 </button>
-                                <span className={[styles.main, styles.monthLabelWrap].join(" ")}>
-                                    <span className={styles.monthLabel}>{y}</span>
-                                    <span className={styles.monthSep}>/</span>
-                                    <span className={styles.monthLabel}>{String(m0 + 1).padStart(2, "0")}</span>
-                                    <input
-                                        type="month"
-                                        value={monthPickerValue}
-                                        max={monthPickerMax}
-                                        onChange={onMonthPick}
-                                        className={styles.monthPickerInput}
-                                        aria-label="월 선택"
-                                        tabIndex={-1}
-                                    />
-                                </span>
+                                <GridPickerPopover
+                                    mode="month"
+                                    value={{ year: y, month: m0 + 1 }}
+                                    label={
+                                        <span className={styles.main}>
+                                            <span className={styles.monthLabel}>{y}</span>
+                                            <span className={styles.monthSep}>/</span>
+                                            <span className={styles.monthLabel}>{String(m0 + 1).padStart(2, "0")}</span>
+                                        </span>
+                                    }
+                                    onSelectMonth={(yr, mo) => setCurrentDate(new Date(yr, mo - 1, 1))}
+                                    maxYear={thisYear}
+                                    maxMonth={thisMonth + 1}
+                                />
                                 <button
                                     onClick={() => changeMonth(1)}
                                     aria-label="다음 달"
@@ -383,9 +361,13 @@ export default function Calendar() {
                                 <button onClick={() => setHeatmapYear(prev => prev - 1)} aria-label="이전 연도">
                                     <CaretLeftIcon size={12} />
                                 </button>
-                                <span className={styles.main}>
-                                    <span className={styles.monthLabel}>{heatmapYear}</span>
-                                </span>
+                                <GridPickerPopover
+                                    mode="year"
+                                    value={{ year: heatmapYear }}
+                                    label={<span className={styles.monthLabel}>{heatmapYear}</span>}
+                                    onSelectYear={(yr) => { if (yr <= thisYear) setHeatmapYear(yr); }}
+                                    maxYear={thisYear}
+                                />
                                 <button
                                     onClick={() => setHeatmapYear(prev => Math.min(prev + 1, thisYear))}
                                     aria-label="다음 연도"
@@ -468,21 +450,27 @@ export default function Calendar() {
                         </button>
 
                         {view === "calendar" && (
-                            <span className={[styles.mobileDateTitle, styles.monthLabelWrap].join(" ")}>
-                                {y} / {String(m0 + 1).padStart(2, "0")}
-                                <input
-                                    type="month"
-                                    value={monthPickerValue}
-                                    max={monthPickerMax}
-                                    onChange={onMonthPick}
-                                    className={styles.monthPickerInput}
-                                    aria-label="월 선택"
-                                    tabIndex={-1}
-                                />
-                            </span>
+                            <GridPickerPopover
+                                mode="month"
+                                value={{ year: y, month: m0 + 1 }}
+                                label={
+                                    <span className={styles.mobileDateTitle}>
+                                        {y} / {String(m0 + 1).padStart(2, "0")}
+                                    </span>
+                                }
+                                onSelectMonth={(yr, mo) => setCurrentDate(new Date(yr, mo - 1, 1))}
+                                maxYear={thisYear}
+                                maxMonth={thisMonth + 1}
+                            />
                         )}
                         {view === "heatmap" && (
-                            <span className={styles.mobileDateTitle}>{heatmapYear}</span>
+                            <GridPickerPopover
+                                mode="year"
+                                value={{ year: heatmapYear }}
+                                label={<span className={styles.mobileDateTitle}>{heatmapYear}</span>}
+                                onSelectYear={(yr) => { if (yr <= thisYear) setHeatmapYear(yr); }}
+                                maxYear={thisYear}
+                            />
                         )}
 
                         {view === "calendar" && (
