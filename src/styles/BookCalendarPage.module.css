@@ -221,19 +221,8 @@
     background-size: cover;
     background-position: center;
     border-radius: 1px;
-    box-shadow:
-        inset -2px 0 5px rgba(0, 0, 0, 0.14),
-        0 2px 6px rgba(0, 0, 0, 0.14),
-        inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
     flex-shrink: 0;
-    transition: box-shadow 0.18s;
-}
-/* 호버: 배경색 없이 표지 그림자만 살짝 깊어짐 */
-.cellActive:hover .coverThumb {
-    box-shadow:
-        inset -2px 0 5px rgba(0, 0, 0, 0.20),
-        0 4px 14px rgba(0, 0, 0, 0.22),
-        inset 0 0 0 0.5px rgba(0, 0, 0, 0.10);
+    margin-bottom: 3px;
 }
 
 /* 표지 없는 날 도트 */
