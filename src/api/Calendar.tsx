@@ -21,6 +21,7 @@ export async function fetchCalendarRange(year: number, month: number)
     const days: DayCount[] = data.days.map((d: any) =>({
         date: d.date,
         count: d.count,
+        coverUrl: d.coverUrl ?? null,
     }));
 
     const summary : CalendarSummary = {

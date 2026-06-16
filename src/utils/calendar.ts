@@ -19,6 +19,12 @@ export function toCountMap(days: DayCount[]): Map<string, number> {
     return map;
 }
 
+export function toCoverMap(days: DayCount[]): Map<string, string | null> {
+    const map = new Map<string, string | null>();
+    for (const d of days) map.set(d.date, d.coverUrl);
+    return map;
+}
+
 export function calcMaxCount(days: DayCount[]): number {
     return days.reduce((max, d) => Math.max(max, d.count), 0);
 }
