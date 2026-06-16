@@ -315,12 +315,11 @@
 
 /* 미니 표지 썸네일 */
 .miniCoverThumb {
-    width: 9px;
-    height: 13px;
+    width: 11px;
+    height: 15px;
     background-size: cover;
     background-position: center;
     border-radius: 1px;
-    box-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.18);
 }
 
 /* 미니 도트 (표지 없는 날) */
@@ -415,7 +414,7 @@
     }
 
     .miniCoverThumb {
-        width: 8px;
-        height: 11px;
+        width: 10px;
+        height: 14px;
     }
 }
