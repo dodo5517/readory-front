@@ -115,6 +115,8 @@
     gap: 2px;
     padding: 2px 4px;
     user-select: none;
+    min-width: 76px;
+    justify-content: center;
 }
 .monthLabel {
     font-size: 0.88rem;
