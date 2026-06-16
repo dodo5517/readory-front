@@ -364,7 +364,11 @@ export default function Calendar() {
                                 <GridPickerPopover
                                     mode="year"
                                     value={{ year: heatmapYear }}
-                                    label={<span className={styles.monthLabel}>{heatmapYear}</span>}
+                                    label={
+                                        <span className={styles.main}>
+                                            <span className={styles.monthLabel}>{heatmapYear}</span>
+                                        </span>
+                                    }
                                     onSelectYear={(yr) => { if (yr <= thisYear) setHeatmapYear(yr); }}
                                     maxYear={thisYear}
                                 />

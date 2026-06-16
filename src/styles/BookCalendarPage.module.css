@@ -1,0 +1,432 @@
+/* ═══════════════════════════════════════════════
+   BookCalendarPage — 표지 캘린더
+   ═══════════════════════════════════════════════ */
+
+.page {
+    padding: 40px 24px 60px;
+    max-width: 1000px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* 페이지 헤더 아래 구분선 */
+.hr {
+    border: none;
+    border-top: 1px solid var(--main-hr);
+    margin: 0 0 28px;
+}
+
+/* ── 페이지 헤더 ── */
+.pageHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    font-family: 'Georgia', serif;
+    margin: 0 0 24px;
+    white-space: nowrap;
+}
+
+/* ── 컨트롤 행 (네비 + 토글) ── */
+.navRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.navBtn {
+    background: none;
+    border: 1px solid var(--border-color);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s;
+    padding: 0;
+}
+.navBtn:hover { background: var(--light-bg); color: var(--text-main); }
+.navBtn:disabled { opacity: 0.25; cursor: not-allowed; }
+.navBtn:disabled:hover { background: none; color: var(--text-muted); }
+
+/* GridPickerPopover 트리거 내부 레이블 */
+.navLabel {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    padding: 2px 4px;
+    user-select: none;
+    min-width: 76px;
+    justify-content: center;
+}
+.navYear,
+.navMonth {
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.navSep {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 0 1px;
+}
+.navYearLabel {
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 2px 6px;
+    display: inline-block;
+    user-select: none;
+}
+
+.controlSep {
+    display: inline-block;
+    width: 1px;
+    height: 14px;
+    background: var(--border-color);
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+/* ── Month / Year 토글 탭 ── */
+.viewTabs {
+    display: flex;
+    align-items: center;
+}
+.viewTab {
+    background: none;
+    border: none;
+    padding: 3px 10px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: -apple-system, sans-serif;
+    transition: color 0.2s;
+    white-space: nowrap;
+    position: relative;
+}
+.viewTab + .viewTab::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 10px;
+    background: var(--border-color);
+}
+.viewTab:hover { color: var(--text-main); }
+.viewTabActive {
+    color: var(--text-main);
+    font-weight: 700;
+}
+.viewTabActive::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 10px;
+    right: 10px;
+    height: 1px;
+    background: var(--text-main);
+}
+
+/* ══════════════════════════════
+   Month View
+   ══════════════════════════════ */
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid var(--main-hr);
+    padding-bottom: 6px;
+    margin-bottom: 2px;
+}
+.weekday {
+    text-align: center;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-normal);
+    font-family: -apple-system, sans-serif;
+}
+
+/* 달력 그리드 영역 — 셀 너비를 적당히 조여 표지가 칸을 채우게 */
+.calendarWrap {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.monthGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 0;
+}
+
+/* 날짜 셀 — 높이는 숫자+표지+최소 여백만 */
+.cell {
+    position: relative;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    cursor: default;
+}
+.cellActive {
+    cursor: pointer;
+}
+
+/* 날짜 숫자 — active 여부 무관하게 동일한 굵기 */
+.dayNum {
+    font-size: 0.72rem;
+    font-family: 'Georgia', serif;
+    color: var(--text-main);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-left: 5px;
+    margin-bottom: 4px;
+}
+
+/* 표지 썸네일 — 칸 폭을 채우도록 넓게, aspect-ratio로 세로 비율 자동 */
+.coverThumb {
+    width: 86px;
+    max-width: calc(100% - 12px);
+    aspect-ratio: 7 / 10;
+    background-size: cover;
+    background-position: center;
+    border-radius: 1px;
+    box-shadow:
+        inset -2px 0 5px rgba(0, 0, 0, 0.14),
+        0 2px 6px rgba(0, 0, 0, 0.14),
+        inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+    flex-shrink: 0;
+    transition: box-shadow 0.18s;
+}
+/* 호버: 배경색 없이 표지 그림자만 살짝 깊어짐 */
+.cellActive:hover .coverThumb {
+    box-shadow:
+        inset -2px 0 5px rgba(0, 0, 0, 0.20),
+        0 4px 14px rgba(0, 0, 0, 0.22),
+        inset 0 0 0 0.5px rgba(0, 0, 0, 0.10);
+}
+
+/* 표지 없는 날 도트 */
+.dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #3a6b52;
+    flex-shrink: 0;
+    margin-top: 20px;
+    opacity: 0.75;
+}
+
+/* +N 배지 */
+.coverMore {
+    position: absolute;
+    bottom: 6px;
+    right: 5px;
+    font-size: 0.58rem;
+    font-family: -apple-system, sans-serif;
+    font-weight: 600;
+    color: var(--text-muted);
+    line-height: 1;
+    pointer-events: none;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+}
+
+/* ══════════════════════════════
+   Year View — 12 미니 캘린더
+   ══════════════════════════════ */
+
+.yearView {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px 20px;
+}
+
+.miniMonth {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.miniMonthFuture {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.miniMonthHeader {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-main);
+    font-family: -apple-system, sans-serif;
+    padding: 2px 0 4px;
+    user-select: none;
+    transition: color 0.15s;
+    line-height: 1;
+}
+.miniMonthHeader:hover {
+    color: #3a6b52;
+}
+
+.miniWeekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 1px;
+}
+.miniWeekday {
+    text-align: center;
+    font-size: 0.48rem;
+    color: var(--text-muted);
+    font-family: -apple-system, sans-serif;
+    line-height: 1.4;
+}
+
+.miniGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px 0;
+}
+
+.miniCell {
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 미니 표지 썸네일 */
+.miniCoverThumb {
+    width: 9px;
+    height: 13px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 1px;
+    box-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.18);
+}
+
+/* 미니 도트 (표지 없는 날) */
+.miniDot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #3a6b52;
+    opacity: 0.65;
+}
+
+/* ══════════════════════════════
+   Responsive
+   ══════════════════════════════ */
+@media (max-width: 768px) {
+    .page {
+        padding: 8px 12px 40px;
+    }
+
+    .pageHeader {
+        padding-bottom: 20px;
+    }
+
+    .title {
+        margin-bottom: 16px;
+    }
+
+    .hr {
+        margin-bottom: 24px;
+    }
+
+    .calendarWrap {
+        max-width: 100%;
+    }
+
+    /* 모바일: 표지는 calc로 셀 폭에 맞게, 고정 width 없이 */
+    .cell {
+        height: 88px;
+        padding-top: 4px;
+    }
+
+    .coverThumb {
+        width: calc(100% - 8px);
+        max-width: none;
+    }
+
+    .dayNum {
+        font-size: 0.65rem;
+        margin-bottom: 3px;
+    }
+
+    .dot {
+        margin-top: 12px;
+    }
+
+    .coverMore {
+        bottom: 4px;
+        right: 3px;
+        font-size: 0.55rem;
+    }
+
+    .yearView {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cell {
+        height: 72px;
+        padding-top: 3px;
+    }
+
+    .coverThumb {
+        width: calc(100% - 6px);
+        max-width: none;
+    }
+
+    .dayNum {
+        font-size: 0.6rem;
+        margin-left: 3px;
+        margin-bottom: 2px;
+    }
+
+    .dot {
+        margin-top: 8px;
+    }
+
+    .yearView {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 16px;
+    }
+
+    .miniCoverThumb {
+        width: 8px;
+        height: 11px;
+    }
+}
