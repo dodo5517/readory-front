@@ -163,7 +163,7 @@ export default function BookCalendarPage() {
         <div className={styles.page}>
             {/* ── 헤더 ── */}
             <div className={styles.pageHeader}>
-                <h1 className={styles.title}>Cover Calendar</h1>
+                <h1 className={styles.title}>Reading Calendar</h1>
 
                 <div className={styles.navRow}>
                     {/* 이전 버튼 */}
@@ -196,7 +196,11 @@ export default function BookCalendarPage() {
                         <GridPickerPopover
                             mode="year"
                             value={{ year: viewYear }}
-                            label={<span className={styles.navYearLabel}>{viewYear}</span>}
+                            label={
+                                <span className={styles.navLabel}>
+                                    <span className={styles.navYear}>{viewYear}</span>
+                                </span>
+                            }
                             onSelectYear={(yr) => { if (yr <= thisYear) setViewYear(yr); }}
                             maxYear={thisYear}
                         />
@@ -231,25 +235,29 @@ export default function BookCalendarPage() {
                 </div>
             </div>
 
-            {/* ── 콘텐츠 ── */}
-            {view === "month" && (
-                <div>
-                    <div className={styles.weekdays}>
-                        {WEEKDAYS.map((wd, i) => (
-                            <div key={i} className={styles.weekday}>{wd}</div>
-                        ))}
-                    </div>
-                    <div className={styles.monthGrid}>
-                        {monthCells}
-                    </div>
-                </div>
-            )}
+            <hr className={styles.hr} />
 
-            {view === "year" && (
-                <div className={styles.yearView}>
-                    {Array.from({ length: 12 }, (_, i) => renderMiniMonth(i))}
-                </div>
-            )}
+            {/* ── 콘텐츠 ── */}
+            <div className={styles.calendarWrap}>
+                {view === "month" && (
+                    <div>
+                        <div className={styles.weekdays}>
+                            {WEEKDAYS.map((wd, i) => (
+                                <div key={i} className={styles.weekday}>{wd}</div>
+                            ))}
+                        </div>
+                        <div className={styles.monthGrid}>
+                            {monthCells}
+                        </div>
+                    </div>
+                )}
+
+                {view === "year" && (
+                    <div className={styles.yearView}>
+                        {Array.from({ length: 12 }, (_, i) => renderMiniMonth(i))}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

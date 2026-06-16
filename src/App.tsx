@@ -34,6 +34,7 @@ import AdminNoticePage from "./pages/AdminNoticePage";
 import AdminPatternPage from "./pages/AdminPatternPage";
 import PrivacyPolicyMobile from "./pages/PrivacyPolicyMobile";
 import TermsMobile from "./pages/TermsMobile";
+import BookCalendarPage from "./pages/BookCalendarPage";
 
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
                           <Route path={"/readingRecords"} element={<PrivateRoute><ReadingRecordPage/></PrivateRoute>}/>
                           <Route path={"/bookshelf"} element={<PrivateRoute><BookShelfPage /></PrivateRoute>} />
                           <Route path={"/bookRecord/:bookId"} element={<PrivateRoute><BookRecordPage /></PrivateRoute>} />
+                          <Route path={"/bookCalendar"} element={<PrivateRoute><BookCalendarPage /></PrivateRoute>} />
                       </Route>
                   </Routes>
                 {/*<Footer />*/}

@@ -131,7 +131,7 @@ export default function Header(){
                 <Link to="/" role="menuitem" data-text="Home" className={`${styles.desktopOnly} ${currentPath === '/main' ? styles.active : ''}`}>Home</Link>
                 <Link to="/readingRecords" role="menuitem" data-text="Recent Records" className={`${styles.navItem} ${currentPath === '/readingRecords' ? styles.active : ''}`}>Recent Records</Link>
                 <a href="/bookshelf" role="menuitem" data-text="My Shelf" className={`${styles.navItem} ${currentPath === '/bookshelf' ? styles.active : ''}`}>My Shelf</a>
-                {/*<Link to={{ pathname: "/calendar", search }} role="menuitem" data-text="Reading Calendar" className={`${styles.navItem} ${currentPath === '/calendar' ? styles.active : ''}`}>Reading Calendar</Link>*/}
+                <Link to="/bookCalendar" role="menuitem" data-text="Reading Calendar" className={`${styles.navItem} ${currentPath === '/bookCalendar' ? styles.active : ''}`}>Reading Calendar</Link>
 
                 {/*모바일일 때는 보임*/}
                 <Link to="/myPage" className={`${styles.mobileOnly} ${currentPath === '/myPage' ? styles.active : ''}`} data-text="My Page">My Page</Link>
