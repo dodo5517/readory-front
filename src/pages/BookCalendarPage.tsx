@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate, createSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, createSearchParams } from "react-router-dom";
 import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 import styles from "../styles/BookCalendarPage.module.css";
-import { formatYMD, getMonthMeta, toCountMap, toCoverMap } from "../utils/calendar";
+import { formatYMD, getMonthMeta, toCountMap, toCoverMap, toBookCountMap } from "../utils/calendar";
 import { fetchCalendarRange } from "../api/Calendar";
 import { CalendarRangeResponse } from "../types/calendar";
 import GridPickerPopover from "../components/calendar/GridPickerPopover";
@@ -14,14 +14,33 @@ const MINI_WEEKDAYS = ["S","M","T","W","T","F","S"];
 
 export default function BookCalendarPage() {
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const today = new Date();
     const thisYear = today.getFullYear();
     const thisMonth = today.getMonth(); // 0-based
 
-    const [view, setView] = useState<ViewMode>("month");
-    const [currentDate, setCurrentDate] = useState(() => new Date(thisYear, thisMonth, 1));
-    const [viewYear, setViewYear] = useState(thisYear);
+    const [view, setView] = useState<ViewMode>(() => {
+        return searchParams.get("view") === "year" ? "year" : "month";
+    });
+
+    const [currentDate, setCurrentDate] = useState<Date>(() => {
+        const yr = parseInt(searchParams.get("year") ?? "", 10);
+        const mo = parseInt(searchParams.get("month") ?? "", 10); // 1-based
+        if (!isNaN(yr) && !isNaN(mo) && mo >= 1 && mo <= 12) {
+            if (yr > thisYear || (yr === thisYear && mo - 1 > thisMonth)) {
+                return new Date(thisYear, thisMonth, 1);
+            }
+            return new Date(yr, mo - 1, 1);
+        }
+        return new Date(thisYear, thisMonth, 1);
+    });
+
+    const [viewYear, setViewYear] = useState<number>(() => {
+        const yr = parseInt(searchParams.get("year") ?? "", 10);
+        if (!isNaN(yr) && yr <= thisYear) return yr;
+        return thisYear;
+    });
 
     const [monthData, setMonthData] = useState<CalendarRangeResponse | null>(null);
     const [yearData, setYearData] = useState<CalendarRangeResponse | null>(null);
@@ -34,6 +53,18 @@ export default function BookCalendarPage() {
     useEffect(() => {
         if (isFutureMonth) setCurrentDate(new Date(thisYear, thisMonth, 1));
     }, [isFutureMonth, thisYear, thisMonth]);
+
+    // 상태가 바뀔 때마다 URL 쿼리를 동기화 (히스토리 미적재)
+    useEffect(() => {
+        const params: Record<string, string> = { view };
+        if (view === "month") {
+            params.year = String(y);
+            params.month = String(m0 + 1);
+        } else {
+            params.year = String(viewYear);
+        }
+        setSearchParams(params, { replace: true });
+    }, [view, y, m0, viewYear, setSearchParams]);
 
     useEffect(() => {
         if (view !== "month") return;
@@ -51,6 +82,7 @@ export default function BookCalendarPage() {
 
     const countMap = useMemo(() => toCountMap(monthData?.days ?? []), [monthData]);
     const coverMap = useMemo(() => toCoverMap(monthData?.days ?? []), [monthData]);
+    const bookCountMap = useMemo(() => toBookCountMap(monthData?.days ?? []), [monthData]);
 
     const yearCountMap = useMemo(() => toCountMap(yearData?.days ?? []), [yearData]);
     const yearCoverMap = useMemo(() => toCoverMap(yearData?.days ?? []), [yearData]);
@@ -80,6 +112,7 @@ export default function BookCalendarPage() {
     for (let day = 1; day <= totalDays; day++) {
         const fullDate = formatYMD(y, m0, day);
         const count = countMap.get(fullDate) ?? 0;
+        const bookCount = bookCountMap.get(fullDate) ?? 0;
         const coverUrl = coverMap.get(fullDate) ?? null;
         const hasRecord = count > 0;
         monthCells.push(
@@ -103,8 +136,8 @@ export default function BookCalendarPage() {
                     />
                 )}
                 {hasRecord && !coverUrl && <span className={styles.dot} />}
-                {hasRecord && coverUrl && count >= 2 && (
-                    <span className={styles.coverMore}>+{count - 1}</span>
+                {hasRecord && coverUrl && bookCount >= 2 && (
+                    <span className={styles.coverMore}>+{bookCount - 1}</span>
                 )}
             </div>
         );

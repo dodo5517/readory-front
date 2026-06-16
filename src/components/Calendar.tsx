@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, createSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, createSearchParams } from "react-router-dom";
 import styles from "../styles/Calendar.module.css";
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 import { formatYMD, getMonthMeta, toCountMap } from "../utils/calendar";
@@ -105,13 +105,35 @@ function clipBooks(books: BookSpine[], maxW: number, gap = 2, scale = 1): BookSp
 }
 
 export default function Calendar() {
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const today = new Date();
+    const thisYear = today.getFullYear();
+    const thisMonth = today.getMonth();
+
+    const [currentDate, setCurrentDate] = useState<Date>(() => {
+        const yr = parseInt(searchParams.get("year") ?? "", 10);
+        const mo = parseInt(searchParams.get("month") ?? "", 10); // 1-based
+        if (!isNaN(yr) && !isNaN(mo) && mo >= 1 && mo <= 12) {
+            if (yr > thisYear || (yr === thisYear && mo - 1 > thisMonth)) {
+                return new Date(thisYear, thisMonth, 1);
+            }
+            return new Date(yr, mo - 1, 1);
+        }
+        return new Date();
+    });
     const [data, setData] = useState<CalendarRangeResponse | null>(null);
     const [yearData, setYearData] = useState<CalendarRangeResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState<string | null>(null);
-    const [view, setView] = useState<ViewMode>("calendar");
-    const [heatmapYear, setHeatmapYear] = useState(new Date().getFullYear());
+    const [view, setView] = useState<ViewMode>(() => {
+        return searchParams.get("view") === "heatmap" ? "heatmap" : "calendar";
+    });
+    const [heatmapYear, setHeatmapYear] = useState<number>(() => {
+        const yr = parseInt(searchParams.get("year") ?? "", 10);
+        if (!isNaN(yr) && yr <= thisYear) return yr;
+        return thisYear;
+    });
 
     const shelfAreaRef = useRef<HTMLDivElement>(null);
     const mobileShelfAreaRef = useRef<HTMLDivElement>(null);
@@ -167,15 +189,24 @@ export default function Calendar() {
     const navigate = useNavigate();
     const { y, m0, startDay, totalDays } = useMemo(() => getMonthMeta(currentDate), [currentDate]);
 
-    const today = new Date();
-    const thisYear = today.getFullYear();
-    const thisMonth = today.getMonth();
     const isCurrentMonth = y === thisYear && m0 === thisMonth;
     const isFutureMonth = y > thisYear || (y === thisYear && m0 > thisMonth);
 
     useEffect(() => {
         if (isFutureMonth) setCurrentDate(new Date(thisYear, thisMonth, 1));
     }, [isFutureMonth, thisYear, thisMonth]);
+
+    // 상태가 바뀔 때마다 URL 쿼리를 동기화 (히스토리 미적재)
+    useEffect(() => {
+        const params: Record<string, string> = { view };
+        if (view === "calendar") {
+            params.year = String(y);
+            params.month = String(m0 + 1);
+        } else {
+            params.year = String(heatmapYear);
+        }
+        setSearchParams(params, { replace: true });
+    }, [view, y, m0, heatmapYear, setSearchParams]);
 
     useEffect(() => {
         setLoading(true); setErr(null);

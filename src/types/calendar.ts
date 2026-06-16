@@ -1,6 +1,7 @@
 export interface DayCount {
     date: string;   // YYYY-MM-DD
     count: number;
+    bookCount: number;
     coverUrl: string | null;
 }
 
