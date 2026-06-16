@@ -9,7 +9,6 @@ import GridPickerPopover from "../components/calendar/GridPickerPopover";
 
 type ViewMode = "month" | "year";
 
-const MONTH_LABELS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const WEEKDAYS = ["일","월","화","수","목","금","토"];
 const MINI_WEEKDAYS = ["S","M","T","W","T","F","S"];
 
@@ -145,7 +144,7 @@ export default function BookCalendarPage() {
                     onClick={() => { if (!isFuture) switchToMonth(viewYear, month1); }}
                     style={{ cursor: isFuture ? "default" : "pointer" }}
                 >
-                    {MONTH_LABELS[monthIdx]}
+                    {month1}월
                 </div>
                 <div className={styles.miniWeekdays}>
                     {MINI_WEEKDAYS.map((wd, i) => (

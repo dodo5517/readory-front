@@ -275,8 +275,7 @@
 .miniMonthHeader {
     font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    letter-spacing: 0;
     color: var(--text-main);
     font-family: -apple-system, sans-serif;
     padding: 2px 0 4px;
