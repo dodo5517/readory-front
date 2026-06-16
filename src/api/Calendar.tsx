@@ -21,6 +21,7 @@ export async function fetchCalendarRange(year: number, month: number)
     const days: DayCount[] = data.days.map((d: any) =>({
         date: d.date,
         count: d.count,
+        bookCount: d.bookCount ?? 0,
         coverUrl: d.coverUrl ?? null,
     }));
 

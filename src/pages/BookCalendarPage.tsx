@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 import styles from "../styles/BookCalendarPage.module.css";
-import { formatYMD, getMonthMeta, toCountMap, toCoverMap } from "../utils/calendar";
+import { formatYMD, getMonthMeta, toCountMap, toCoverMap, toBookCountMap } from "../utils/calendar";
 import { fetchCalendarRange } from "../api/Calendar";
 import { CalendarRangeResponse } from "../types/calendar";
 import GridPickerPopover from "../components/calendar/GridPickerPopover";
@@ -51,6 +51,7 @@ export default function BookCalendarPage() {
 
     const countMap = useMemo(() => toCountMap(monthData?.days ?? []), [monthData]);
     const coverMap = useMemo(() => toCoverMap(monthData?.days ?? []), [monthData]);
+    const bookCountMap = useMemo(() => toBookCountMap(monthData?.days ?? []), [monthData]);
 
     const yearCountMap = useMemo(() => toCountMap(yearData?.days ?? []), [yearData]);
     const yearCoverMap = useMemo(() => toCoverMap(yearData?.days ?? []), [yearData]);
@@ -80,6 +81,7 @@ export default function BookCalendarPage() {
     for (let day = 1; day <= totalDays; day++) {
         const fullDate = formatYMD(y, m0, day);
         const count = countMap.get(fullDate) ?? 0;
+        const bookCount = bookCountMap.get(fullDate) ?? 0;
         const coverUrl = coverMap.get(fullDate) ?? null;
         const hasRecord = count > 0;
         monthCells.push(
@@ -103,8 +105,8 @@ export default function BookCalendarPage() {
                     />
                 )}
                 {hasRecord && !coverUrl && <span className={styles.dot} />}
-                {hasRecord && coverUrl && count >= 2 && (
-                    <span className={styles.coverMore}>+{count - 1}</span>
+                {hasRecord && coverUrl && bookCount >= 2 && (
+                    <span className={styles.coverMore}>+{bookCount - 1}</span>
                 )}
             </div>
         );
