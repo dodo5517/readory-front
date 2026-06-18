@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styles from '../styles/ReadingRecordPage.module.css';
 import {fetchCandidatesLocal, fetchCandidatesExternal, fetchDeleteRecord, fetchMyRecords, fetchRemoveMatch, linkRecord} from "../api/ReadingRecord";
-import { MagnifyingGlassIcon, CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
+import { MagnifyingGlassIcon, CaretLeftIcon, CaretRightIcon, PlusIcon } from '@phosphor-icons/react';
 import {Record} from "../types/records";
 import {BookCandidate, PageResult} from "../types/books";
 import BookSelectModal from "../components/modal/BookSelectModal";
@@ -366,6 +366,7 @@ export default function ReadingRecordPage() {
                     className={styles.createBtn}
                     onClick={() => setCreateOpen(true)}
                 >
+                    <PlusIcon size={14} weight="bold" />
                     기록 추가
                 </button>
             </div>
