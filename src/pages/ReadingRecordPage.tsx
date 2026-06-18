@@ -367,7 +367,7 @@ export default function ReadingRecordPage() {
                     onClick={() => setCreateOpen(true)}
                 >
                     <PlusIcon size={14} weight="bold" />
-                    기록 추가
+                    <span>기록 추가</span>
                 </button>
             </div>
 
