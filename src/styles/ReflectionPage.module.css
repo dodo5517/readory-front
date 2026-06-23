@@ -405,7 +405,7 @@
 
 .markdownContent :global(em.book-quote) {
     font-style: italic;
-    color: var(--badge-linked-text);
+    color: var(--book-quote-color);
 }
 
 .mdH2 {
