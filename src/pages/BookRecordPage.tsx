@@ -483,7 +483,8 @@ export default function BookRecordPage() {
             <div className={styles.actionBtns}>
                 {reflectionAccess && (
                 <button
-                    className={styles.reflectionBtn}
+                    className={styles.addRecordBtn}
+                    style={{ marginRight: 'auto' }}
                     onClick={() => navigate(`/reflection/${id}`)}
                 >
                     {hasReflection ? '독후감 보기' : '독후감 만들기'}
