@@ -35,6 +35,8 @@
   --badge-linked-text: #1e4d36;
   --book-quote-color: #8b5a3c;
   --toc-line: #d8d8d8;
+  --edit-btn-hover-bg: #eef4f0;
+  --edit-btn-border: #cdddd4;
   --page-btn: #111;
   --placeholder: #777;
   --search-btn: #f6f9f7;
@@ -139,6 +141,8 @@
   --badge-linked-text: #7abf9a;
   --book-quote-color: #c08d5f;
   --toc-line: #3a3a3a;
+  --edit-btn-hover-bg: #243029;
+  --edit-btn-border: #3a4f44;
   --page-btn: #eee;
   --placeholder: #777;
   --search-btn: #1f1f23;

@@ -354,13 +354,13 @@
     font-size: 0.8rem;
     font-weight: 500;
     border-radius: 6px;
-    border: 1px solid var(--btn-bg);
+    border: 1px solid var(--edit-btn-border);
     background: transparent;
     color: var(--btn-bg);
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
 }
-.editBtn:hover { background: var(--btn-bg); color: #fff; }
+.editBtn:hover { background: var(--edit-btn-hover-bg); }
 
 .savedTitle {
     margin: 0 0 8px;
