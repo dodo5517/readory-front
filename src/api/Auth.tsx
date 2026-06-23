@@ -18,7 +18,7 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL!;
 
 // 로그인(POST)
 export async function loginUser(email: string, password: string) {
-    console.log("loginUser")
+    // console.log("loginUser")
 
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
@@ -32,7 +32,7 @@ export async function loginUser(email: string, password: string) {
 
 // 현재 로그인한 유저 정보 조회
 export async function fetchCurrentUser(){
-    console.log("fetchCurrentUser")
+    // console.log("fetchCurrentUser")
     const response = await fetchWithAuth(`/users/me`);
     return unwrap<any>(response);
 }
