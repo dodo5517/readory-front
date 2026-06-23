@@ -112,6 +112,40 @@ function parseAndDispatch(frame: string, handlers: ComposeHandlers): void {
   }
 }
 
+export interface SavedReflection {
+  id: number;
+  bookId: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function saveReflection(bookId: number, title: string, content: string): Promise<SavedReflection> {
+  const res = await fetchWithAuth(`/reflection/save`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ bookId, title, content }),
+  });
+  return unwrap<SavedReflection>(res);
+}
+
+export async function getSavedReflection(bookId: number): Promise<SavedReflection | null> {
+  const res = await fetchWithAuth(`/reflection/saved?bookId=${bookId}`, { method: 'GET' });
+  return unwrap<SavedReflection | null>(res);
+}
+
+export async function reflectionExists(bookId: number): Promise<boolean> {
+  const res = await fetchWithAuth(`/reflection/exists?bookId=${bookId}`, { method: 'GET' });
+  const data = await unwrap<{ exists: boolean }>(res);
+  return data.exists;
+}
+
+export async function deleteReflection(bookId: number): Promise<void> {
+  const res = await fetchWithAuth(`/reflection/saved?bookId=${bookId}`, { method: 'DELETE' });
+  await unwrap<void>(res);
+}
+
 export async function composeReflection(
   body: {
     bookId: number;
