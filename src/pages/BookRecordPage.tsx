@@ -472,6 +472,12 @@ export default function BookRecordPage() {
             {/* 액션 버튼 */}
             <div className={styles.actionBtns}>
                 <button
+                    className={styles.reflectionBtn}
+                    onClick={() => navigate(`/reflection/${id}`)}
+                >
+                    독후감 만들기
+                </button>
+                <button
                     className={styles.addRecordBtn}
                     onClick={() => setCreateOpen(true)}
                 >
