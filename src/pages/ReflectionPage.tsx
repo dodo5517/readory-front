@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import { remarkQuoteHighlight } from '../utils/remarkQuoteHighlight';
 import styles from '../styles/ReflectionPage.module.css';
 import {
   clusterReflection, composeReflection, saveReflection, getSavedReflection, deleteReflection,
@@ -398,7 +399,10 @@ export default function ReflectionPage() {
           )}
 
           <div className={styles.markdownContent}>
-            <ReactMarkdown components={createMarkdownComponents()}>
+            <ReactMarkdown
+              remarkPlugins={[remarkQuoteHighlight]}
+              components={createMarkdownComponents()}
+            >
               {savedReflection.content}
             </ReactMarkdown>
           </div>
