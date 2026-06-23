@@ -1,4 +1,5 @@
 import { fetchWithAuth } from '../utils/fetchWithAuth';
+import { unwrap } from '../utils/apiResponse';
 
 export interface Cluster {
   theme: string;
@@ -10,14 +11,71 @@ export interface Cluster {
 export interface ReflectionSection {
   heading: string;
   body: string;
+  closing?: string; // "true"면 맺음말 섹션
+}
+
+export interface ClusterResult {
+  tone: string;
+  clusters: Cluster[];
+  title: string;
+  sections: { heading: string; clusterIndices: number[] }[];
 }
 
 export interface ComposeHandlers {
-  onClustered?: (d: { tone: string; clusters: Cluster[] }) => void;
-  onOutline?: (d: { title: string; tone: string; sections: { heading: string; clusterIndices: number[] }[] }) => void;
-  onSection?: (d: ReflectionSection) => void;
+  onSection?: (s: ReflectionSection) => void;
   onDone?: (d: { reflectionId: number | null }) => void;
   onError?: (msg: string) => void;
+}
+
+export interface ElicitClusterInput {
+  theme: string;
+  summary: string;
+  thin: boolean;
+}
+
+export interface ElicitTurn {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface ElicitResponse {
+  reply: string;
+  fragment: string;
+  theme: string;
+  closing: boolean;
+}
+
+export interface DrawnPair {
+  question: string;
+  answer: string;
+}
+
+export async function clusterReflection(bookId: number): Promise<ClusterResult> {
+  const res = await fetchWithAuth(`/reflection/cluster?bookId=${bookId}`, { method: 'POST' });
+  return unwrap<ClusterResult>(res);
+}
+
+export async function elicit(params: {
+  bookId: number;
+  tone?: string;
+  clusters: ElicitClusterInput[];
+  history: ElicitTurn[];
+}): Promise<ElicitResponse> {
+  const res = await fetchWithAuth(`/reflection/elicit`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+  return unwrap<ElicitResponse>(res);
+}
+
+export async function saveDrawn(bookId: number, pairs: DrawnPair[]): Promise<number> {
+  const res = await fetchWithAuth(`/reflection/elicit/save`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ bookId, pairs }),
+  });
+  return unwrap<number>(res);
 }
 
 function parseAndDispatch(frame: string, handlers: ComposeHandlers): void {
@@ -42,12 +100,6 @@ function parseAndDispatch(frame: string, handlers: ComposeHandlers): void {
   }
 
   switch (eventType) {
-    case 'clustered':
-      handlers.onClustered?.(parsed);
-      break;
-    case 'outline':
-      handlers.onOutline?.(parsed);
-      break;
     case 'section':
       handlers.onSection?.(parsed);
       break;
@@ -61,22 +113,28 @@ function parseAndDispatch(frame: string, handlers: ComposeHandlers): void {
 }
 
 export async function composeReflection(
-  bookId: number,
+  body: {
+    bookId: number;
+    tone: string;
+    clusters: Cluster[];
+    sections: { heading: string; clusterIndices: number[] }[];
+  },
   handlers: ComposeHandlers,
   signal?: AbortSignal
 ): Promise<void> {
   try {
-    const response = await fetchWithAuth(`/reflection/compose?bookId=${bookId}`, {
-      method: 'GET',
-      headers: { 'Accept': 'text/event-stream' },
+    const response = await fetchWithAuth(`/reflection/compose`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'text/event-stream' },
+      body: JSON.stringify(body),
       signal,
     });
 
     if (!response.ok) {
       let msg = `요청 실패 (${response.status})`;
       try {
-        const body = await response.json();
-        msg = body?.message ?? msg;
+        const errBody = await response.json();
+        msg = errBody?.message ?? msg;
       } catch {}
       handlers.onError?.(msg);
       return;
