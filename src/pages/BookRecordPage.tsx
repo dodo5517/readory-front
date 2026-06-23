@@ -3,6 +3,7 @@ import styles from "../styles/BookRecordPage.module.css";
 import {BookComment, BookMeta} from "../types/books";
 import {BookRecord} from "../types/records";
 import {deleteBookComment, fetchBookRecords, fetchDeleteBook, fetchDeleteRecord, upsertBookComment} from "../api/ReadingRecord";
+import { reflectionExists } from "../api/Reflection";
 import {useParams, useNavigate} from "react-router-dom";
 import CreateRecordModal from "../components/modal/CreateRecordModal";
 import RecordEditModal, { RecordEditForm } from "../components/modal/EditRecordModal";
@@ -73,6 +74,7 @@ export default function BookRecordPage() {
     // 삭제 상태
     const [deletingRecordId, setDeletingRecordId] = useState<number | null>(null);
     const [deletingAllBooks, setDeletingAllBooks] = useState(false);
+    const [hasReflection, setHasReflection] = useState(false);
 
     // 책 감상 상태
     const [bookComment, setBookComment] = useState<BookComment | null>(null);
@@ -95,6 +97,10 @@ export default function BookRecordPage() {
         for (const it of next) map.set(it.id, it);
         return Array.from(map.values());
     }
+
+    useEffect(() => {
+        reflectionExists(id).then(setHasReflection).catch(() => {});
+    }, [id]);
 
     // 상태 초기화 (bookId 변할 때)
     useEffect(() => {
@@ -475,7 +481,7 @@ export default function BookRecordPage() {
                     className={styles.reflectionBtn}
                     onClick={() => navigate(`/reflection/${id}`)}
                 >
-                    독후감 만들기
+                    {hasReflection ? '독후감 보기' : '독후감 만들기'}
                 </button>
                 <button
                     className={styles.addRecordBtn}
