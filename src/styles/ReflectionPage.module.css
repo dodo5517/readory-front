@@ -64,7 +64,7 @@
     width: 15px;
     height: 15px;
     flex-shrink: 0;
-    accent-color: #3a6b52;
+    accent-color: var(--btn-bg);
     cursor: pointer;
 }
 .clusterTheme {
@@ -108,15 +108,15 @@
     height: 34px;
     font-size: 0.83rem;
     font-weight: 500;
-    border: 1px solid #3a6b52;
+    border: 1px solid var(--btn-bg);
     border-radius: 7px;
     background: transparent;
-    color: #3a6b52;
+    color: var(--btn-bg);
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
 }
 .elicitBtn:hover {
-    background: #3a6b52;
+    background: var(--btn-bg);
     color: #fff;
 }
 
@@ -129,7 +129,7 @@
     font-weight: 500;
     border: none;
     border-radius: 7px;
-    background: #3a6b52;
+    background: var(--btn-bg);
     color: #fff;
     cursor: pointer;
     transition: opacity 0.15s;
@@ -354,13 +354,13 @@
     font-size: 0.8rem;
     font-weight: 500;
     border-radius: 6px;
-    border: 1px solid #3a6b52;
+    border: 1px solid var(--btn-bg);
     background: transparent;
-    color: #3a6b52;
+    color: var(--btn-bg);
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
 }
-.editBtn:hover { background: #3a6b52; color: #fff; }
+.editBtn:hover { background: var(--btn-bg); color: #fff; }
 
 .savedTitle {
     margin: 0 0 8px;
@@ -379,7 +379,7 @@
     gap: 0;
     margin: 18px 0 28px;
     padding: 14px 16px;
-    border-left: 2px solid #3a6b52;
+    border-left: 2px solid var(--btn-bg);
     background: var(--light-bg);
     border-radius: 0 6px 6px 0;
 }
@@ -396,11 +396,16 @@
     transition: color 0.15s;
     line-height: 1.5;
 }
-.tocItem:hover { color: #3a6b52; }
+.tocItem:hover { color: var(--btn-bg); }
 
 /* Markdown content */
 .markdownContent {
     margin-top: 4px;
+}
+
+.markdownContent :global(em.book-quote) {
+    font-style: italic;
+    color: var(--badge-linked-text);
 }
 
 .mdH2 {
@@ -472,7 +477,7 @@
     font-weight: 500;
     border: none;
     border-radius: 7px;
-    background: #3a6b52;
+    background: var(--btn-bg);
     color: #fff;
     cursor: pointer;
     transition: opacity 0.15s;
@@ -496,7 +501,7 @@
     outline: none;
     transition: border-color 0.15s;
 }
-.editTitleInput:focus { border-color: #3a6b52; }
+.editTitleInput:focus { border-color: var(--input-focus); }
 
 .editContentArea {
     display: block;
@@ -515,7 +520,7 @@
     outline: none;
     transition: border-color 0.15s;
 }
-.editContentArea:focus { border-color: #3a6b52; }
+.editContentArea:focus { border-color: var(--input-focus); }
 
 /* Mobile */
 @media (max-width: 768px) {
