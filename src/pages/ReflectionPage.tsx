@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import styles from '../styles/ReflectionPage.module.css';
 import {
   clusterReflection, composeReflection, saveReflection, getSavedReflection, deleteReflection,
-  Cluster, ClusterResult, ReflectionSection, SavedReflection,
+  accessReflection, Cluster, ClusterResult, ReflectionSection, SavedReflection,
 } from '../api/Reflection';
 import { fetchBookRecords } from '../api/ReadingRecord';
 import { BookRecord, BookRecordsPage } from '../types/records';
@@ -127,8 +127,12 @@ export default function ReflectionPage() {
 
   useEffect(() => {
     let cancelled = false;
-    getSavedReflection(id)
-      .then(saved => {
+    (async () => {
+      try {
+        const canUse = await accessReflection();
+        if (cancelled) return;
+        if (!canUse) { navigate(-1); return; }
+        const saved = await getSavedReflection(id);
         if (cancelled) return;
         if (saved) {
           setSavedReflection(saved);
@@ -136,12 +140,12 @@ export default function ReflectionPage() {
         } else {
           runCluster();
         }
-      })
-      .catch(() => {
-        if (!cancelled) runCluster();
-      });
+      } catch {
+        if (!cancelled) navigate(-1);
+      }
+    })();
     return () => { cancelled = true; };
-  }, [id, runCluster]);
+  }, [id, runCluster, navigate]);
 
   const startCompose = useCallback(() => {
     if (abortRef.current) abortRef.current.abort();

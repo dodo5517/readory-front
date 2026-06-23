@@ -50,6 +50,16 @@ export interface DrawnPair {
   answer: string;
 }
 
+export async function accessReflection(): Promise<boolean> {
+  try {
+    const res = await fetchWithAuth(`/reflection/access`, { method: 'GET' });
+    const data = await unwrap<{ canUse: boolean }>(res);
+    return data.canUse;
+  } catch {
+    return false;
+  }
+}
+
 export async function clusterReflection(bookId: number): Promise<ClusterResult> {
   const res = await fetchWithAuth(`/reflection/cluster?bookId=${bookId}`, { method: 'POST' });
   return unwrap<ClusterResult>(res);
