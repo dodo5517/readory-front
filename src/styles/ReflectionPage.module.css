@@ -319,6 +319,204 @@
     overflow-wrap: anywhere;
 }
 
+/* Saved view */
+.savedView { margin-top: 4px; }
+
+.savedActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.remakeBtn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    height: 30px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.remakeBtn:hover:not(:disabled) { background: var(--light-bg); color: var(--text-main); }
+.remakeBtn:disabled { opacity: 0.5; cursor: default; }
+
+.editBtn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 14px;
+    height: 30px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid #3a6b52;
+    background: transparent;
+    color: #3a6b52;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.editBtn:hover { background: #3a6b52; color: #fff; }
+
+.savedTitle {
+    margin: 0 0 8px;
+    font-size: 1.55rem;
+    font-weight: 800;
+    font-family: 'Georgia', serif;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    line-height: 1.3;
+}
+
+/* TOC */
+.toc {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 18px 0 28px;
+    padding: 14px 16px;
+    border-left: 2px solid #3a6b52;
+    background: var(--light-bg);
+    border-radius: 0 6px 6px 0;
+}
+
+.tocItem {
+    display: block;
+    text-align: left;
+    padding: 4px 0;
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s;
+    line-height: 1.5;
+}
+.tocItem:hover { color: #3a6b52; }
+
+/* Markdown content */
+.markdownContent {
+    margin-top: 4px;
+}
+
+.mdH2 {
+    margin: 36px 0 10px;
+    font-size: 1.03rem;
+    font-weight: 700;
+    color: var(--text-main);
+    font-family: 'Georgia', serif;
+}
+.mdH2:first-child { margin-top: 0; }
+
+.mdP {
+    margin: 0 0 8px;
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: var(--text-normal);
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+}
+
+.mdBlockquote {
+    margin: 8px 0;
+    padding: 0 0 0 14px;
+    border-left: 3px solid var(--border-color);
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.92rem;
+}
+
+.mdHr {
+    margin: 24px 0;
+    border: 0;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Edit mode */
+.editWrap { margin-top: 4px; }
+
+.editActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+}
+
+.editCancelBtn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 14px;
+    height: 32px;
+    font-size: 0.83rem;
+    border-radius: 7px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.editCancelBtn:hover:not(:disabled) { background: var(--light-bg); }
+.editCancelBtn:disabled { opacity: 0.5; cursor: default; }
+
+.editSaveBtn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 32px;
+    font-size: 0.83rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 7px;
+    background: #3a6b52;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.editSaveBtn:hover:not(:disabled) { opacity: 0.85; }
+.editSaveBtn:disabled { opacity: 0.45; cursor: default; }
+
+.editTitleInput {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Georgia', serif;
+    color: var(--text-main);
+    background: var(--card-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 7px;
+    outline: none;
+    transition: border-color 0.15s;
+}
+.editTitleInput:focus { border-color: #3a6b52; }
+
+.editContentArea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 480px;
+    padding: 12px;
+    font-size: 0.9rem;
+    font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+    line-height: 1.7;
+    color: var(--text-main);
+    background: var(--card-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 7px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s;
+}
+.editContentArea:focus { border-color: #3a6b52; }
+
 /* Mobile */
 @media (max-width: 768px) {
     .wrap { padding: 16px 16px 60px; margin: 0 auto; }
