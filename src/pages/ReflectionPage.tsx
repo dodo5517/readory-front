@@ -7,9 +7,6 @@ import {
   clusterReflection, composeReflection, saveReflection, getSavedReflection, deleteReflection,
   accessReflection, Cluster, ClusterResult, ReflectionSection, SavedReflection,
 } from '../api/Reflection';
-import { fetchBookRecords } from '../api/ReadingRecord';
-import { BookRecord, BookRecordsPage } from '../types/records';
-import { BookMeta } from '../types/books';
 import Eliciter from '../components/Eliciter';
 
 type Phase =
@@ -88,11 +85,6 @@ export default function ReflectionPage() {
   const [editContent, setEditContent] = useState('');
   const [editSaving, setEditSaving] = useState(false);
   const [remaking, setRemaking] = useState(false);
-
-  const [recordsOpen, setRecordsOpen] = useState(false);
-  const [allRecords, setAllRecords] = useState<BookRecord[]>([]);
-  const [loadingRecords, setLoadingRecords] = useState(false);
-  const [recordsLoaded, setRecordsLoaded] = useState(false);
 
   const abortRef = useRef<AbortController | null>(null);
   const sectionsRef = useRef<ReflectionSection[]>([]);
@@ -203,37 +195,6 @@ export default function ReflectionPage() {
   const handleEliciterClose = () => {
     setEliciterOpen(false);
     runCluster();
-  };
-
-  const loadAllRecords = async () => {
-    setLoadingRecords(true);
-    const collected: BookRecord[] = [];
-    try {
-      let cursor: string | null = null;
-      let keepGoing = true;
-      while (keepGoing) {
-        const page: BookRecordsPage<BookMeta, BookRecord> = await fetchBookRecords(id, cursor, 100);
-        collected.push(...page.content);
-        if (page.hasMore && page.nextCursor) {
-          cursor = page.nextCursor;
-        } else {
-          keepGoing = false;
-        }
-      }
-      setAllRecords(collected);
-    } catch {}
-    finally {
-      setLoadingRecords(false);
-    }
-  };
-
-  const handleToggleRecords = () => {
-    const next = !recordsOpen;
-    setRecordsOpen(next);
-    if (next && !recordsLoaded) {
-      setRecordsLoaded(true);
-      loadAllRecords();
-    }
   };
 
   const handleEdit = () => {
