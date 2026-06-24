@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import styles from "../../../styles/AdminModal.module.css";
+import { useModalOpen } from "../../../hook/useModalOpen";
 import * as adminUser from "../../../api/AdminUser";
 import {AdminPageUserResponse} from "../../../types/adminUser";
 import UpdateUsernameModal from "./UpdateUsernameModal";
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export default function UserDetailModal({ isOpen, userId, onClose, onRefreshList = () => {} }: Props) {
+    useModalOpen(isOpen);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [user, setUser] = useState<AdminPageUserResponse | null>(null);

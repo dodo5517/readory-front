@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../styles/Eliciter.module.css';
+import { useModalOpen } from '../hook/useModalOpen';
 import {
   elicit,
   saveDrawn,
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function Eliciter({ bookId, tone, clusters, onClose }: Props) {
+  useModalOpen(true);
   const [history, setHistory] = useState<ElicitTurn[]>([]);
   const [drawn, setDrawn] = useState<{ comment: string; theme: string }[]>([]);
   const [pairs, setPairs] = useState<DrawnPair[]>([]);

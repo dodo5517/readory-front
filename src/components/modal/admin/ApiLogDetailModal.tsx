@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import styles from "../../../styles/AdminModal.module.css";
+import { useModalOpen } from "../../../hook/useModalOpen";
 import logStyles from "../../../styles/AdminApiLogPage.module.css";
 import {ApiLogDetailResponse} from "../../../types/adminLog";
 import UserDetailModal from "./UserDetailModal";
@@ -25,6 +26,7 @@ const getMethodClass = (method: string): string => {
 };
 
 export default function ApiLogDetailModal({ isOpen, log, loading, onClose }: Props) {
+    useModalOpen(isOpen);
     const [openUserDetail, setOpenUserDetail] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
