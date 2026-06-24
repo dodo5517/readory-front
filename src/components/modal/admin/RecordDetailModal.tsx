@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/AdminModal.module.css";
+import { useModalOpen } from "../../../hook/useModalOpen";
 import recordStyles from "../../../styles/AdminRecordPage.module.css";
 import * as adminRecord from "../../../api/AdminRecord";
 import { AdminRecordDetailResponse, MatchStatus } from "../../../types/adminRecord";
@@ -23,6 +24,7 @@ const MATCH_STATUS_LABELS: Record<MatchStatus, string> = {
 };
 
 export default function RecordDetailModal({ isOpen, recordId, onClose, onDeleted, onUpdated }: Props) {
+    useModalOpen(isOpen);
     const [record, setRecord] = useState<AdminRecordDetailResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);

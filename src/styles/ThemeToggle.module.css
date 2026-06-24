@@ -31,3 +31,7 @@
 .toggleButton:active {
     transform: scale(0.96);
 }
+
+:global(body.modal-open) .toggleButton {
+    display: none;
+}

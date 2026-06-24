@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../../styles/CreateRecordModal.module.css";
 import { createReadingRecord } from "../../api/ReadingRecord";
+import { useModalOpen } from "../../hook/useModalOpen";
 import { XIcon } from '@phosphor-icons/react';
 import { nowDatetimeLocal } from "../../utils/datetime";
 
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function CreateRecordModal({ open, onClose, onCreated, initialTitle, initialAuthor }: Props) {
+    useModalOpen(open);
     const overlayRef = useRef<HTMLDivElement>(null);
     const [rawTitle, setRawTitle] = useState("");
     const [rawAuthor, setRawAuthor] = useState("");

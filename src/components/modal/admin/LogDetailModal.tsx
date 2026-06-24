@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import styles from "../../../styles/AdminModal.module.css";
+import { useModalOpen } from "../../../hook/useModalOpen";
 import logStyles from "../../../styles/AdminLogPage.module.css";
 import {AuthEventType, LogDetailResponse} from "../../../types/adminLog";
 import UserDetailModal from "./UserDetailModal";
@@ -21,6 +22,7 @@ const EVENT_TYPE_LABELS: Record<AuthEventType, string> = {
 };
 
 export default function LogDetailModal({ isOpen, log, loading, onClose }: Props) {
+    useModalOpen(isOpen);
     const [openUserDetail, setOpenUserDetail] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 

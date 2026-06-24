@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../../styles/EditRecordModal.module.css";
+import { useModalOpen } from "../../hook/useModalOpen";
 import {UpdateRecord} from "../../types/records";
 import {fetchUpdateRecord} from "../../api/ReadingRecord";
 import { XIcon } from '@phosphor-icons/react';
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export default function RecordEditModal({ open, initial, onSave, onClose, onDelete }: Props) {
+    useModalOpen(open);
     const overlayRef = useRef<HTMLDivElement>(null);
     const recordId: number = initial.id;
     const [dateValue, setDateValue] = useState(() => toDatetimeLocal(initial.recordedAt));

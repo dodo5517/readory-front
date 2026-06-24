@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/AdminModal.module.css";
+import { useModalOpen } from "../../../hook/useModalOpen";
 import * as adminRecord from "../../../api/AdminRecord";
 import {AdminRecordDetailResponse} from "../../../types/adminRecord";
 import { XIcon } from '@phosphor-icons/react';
@@ -19,6 +20,7 @@ export default function RecordEditModal({
                                             onClose,
                                             onUpdated,
                                         }: Props) {
+    useModalOpen(isOpen);
     const [rawTitle, setRawTitle] = useState("");
     const [rawAuthor, setRawAuthor] = useState("");
     const [loading, setLoading] = useState(false);

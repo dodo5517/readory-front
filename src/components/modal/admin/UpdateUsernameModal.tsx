@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/AdminModal.module.css";
+import { useModalOpen } from "../../../hook/useModalOpen";
 import * as adminUser from "../../../api/AdminUser";
 import { XIcon } from '@phosphor-icons/react';
 
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function UpdateUsernameModal({ isOpen, userId, initialUsername, onClose, onSuccess }: Props) {
+    useModalOpen(isOpen);
     const [newUsername, setNewUsername] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);

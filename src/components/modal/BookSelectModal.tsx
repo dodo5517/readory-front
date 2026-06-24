@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../../styles/BookSelectModal.module.css";
+import { useModalOpen } from "../../hook/useModalOpen";
 import {BookCandidate} from "../../types/books";
 import { XIcon, MagnifyingGlassIcon } from '@phosphor-icons/react';
 
@@ -23,6 +24,7 @@ export default function BookSelectModal({open, candidates, onSelect, onClose,
                                             loading = false, keyword = "", onKeywordChange,
                                             sortKey = 'title', onSortKeyChange,
                                             onSubmitSearch, onAddExternalSearch}: Props) {
+    useModalOpen(open);
     const overlayRef = useRef<HTMLDivElement>(null);
     const [focused, setFocused] = useState<number>(-1);
     // 로컬 검색인지 외부 검색인지 확인

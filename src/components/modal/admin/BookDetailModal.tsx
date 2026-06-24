@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../../../styles/AdminModal.module.css";
+import { useModalOpen } from "../../../hook/useModalOpen";
 import bookStyles from "../../../styles/AdminBookPage.module.css";
 import {BookDetailResponse} from "../../../types/adminLog";
 import { XIcon, TrashIcon , BooksIcon } from '@phosphor-icons/react';
@@ -23,6 +24,7 @@ export default function BookDetailModal({
                                             onHardDelete,
                                             onRestore,
                                         }: Props) {
+    useModalOpen(isOpen);
     if (!isOpen) return null;
 
     const handleBackdropClick = (e: React.MouseEvent) => {

@@ -57,6 +57,7 @@
 .periodLabel { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2px; }
 .periodValue { font-size: 0.92rem; font-weight: 500; color: var(--text-main); font-variant-numeric: tabular-nums; }
 
+
 .addRecordBtn {
     display: inline-flex;
     align-items: center;

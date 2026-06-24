@@ -41,7 +41,7 @@ export default function Login() {
         if (isSubmitting) return;
 
         setIsSubmitting(true);
-        console.log('로그인 시도:', { email, password });
+        // console.log('로그인 시도:', { email, password });
 
         try {
             // authService
@@ -53,7 +53,7 @@ export default function Login() {
             sessionStorage.removeItem('loginRedirectTo');
             navigate(redirectTo);
         } catch (err: any) {
-            console.log("로그인 실패: ", err);
+            // console.log("로그인 실패: ", err);
             alert("로그인 실패");
         } finally {
             setIsSubmitting(false);

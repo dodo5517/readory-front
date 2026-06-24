@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/AdminModal.module.css";
+import { useModalOpen } from "../../../hook/useModalOpen";
 import * as adminUser from "../../../api/AdminUser";
 import { XIcon, WarningIcon } from '@phosphor-icons/react';
 
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function UpdatePasswordModal({ isOpen, userId, userLabel, onClose, onSuccess }: Props) {
+    useModalOpen(isOpen);
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
