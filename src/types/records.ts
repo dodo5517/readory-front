@@ -37,11 +37,21 @@ export interface CreateRecordRequest {
 }
 
 
+export type HighlightColor = "GREEN" | "PEACH";
+
+export interface Highlight {
+    id: number;
+    start: number;   // sentence 기준 시작(포함)
+    end: number;     // sentence 기준 끝(미포함)
+    color: HighlightColor;
+}
+
 export interface BookRecord {
     id: number;
     recordedAt: string;
     sentence: string | null;
     comment: string | null;
+    highlights: Highlight[];
 }
 
 export type BookRecordsPage<T, A> = {

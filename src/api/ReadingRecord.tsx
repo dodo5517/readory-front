@@ -1,6 +1,6 @@
 import {fetchWithAuth} from "../utils/fetchWithAuth";
 import {unwrap, unwrapVoid} from "../utils/apiResponse";
-import {BookRecord, BookRecordsPage, CreateRecordRequest, Record, SummaryRecord, UpdateRecord} from "../types/records";
+import {BookRecord, BookRecordsPage, CreateRecordRequest, Highlight, HighlightColor, Record, SummaryRecord, UpdateRecord} from "../types/records";
 import {formatYMDhm} from "../utils/datetime";
 import {BookCandidate, BookComment, BookMeta, PageResponse, PageResult, SummaryBook} from "../types/books";
 
@@ -219,6 +219,14 @@ export async function fetchBookRecords(bookId: number, cursor: string|null, size
         recordedAt: r.recordedAt,
         sentence: r.sentence,
         comment: r.comment,
+        highlights: Array.isArray(r.highlights)
+            ? r.highlights.map((h: any): Highlight => ({
+                id: h.id,
+                start: h.start,
+                end: h.end,
+                color: h.color,
+            }))
+            : [],
     }));
 
     const bookComment = data.bookComment ?? null;
@@ -293,5 +301,26 @@ export async function upsertBookComment(bookId: number, content: string): Promis
 // 책 감상 삭제
 export async function deleteBookComment(bookId: number): Promise<void> {
     const response = await fetchWithAuth(`/records/books/${bookId}/comment`, { method: 'DELETE' });
+    await unwrapVoid(response);
+}
+
+// 기록 문장에 하이라이트 추가
+export async function addHighlight(
+    recordId: number,
+    start: number,
+    end: number,
+    color: HighlightColor
+): Promise<Highlight> {
+    const response = await fetchWithAuth(`/records/${recordId}/highlights`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ start, end, color }),
+    });
+    return unwrap<Highlight>(response);
+}
+
+// 하이라이트 삭제
+export async function removeHighlight(highlightId: number): Promise<void> {
+    const response = await fetchWithAuth(`/records/highlights/${highlightId}`, { method: 'DELETE' });
     await unwrapVoid(response);
 }

@@ -48,6 +48,10 @@
   --weekday-text: #555;
   --day-bg: #f9f9f9;
 
+  /* ─── 하이라이트(형광펜) 마커 색 (light) ──────────── */
+  --mk-green: #cbe8d3;
+  --mk-peach: #f9e1c1;
+
   --shadow-lift: 0 8px 20px rgba(0,0,0,.18), 0 3px 6px rgba(0,0,0,.10);
   --shadow-press: 0 4px 10px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.08);
   --card-hover-shadow: 0 2px 10px rgba(0,0,0,0.06);
@@ -153,6 +157,10 @@
 
   --weekday-text: #aaa;
   --day-bg: #262626;
+
+  /* ─── 하이라이트(형광펜) 마커 색 (dark) — 반투명 발광 ── */
+  --mk-green: rgba(120, 205, 150, 0.30);
+  --mk-peach: rgba(240, 175, 95, 0.30);
 
   --shadow-lift: 0 0 0 1px rgba(255,255,255,.12), 0 10px 24px rgba(0,0,0,.70), 0 4px 10px rgba(0,0,0,.45);
   --shadow-press: 0 0 0 1px rgba(255,255,255,.08), 0 6px 14px rgba(0,0,0,.60);
