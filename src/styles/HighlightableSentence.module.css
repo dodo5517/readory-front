@@ -1,0 +1,43 @@
+/* 형광펜 마커 — 글자 아래쪽 절반만 칠하고 양끝은 각지게 */
+.mark {
+    background: transparent;  /* <mark> 기본 노란 배경 제거 */
+    box-shadow: inset 0 -0.6em 0 var(--mk-color);
+    border-radius: 0;
+    padding: 0;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    cursor: pointer;
+    color: inherit;
+}
+.green { --mk-color: var(--mk-green); }
+.peach { --mk-color: var(--mk-peach); }
+
+/* 색 선택 팝오버 */
+.popover {
+    position: fixed;
+    transform: translate(-50%, calc(-100% - 8px));
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    padding: 6px 8px;
+    box-shadow: var(--shadow-press);
+    z-index: 1000;
+}
+
+.swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.1s ease;
+}
+.swatch:hover { transform: scale(1.12); }
+
+/* 스와치는 다크모드에서도 또렷하게 보이도록 라이트 파스텔 고정 */
+.swatchGreen { background: #cbe8d3; }
+.swatchPeach { background: #f9e1c1; }

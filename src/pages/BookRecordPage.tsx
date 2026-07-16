@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../styles/BookRecordPage.module.css";
 import {BookComment, BookMeta} from "../types/books";
-import {BookRecord} from "../types/records";
-import {deleteBookComment, fetchBookRecords, fetchDeleteBook, fetchDeleteRecord, upsertBookComment} from "../api/ReadingRecord";
+import {BookRecord, HighlightColor} from "../types/records";
+import {addHighlight, deleteBookComment, fetchBookRecords, fetchDeleteBook, fetchDeleteRecord, removeHighlight, upsertBookComment} from "../api/ReadingRecord";
+import HighlightableSentence from "../components/HighlightableSentence";
 import { reflectionExists, accessReflection } from "../api/Reflection";
 import {useParams, useNavigate} from "react-router-dom";
 import CreateRecordModal from "../components/modal/CreateRecordModal";
@@ -246,6 +247,30 @@ export default function BookRecordPage() {
         setCommentDraft(bookComment?.content ?? '');
         setCommentEditing(true);
     };
+
+    // 문장 하이라이트 추가
+    const handleAddHighlight = demoGuard(async (recordId: number, start: number, end: number, color: HighlightColor) => {
+        try {
+            const created = await addHighlight(recordId, start, end, color);
+            setRecords(prev => prev.map(r =>
+                r.id === recordId ? { ...r, highlights: [...(r.highlights ?? []), created] } : r
+            ));
+        } catch (e: any) {
+            alert(e?.message ?? '하이라이트 저장에 실패했습니다.');
+        }
+    });
+
+    // 문장 하이라이트 삭제
+    const handleRemoveHighlight = demoGuard(async (recordId: number, highlightId: number) => {
+        try {
+            await removeHighlight(highlightId);
+            setRecords(prev => prev.map(r =>
+                r.id === recordId ? { ...r, highlights: (r.highlights ?? []).filter(h => h.id !== highlightId) } : r
+            ));
+        } catch (e: any) {
+            alert(e?.message ?? '하이라이트 삭제에 실패했습니다.');
+        }
+    });
 
     // IntersectionObserver로 센티널 진입 시 다음 페이지 로드
     useEffect(() => {
@@ -541,7 +566,16 @@ export default function BookRecordPage() {
                                                         }
                                                     }}
                                                 >
-                                                    {r.sentence && <blockquote className={styles.quote}>{r.sentence}</blockquote>}
+                                                    {r.sentence && (
+                                                        <HighlightableSentence
+                                                            recordId={r.id}
+                                                            sentence={r.sentence}
+                                                            highlights={r.highlights ?? []}
+                                                            className={styles.quote}
+                                                            onAdd={handleAddHighlight}
+                                                            onRemove={handleRemoveHighlight}
+                                                        />
+                                                    )}
                                                     {r.comment && <p className={styles.comment}>{r.comment}</p>}
                                                     <div className={styles.cardActions}>
                                                         <button
