@@ -47,12 +47,13 @@
 
 .bgOptions { display: flex; gap: 6px; }
 .bgBtn {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: 6px;
     border: 1px solid var(--input-border);
     cursor: pointer;
     padding: 0;
+    flex: 0 0 auto;
 }
 .bgBtn[data-active="true"] {
     outline: 2px solid var(--btn-bg);
@@ -237,4 +238,21 @@
 @media screen and (max-width: 768px) {
     .paper { padding: 28px 22px; }
     .title { font-size: 19px; }
+}
+
+/* 좁은 화면: 1행 = 돌아가기 + 스와치, 2행 = 저장 버튼(전체 너비) */
+@media screen and (max-width: 560px) {
+    .screen { padding: 16px 12px 48px; }
+    .toolbar {
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    .bgOptions { gap: 8px; }
+    .saveBtn {
+        order: 3;
+        margin-left: 0;
+        width: 100%;
+    }
 }

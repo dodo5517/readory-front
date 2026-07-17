@@ -13,16 +13,23 @@ function ymd(iso: string | null | undefined): string {
     return `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())}`;
 }
 
+// 스와치용 도트 — 실제(19px 간격)보다 촘촘·진하게 그려야 작은 버튼에서도 도트 유무가 보인다
+const dotSwatch = (bg: string, dot: string): React.CSSProperties => ({
+    backgroundColor: bg,
+    backgroundImage: `radial-gradient(circle, ${dot} 1.5px, transparent 1.5px)`,
+    backgroundSize: "7px 7px",
+});
+
 // 배경 옵션 (기본: 베이지·도트). canvasBg/canvasDots = 인쇄 시 페이지 전체(캔버스) 배경
 const BG_OPTIONS: {
     key: string; label: string; cls: string; sw: React.CSSProperties;
     canvasBg: string; canvasDots: string;
 }[] = [
-    { key: "beigeDots", label: "베이지·도트", cls: "bgBeigeDots", sw: { background: "#fbf9f2" }, canvasBg: "#fbf9f2", canvasDots: "#e4dec9" },
-    { key: "whiteDots", label: "흰·도트", cls: "bgWhiteDots", sw: { background: "#ffffff" }, canvasBg: "#ffffff", canvasDots: "#e7e7e2" },
-    { key: "white", label: "흰색", cls: "bgWhite", sw: { background: "#ffffff" }, canvasBg: "#ffffff", canvasDots: "transparent" },
-    { key: "darkDots", label: "다크·도트", cls: "bgDarkDots", sw: { background: "#242422" }, canvasBg: "#242422", canvasDots: "#38382f" },
-    { key: "dark", label: "다크", cls: "bgDark", sw: { background: "#2a2a28" }, canvasBg: "#2a2a28", canvasDots: "transparent" },
+    { key: "beigeDots", label: "베이지 · 도트", cls: "bgBeigeDots", sw: dotSwatch("#fbf9f2", "#c4b795"), canvasBg: "#fbf9f2", canvasDots: "#e4dec9" },
+    { key: "whiteDots", label: "흰색 · 도트", cls: "bgWhiteDots", sw: dotSwatch("#ffffff", "#cfcfc9"), canvasBg: "#ffffff", canvasDots: "#e7e7e2" },
+    { key: "white", label: "흰색", cls: "bgWhite", sw: { backgroundColor: "#ffffff" }, canvasBg: "#ffffff", canvasDots: "transparent" },
+    { key: "darkDots", label: "다크 · 도트", cls: "bgDarkDots", sw: dotSwatch("#242422", "#6b6b58"), canvasBg: "#242422", canvasDots: "#38382f" },
+    { key: "dark", label: "다크", cls: "bgDark", sw: { backgroundColor: "#2a2a28" }, canvasBg: "#2a2a28", canvasDots: "transparent" },
 ];
 
 // 문장을 하이라이트 범위로 쪼개 렌더 (읽기 전용)
