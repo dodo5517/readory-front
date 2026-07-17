@@ -117,11 +117,32 @@ export default function BookPrintPage() {
         };
     }, [bg]);
 
-    // 인쇄창이 닫히면(저장/취소 공통) 기록 화면으로 조용히 복귀
+    // PDF 기본 파일명 = document.title → "제목-작가(마지막 기록 날짜)"
+    const fileName = useMemo(() => {
+        const title = book?.title ?? "독서기록";
+        const author = book?.author ?? "";
+        const last = ymd(book?.periodEnd) || (records.length ? ymd(records[records.length - 1].recordedAt) : "");
+        let name = author ? `${title}-${author}` : title;
+        if (last) name += `(${last})`;
+        // 파일명에 못 쓰는 문자 제거
+        return name.replace(/[\\/:*?"<>|]/g, "").trim();
+    }, [book, records]);
+
+    // 저장 대화상자의 기본 파일명 = document.title.
+    // 인쇄 직전이 아니라 데이터 로드 시점에 미리 걸어둬야 크롬이 파일명으로 집어간다.
+    useEffect(() => {
+        if (!book) return;
+        const prevTitle = document.title;
+        document.title = fileName;
+        return () => { document.title = prevTitle; };
+    }, [book, fileName]);
+
+    // 인쇄창이 닫히면(저장/취소 공통) 기록 화면으로 조용히 복귀.
+    // 저장 대화상자가 파일명을 읽을 시간을 주려고 복귀를 살짝 늦춘다.
     const handleSave = () => {
         const onAfterPrint = () => {
             window.removeEventListener("afterprint", onAfterPrint);
-            navigate(`/bookRecord/${id}`, { replace: true });
+            window.setTimeout(() => navigate(`/bookRecord/${id}`, { replace: true }), 800);
         };
         window.addEventListener("afterprint", onAfterPrint);
         window.print();
