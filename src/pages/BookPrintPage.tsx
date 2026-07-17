@@ -13,13 +13,16 @@ function ymd(iso: string | null | undefined): string {
     return `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())}`;
 }
 
-// 배경 옵션 (기본: 베이지·도트)
-const BG_OPTIONS: { key: string; label: string; cls: string; sw: React.CSSProperties }[] = [
-    { key: "beigeDots", label: "베이지·도트", cls: "bgBeigeDots", sw: { background: "#fbf9f2" } },
-    { key: "whiteDots", label: "흰·도트", cls: "bgWhiteDots", sw: { background: "#ffffff" } },
-    { key: "white", label: "흰색", cls: "bgWhite", sw: { background: "#ffffff" } },
-    { key: "darkDots", label: "다크·도트", cls: "bgDarkDots", sw: { background: "#242422" } },
-    { key: "dark", label: "다크", cls: "bgDark", sw: { background: "#2a2a28" } },
+// 배경 옵션 (기본: 베이지·도트). canvasBg/canvasDots = 인쇄 시 페이지 전체(캔버스) 배경
+const BG_OPTIONS: {
+    key: string; label: string; cls: string; sw: React.CSSProperties;
+    canvasBg: string; canvasDots: string;
+}[] = [
+    { key: "beigeDots", label: "베이지·도트", cls: "bgBeigeDots", sw: { background: "#fbf9f2" }, canvasBg: "#fbf9f2", canvasDots: "#e4dec9" },
+    { key: "whiteDots", label: "흰·도트", cls: "bgWhiteDots", sw: { background: "#ffffff" }, canvasBg: "#ffffff", canvasDots: "#e7e7e2" },
+    { key: "white", label: "흰색", cls: "bgWhite", sw: { background: "#ffffff" }, canvasBg: "#ffffff", canvasDots: "transparent" },
+    { key: "darkDots", label: "다크·도트", cls: "bgDarkDots", sw: { background: "#242422" }, canvasBg: "#242422", canvasDots: "#38382f" },
+    { key: "dark", label: "다크", cls: "bgDark", sw: { background: "#2a2a28" }, canvasBg: "#2a2a28", canvasDots: "transparent" },
 ];
 
 // 문장을 하이라이트 범위로 쪼개 렌더 (읽기 전용)
@@ -100,6 +103,18 @@ export default function BookPrintPage() {
     const paperClass = useMemo(() => {
         const cls = BG_OPTIONS.find(o => o.key === bg)?.cls;
         return cls && styles[cls] ? styles[cls] : "";
+    }, [bg]);
+
+    // 인쇄 캔버스(페이지 전체) 배경 = 선택한 배경 → 마지막 장 빈 공간까지 채워짐
+    useEffect(() => {
+        const opt = BG_OPTIONS.find(o => o.key === bg);
+        const root = document.documentElement;
+        root.style.setProperty("--print-bg", opt?.canvasBg ?? "#ffffff");
+        root.style.setProperty("--print-dots", opt?.canvasDots ?? "transparent");
+        return () => {
+            root.style.removeProperty("--print-bg");
+            root.style.removeProperty("--print-dots");
+        };
     }, [bg]);
 
     // 인쇄창이 닫히면(저장/취소 공통) 기록 화면으로 조용히 복귀
