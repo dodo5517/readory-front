@@ -522,6 +522,13 @@ export default function BookRecordPage() {
                     기록 추가
                 </button>
                 <button
+                    className={styles.addRecordBtn}
+                    onClick={() => navigate(`/bookRecord/${id}/print`)}
+                    title="이 책의 기록을 PDF로 저장"
+                >
+                    PDF 저장
+                </button>
+                <button
                     className={styles.deleteAllBtn}
                     onClick={handleDeleteBook}
                     disabled={deletingAllBooks}

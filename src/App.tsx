@@ -36,6 +36,7 @@ import PrivacyPolicyMobile from "./pages/PrivacyPolicyMobile";
 import TermsMobile from "./pages/TermsMobile";
 import BookCalendarPage from "./pages/BookCalendarPage";
 import ReflectionPage from "./pages/ReflectionPage";
+import BookPrintPage from "./pages/BookPrintPage";
 
 
 function App() {
@@ -55,6 +56,9 @@ function App() {
                       <Route path="/terms" element={<Terms />} />
                       <Route path="/privacy-mobile" element={<PrivacyPolicyMobile />} />
                       <Route path="/terms-mobile" element={<TermsMobile />} />
+
+                      {/* 인쇄/PDF 전용 뷰 — 앱 헤더/네비 없이 단독 */}
+                      <Route path={"/bookRecord/:bookId/print"} element={<PrivateRoute><BookPrintPage /></PrivateRoute>} />
 
                       <Route element={<AdminLayout />}>
                           <Route path="/admin" element={<AdminNav title="Readory Admin" />}>

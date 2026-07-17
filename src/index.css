@@ -233,3 +233,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   monospace;
 }
+
+/* 인쇄 시 앱 크롬(ThemeToggle 등) 숨김 — 프린트 뷰만 남김 */
+@media print {
+  .app-container > button { display: none !important; }
+}
