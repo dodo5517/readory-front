@@ -113,6 +113,11 @@
     --mkg: rgba(120, 205, 150, 0.30); --mkp: rgba(240, 175, 95, 0.30);
 }
 
+/* 인쇄 시 페이지마다 반복될 상·하단 여백용 표. 화면에선 여백 0(=일반 블록처럼 보임) */
+.sheet { width: 100%; border-collapse: collapse; }
+.sheetCell { padding: 0; border: 0; vertical-align: top; }
+.spacerTop, .spacerBottom { padding: 0; border: 0; height: 0; }
+
 .header { display: flex; gap: 16px; align-items: flex-start; }
 .cover {
     width: 60px;
@@ -199,14 +204,18 @@
     .paper {
         width: auto;
         max-width: none;
-        margin: 12mm;          /* 종이 바깥 흰 여백(숨 쉴 공간) */
-        padding: 14mm 16mm;    /* 안쪽 본문 여백 */
+        margin: 0;
+        padding: 0 18mm;       /* 좌우 여백 (모든 페이지 동일) */
         border-radius: 0;
         box-shadow: none;
     }
+    /* 상·하단 여백은 thead/tfoot로 → 2페이지 이후에도 동일하게 반복 */
+    .spacerTop { height: 18mm; }
+    .spacerBottom { height: 9mm; }
 }
 
-@media (max-width: 768px) {
+/* 화면 전용 — screen을 명시하지 않으면 인쇄에도 적용돼 인쇄 여백을 덮어씀 */
+@media screen and (max-width: 768px) {
     .paper { padding: 28px 22px; }
     .title { font-size: 19px; }
 }

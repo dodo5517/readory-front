@@ -153,6 +153,11 @@ export default function BookPrintPage() {
 
             {!loading && !error && (
                 <article className={`${styles.paper} ${paperClass}`}>
+                  {/* thead/tfoot는 인쇄 시 페이지마다 반복 → 모든 페이지에 동일한 상·하단 여백 */}
+                  <table className={styles.sheet}>
+                    <thead><tr><td className={styles.spacerTop} /></tr></thead>
+                    <tbody><tr><td className={styles.sheetCell}>
+
                     {/* 헤더: 표지 + 책 정보 */}
                     <header className={styles.header}>
                         {book?.coverUrl && (
@@ -182,6 +187,10 @@ export default function BookPrintPage() {
                     ))}
 
                     <div className={styles.footer}>readory</div>
+
+                    </td></tr></tbody>
+                    <tfoot><tr><td className={styles.spacerBottom} /></tr></tfoot>
+                  </table>
                 </article>
             )}
         </div>
