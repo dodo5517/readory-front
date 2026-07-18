@@ -182,7 +182,7 @@
     transition: box-shadow 0.2s;
 }
 .recordCard:hover { box-shadow: var(--card-hover-shadow); }
-.quote { margin: 0 0 8px; color: var(--record-quote); font-size: 0.95rem; white-space: pre-line; line-height: 1.7; }
+.quote { margin: 0 0 8px; color: var(--record-quote-strong); font-size: 0.95rem; white-space: pre-line; line-height: 1.7; }
 .comment { font-size: 0.85rem; margin: 0; color: var(--text-muted); white-space: pre-line; line-height: 1.65; }
 
 .helper { text-align: center; color: var(--text-muted); font-size: 0.88rem; padding: 20px 0; }
