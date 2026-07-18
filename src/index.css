@@ -31,6 +31,7 @@
   --card-border: #e8e8e8;
   --record-comment: #9ca3af;
   --record-quote: #444;
+  --record-quote-strong: #444;
   --badge-linked-bg: #f0f7f3;
   --badge-linked-text: #1e4d36;
   --book-quote-color: #8b5a3c;
@@ -141,6 +142,7 @@
   --card-border: #2c2c2c;
   --record-comment: #4b5563;
   --record-quote: #bbb;
+  --record-quote-strong: #ffffff;
   --badge-linked-bg: #2a2a2a;
   --badge-linked-text: #7abf9a;
   --book-quote-color: #c08d5f;
