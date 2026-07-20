@@ -26,6 +26,20 @@
     box-shadow: var(--shadow-press);
     z-index: 1000;
 }
+/* 모바일: 네이티브 선택 메뉴와 겹치지 않게 선택 근처가 아닌 화면 하단 중앙에 고정 */
+.popover.bar {
+    left: 50%;
+    right: auto;
+    top: auto;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    transform: translateX(-50%);
+    padding: 10px 16px;
+    gap: 16px;
+}
+.popover.bar .swatch {
+    width: 30px;
+    height: 30px;
+}
 
 .swatch {
     width: 20px;
