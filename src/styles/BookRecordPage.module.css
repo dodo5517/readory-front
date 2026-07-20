@@ -84,6 +84,8 @@
     gap: 8px;
     margin-top: 12px;
 }
+/* 독후감 버튼만 왼쪽 정렬(나머지는 오른쪽으로 밀림) */
+.reflectionBtn { margin-right: auto; }
 
 /* 전체 삭제 버튼 */
 .deleteAllBtn {
@@ -218,7 +220,9 @@
     .periodCard { padding: 8px 10px; }
     .periodValue { font-size: 0.9rem; }
     .bookInfo { flex-direction: column; }
-    .actionBtns { justify-content: flex-end; margin-top: 10px; }
+    .actionBtns { flex-wrap: wrap; justify-content: flex-end; margin-top: 10px; }
+    /* 모바일: 줄바꿈되므로 왼쪽 밀어내기 해제(안 그러면 첫 버튼이 화면 밖으로 잘림) */
+    .reflectionBtn { margin-right: 0; }
     .addRecordBtn { height: 38px; }
     .deleteAllBtn { height: 38px; }
 
