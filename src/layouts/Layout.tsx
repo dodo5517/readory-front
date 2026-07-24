@@ -1,4 +1,5 @@
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { Outlet, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { fetchCurrentUser } from '../api/Auth';
@@ -46,6 +47,7 @@ const Layout = () => {
             <main>
                 <Outlet />
             </main>
+            <Footer />
         </>
     );
 };
