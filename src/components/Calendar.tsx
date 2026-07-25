@@ -259,7 +259,6 @@ export default function Calendar() {
                 style={{ cursor: hasRecord ? "pointer" : "default" }}
             >
                 <span>{day}</span>
-                {hasRecord && <span className={styles.badge}>{count}</span>}
             </div>
         );
     }

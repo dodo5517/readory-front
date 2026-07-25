@@ -238,64 +238,34 @@
     margin-bottom: 5px;
 }
 
-/* 배경 — 둥근 사각형 */
-.day::before {
-    content: "";
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 0; height: 0;
-    border-radius: 8px;
-    background: transparent;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, border-radius 0.2s ease;
-    z-index: 0;
-    pointer-events: none;
-}
-
-/* 도트 — active일 때만 */
+/* 도트 — active일 때만. 호버 시 자라서 숫자를 감싸는 원이 된다 */
 .day::after { content: none; }
 .active::after {
     content: "";
     position: absolute;
-    bottom: 7px; left: 50%;
-    transform: translateX(-50%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, calc(-50% + 14px));
     width: 5px; height: 5px;
     border-radius: 50%;
     background: var(--calendar-intensity-4);
+    box-sizing: border-box;
     z-index: 1;
-    transition: opacity 0.2s ease;
+    transition: width 0.22s ease, height 0.22s ease, transform 0.22s ease,
+                background 0.22s ease, border-color 0.22s ease;
     pointer-events: none;
 }
 
 /* 기록 있는 날 */
 .active { font-weight: 700; cursor: pointer; }
 
-/* 호버: 가로 직사각형, 진한 파란 배경 */
-.active:hover::before {
-    width: 62px;
-    height: 42px;
-    border-radius: 8px;
-    background: var(--calendar-intensity-2);
+/* 호버: 점이 자라 숫자를 감싸는 원이 된다 (숫자는 움직이지 않고, 원이 숫자 중심에 정렬)
+   -1px = 숫자 위치에 맞춘 광학적 보정값(작게 올림). 값을 키우면 원이 위로, 줄이면 아래로 */
+.active:hover::after {
+    width: 40px; height: 40px;
+    transform: translate(-50%, calc(-50% - 1px));
+    background: transparent;
+    border: 2px solid var(--calendar-intensity-4);
 }
-.active:hover::after { opacity: 0; }
-.active:hover > span:first-child { color: var(--text-main); }
-
-/* badge: 직사각형 우측 하단, 호버 시 등장 */
-.badge {
-    position: absolute;
-    top: calc(50% + 9px);
-    left: calc(50% + 16px);
-    z-index: 2;
-    font-size: 0.62rem;
-    font-family: -apple-system, sans-serif;
-    font-weight: 500;
-    line-height: 1;
-    color: var(--text-main);
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    pointer-events: none;
-}
-.active:hover .badge { opacity: 1; }
 
 /* ══════════════════════════════
    책장 히트맵 — 통합 책장 프레임
