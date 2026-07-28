@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams, createSearchParams } from "react-router-dom";
 import styles from "../styles/Calendar.module.css";
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
@@ -9,100 +9,82 @@ import GridPickerPopover from "./calendar/GridPickerPopover";
 
 const HM_MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-const BOOK_WIDTHS  = [12,14,16,18,20,22,24,26,28,30,13,17,21,25,15,19,23,27,11,29,16,22,14,20,26,18,24,13,28,21];
-const BOOK_HEIGHTS = [52,58,64,70,76,82,88,94,100,106,55,67,73,85,91,103,60,72,80,96,48,65,78,88,56,74,84,98,62,90];
-
 function seededRand(seed: number): number {
     const x = Math.sin(seed + 1) * 10000;
     return x - Math.floor(x);
 }
 
-const MONTH_PALETTES: string[][] = Array.from({ length: 12 }, (_, m) =>
-    [1, 2, 3, 4].map(i => `var(--book-${m + 1}-${i})`)
-);
+/* 한 해 = 글 한 편. 하루가 낱말 하나
+   실제 글처럼 짧은 말이 많은 분포 — 낱말 폭 = --wu * 글자수 */
+const WORD_LENS = [2,3,4,3,5,2,6,4,3,7,4,2,5,8,3,4,6,3,2,5,9,4,3,6,2,7,4,5,3,4,11,2,6,3,5];
+const PUNCT_RATE = 0.16;
 
-function pickBookColor(m: number, bookIdx: number): string {
-    const palette = MONTH_PALETTES[m];
-    return palette[bookIdx % palette.length];
+/** 0=기록 없음, 1=1건, 2=2건, 3=3건 이상 */
+type InkLevel = 0 | 1 | 2 | 3;
+
+interface DayWord {
+    date: string;
+    len: number;
+    level: InkLevel;
+    punct: boolean;
+    /** 아직 오지 않은 날 — 낱말 자리는 있지만 1px 선으로만 그린다 */
+    future: boolean;
 }
 
-interface BookSpine {
-    idx: number;
-    ghost: boolean;
-    days: number;
-    width: number;
-    height: number;
-    color: string;
-}
-
-interface MonthShelf {
+interface MonthParagraph {
     month: string;
-    totalCount: number;
-    isPast: boolean;
-    books: BookSpine[];
-    totalSlots: number;
+    monthNum: number;
+    count: number;
+    words: DayWord[];
+    /** 아직 시작하지 않은 달 — 클릭 대상에서 제외 */
+    isFuture: boolean;
 }
 
-function buildMonthShelves(
+/* 한 해 전체를 항상 만듦. */
+function buildYearProse(
     countMap: Map<string, number>,
     year: number,
-    todayStr: string,
-    daysPerBook: number
-): MonthShelf[] {
-    return HM_MONTHS.map((month, m) => {
-        const daysInMonth = new Date(year, m + 1, 0).getDate();
-        const lastDay = `${year}-${String(m + 1).padStart(2, "0")}-${String(daysInMonth).padStart(2, "0")}`;
-        const isPast = lastDay <= todayStr;
+    todayStr: string
+): MonthParagraph[] {
+    const months: MonthParagraph[] = [];
+    let dayOfYear = 0;
+
+    for (let m = 0; m < 12; m++) {
         const mm = String(m + 1).padStart(2, "0");
-        const totalSlots = Math.ceil(daysInMonth / daysPerBook);
-        let totalCount = 0;
+        const daysInMonth = new Date(year, m + 1, 0).getDate();
+        const words: DayWord[] = [];
+        let count = 0;
 
-        const slotHasRecord: boolean[] = Array.from({ length: totalSlots }, (_, i) => {
-            const dayStart = i * daysPerBook + 1;
-            const dayEnd = Math.min((i + 1) * daysPerBook, daysInMonth);
-            let hasAny = false;
-            for (let d = dayStart; d <= dayEnd; d++) {
-                const dateStr = `${year}-${mm}-${String(d).padStart(2, "0")}`;
-                if (dateStr > todayStr) break;
-                const cnt = countMap.get(dateStr) ?? 0;
-                totalCount += cnt;
-                if (cnt > 0) hasAny = true;
-            }
-            return hasAny;
+        for (let d = 1; d <= daysInMonth; d++) {
+            dayOfYear++;
+            const date = `${year}-${mm}-${String(d).padStart(2, "0")}`;
+            const future = date > todayStr;
+            const cnt = future ? 0 : (countMap.get(date) ?? 0);
+            count += cnt;
+            words.push({
+                date,
+                len: WORD_LENS[Math.floor(seededRand(dayOfYear) * WORD_LENS.length)],
+                level: (cnt === 0 ? 0 : cnt === 1 ? 1 : cnt === 2 ? 2 : 3) as InkLevel,
+                punct: seededRand(dayOfYear + 977) < PUNCT_RATE,
+                future,
+            });
+        }
+
+        months.push({
+            month: HM_MONTHS[m],
+            monthNum: m + 1,
+            count,
+            words,
+            isFuture: words[0].future,
         });
+    }
 
-        const books: BookSpine[] = Array.from({ length: totalSlots }, (_, i) => {
-            const seed = m * 100 + i;
-            const wIdx = Math.floor(seededRand(seed) * BOOK_WIDTHS.length);
-            const hIdx = Math.floor(seededRand(seed + 50) * BOOK_HEIGHTS.length);
-            return {
-                idx: i,
-                ghost: !slotHasRecord[i],
-                days: daysPerBook,
-                width: BOOK_WIDTHS[wIdx],
-                height: BOOK_HEIGHTS[hIdx],
-                color: pickBookColor(m, i),
-            };
-        });
-
-        return { month, totalCount, isPast, books, totalSlots };
-    });
+    return months;
 }
+
+const INK_CLASS = [styles.wordEmpty, styles.wordL2, styles.wordL3, styles.wordL4];
 
 type ViewMode = "calendar" | "heatmap";
-
-function clipBooks(books: BookSpine[], maxW: number, gap = 2, scale = 1): BookSpine[] {
-    let acc = 0;
-    const result: BookSpine[] = [];
-    for (const b of books) {
-        const bw = b.width * scale;
-        const w = bw + (result.length > 0 ? gap : 0);
-        if (!b.ghost && acc + w > maxW) break;
-        acc += b.ghost ? bw + gap : w;
-        result.push(b);
-    }
-    return result;
-}
 
 export default function Calendar() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -134,57 +116,6 @@ export default function Calendar() {
         if (!isNaN(yr) && yr <= thisYear) return yr;
         return thisYear;
     });
-
-    const shelfAreaRef = useRef<HTMLDivElement>(null);
-    const mobileShelfAreaRef = useRef<HTMLDivElement>(null);
-
-    const [daysPerBook, setDaysPerBook] = useState(6);
-    const [mobileDaysPerBook, setMobileDaysPerBook] = useState(3);
-    const [shelfCellWidth, setShelfCellWidth] = useState(999);
-    const [mobileBookMaxH, setMobileBookMaxH] = useState(95);
-    const [mobileBookW, setMobileBookW] = useState(18);
-
-    useEffect(() => {
-        if (!shelfAreaRef.current) return;
-        const measure = () => {
-            const el = shelfAreaRef.current;
-            if (!el) return;
-            const cellW = el.clientWidth / 6;
-            const BOOK_AVG_W = 21;
-            const CELL_PADDING = 24;
-            const booksPerCell = Math.max(2, Math.floor((cellW - CELL_PADDING) / BOOK_AVG_W));
-            setDaysPerBook(Math.max(1, Math.round(30 / booksPerCell)));
-            setShelfCellWidth(cellW - CELL_PADDING);
-        };
-        measure();
-        const ro = new ResizeObserver(measure);
-        ro.observe(shelfAreaRef.current);
-        return () => ro.disconnect();
-    }, [view]);
-
-    useEffect(() => {
-        if (!mobileShelfAreaRef.current) return;
-        const measure = () => {
-            const el = mobileShelfAreaRef.current;
-            if (!el) return;
-            const cellW = el.clientWidth / 3;
-            const CELL_PADDING = 14;
-            const usableW = cellW - CELL_PADDING;
-            const BOOK_SLOT = 21;
-            const booksPerCell = Math.max(2, Math.floor(usableW / BOOK_SLOT));
-            const bookW = Math.floor((usableW - (booksPerCell - 1) * 3) / booksPerCell);
-            setMobileBookW(Math.max(11, bookW));
-            setMobileDaysPerBook(Math.max(1, Math.ceil(30 / booksPerCell)));
-            const rowH = el.clientHeight;
-            const labelH = 24;
-            const bookAreaH = rowH - labelH - 4;
-            setMobileBookMaxH(Math.max(80, Math.floor(bookAreaH * 0.80)));
-        };
-        measure();
-        const ro = new ResizeObserver(measure);
-        ro.observe(mobileShelfAreaRef.current);
-        return () => ro.disconnect();
-    }, [view]);
 
     const navigate = useNavigate();
     const { y, m0, startDay, totalDays } = useMemo(() => getMonthMeta(currentDate), [currentDate]);
@@ -268,81 +199,46 @@ export default function Calendar() {
         return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
     })();
 
-    const monthShelves = useMemo(
-        () => buildMonthShelves(yearCountMap, heatmapYear, todayStr, daysPerBook),
-        [yearCountMap, heatmapYear, todayStr, daysPerBook]
+    const yearProse = useMemo(
+        () => buildYearProse(yearCountMap, heatmapYear, todayStr),
+        [yearCountMap, heatmapYear, todayStr]
     );
 
-    const mobileMonthShelves = useMemo(
-        () => buildMonthShelves(yearCountMap, heatmapYear, todayStr, mobileDaysPerBook),
-        [yearCountMap, heatmapYear, todayStr, mobileDaysPerBook]
-    );
-
-    const renderDesktopBook = (b: BookSpine, i: number) =>
-        b.ghost ? (
-            <div key={i} style={{ width: b.width, height: 1, flexShrink: 0 }} />
-        ) : (
-            <div key={i} className={styles.book} style={{ width: b.width, height: b.height, background: b.color }}>
-                <div className={styles.bookCap} />
-                <div className={styles.bookStripe1} />
-                <div className={styles.bookStripe2} />
-            </div>
-        );
-
-    const renderMobileBook = (b: BookSpine, i: number) => {
-        const ratio = b.height / 106;
-        const mH = Math.round(mobileBookMaxH * (0.24 + ratio * 0.32));
-        return b.ghost ? (
-            <div key={i} style={{ width: mobileBookW, height: 1, flexShrink: 0 }} />
-        ) : (
-            <div key={i} className={styles.book} style={{ width: mobileBookW, height: mH, background: b.color }}>
-                <div className={styles.bookCap} />
-                <div className={styles.bookStripe1} />
-                <div className={styles.bookStripe2} />
-            </div>
-        );
-    };
-
-    const renderShelf = (month: string, totalCount: number, books: BookSpine[], totalSlots: number, isMobile: boolean) => {
-        const booksToRender = isMobile ? books : clipBooks(books, shelfCellWidth);
-        const monthNum = HM_MONTHS.indexOf(month) + 1;
-
-        return (
-            <div
-                key={month}
-                className={styles.shelf}
-                onClick={() => goMonth(heatmapYear, monthNum)}
-                style={{ cursor: "pointer" }}
-            >
-                <div className={styles.shelfLabel}>
-                    {month}
-                </div>
-                <div className={styles.shelfInner}>
-                    <div className={styles.shelfRow}>
-                        {booksToRender.map((b, i) =>
-                            isMobile ? renderMobileBook(b, i) : renderDesktopBook(b, i)
-                        )}
-                    </div>
-                    <div className={styles.shelfBoard} />
-                </div>
-            </div>
-        );
-    };
-
-    const hmLegend = (
-        <div className={styles.hmLegend}>
-            <span className={styles.hmLegendLabel}>fewer</span>
-            {[0, 1, 2, 3].map(level => (
-                <div key={level} className={styles.hmLegendShelf}>
-                    <div className={styles.hmLegendRow}>
-                        {Array.from({ length: level }).map((_, i) => (
-                            <div key={i} className={[styles.hmLegendBook, styles[`hmLegendL${level}`]].join(" ")} />
-                        ))}
-                    </div>
-                    <div className={styles.hmLegendBoard} />
-                </div>
+    /* 탭 스톱은 지나간 달만. 낱말 하나하나는 클릭 대상이 아님 */
+    const prose = (
+        <div className={styles.prose}>
+            {yearProse.map(({ month, monthNum, count, words, isFuture }) => (
+                <span
+                    key={month}
+                    className={[styles.monthGroup, isFuture ? styles.monthGroupFuture : ""].join(" ")}
+                    role={isFuture ? undefined : "button"}
+                    tabIndex={isFuture ? undefined : 0}
+                    title={isFuture ? undefined : `${heatmapYear}.${String(monthNum).padStart(2, "0")} · ${count}건`}
+                    onClick={isFuture ? undefined : () => goMonth(heatmapYear, monthNum)}
+                    onKeyDown={isFuture ? undefined : (e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            goMonth(heatmapYear, monthNum);
+                        }
+                    }}
+                >
+                    <span className={styles.monthName}>{month}</span>
+                    {words.map(w => {
+                        const ink = w.future ? styles.wordFuture : INK_CLASS[w.level];
+                        return (
+                            <React.Fragment key={w.date}>
+                                <span
+                                    className={[styles.word, ink, w.punct ? styles.wordTight : ""].join(" ")}
+                                    style={{ width: `calc(var(--wu) * ${w.len})` }}
+                                />
+                                {w.punct && <span className={[styles.word, styles.punct, ink].join(" ")} />}
+                                {/* 커서는 글 끝이 아니라 오늘 자리에 위치 */}
+                                {w.date === todayStr && <span className={styles.cursor} />}
+                            </React.Fragment>
+                        );
+                    })}
+                </span>
             ))}
-            <span className={styles.hmLegendLabel}>more</span>
         </div>
     );
 
@@ -445,25 +341,7 @@ export default function Calendar() {
                     )}
 
                     {view === "heatmap" && (
-                        <div className={styles.heatmapWrapper}>
-                            <div className={styles.bookcaseFrame}>
-                                <div className={styles.bookcaseRow}>
-                                    <div className={styles.bookshelfArea} ref={shelfAreaRef}>
-                                        {monthShelves.slice(0, 6).map(({ month, totalCount, books, totalSlots }) =>
-                                            renderShelf(month, totalCount, books, totalSlots, false)
-                                        )}
-                                    </div>
-                                </div>
-                                <div className={styles.bookcaseRow}>
-                                    <div className={styles.bookshelfArea}>
-                                        {monthShelves.slice(6, 12).map(({ month, totalCount, books, totalSlots }) =>
-                                            renderShelf(month, totalCount, books, totalSlots, false)
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                            {hmLegend}
-                        </div>
+                        <div className={styles.heatmapWrapper}>{prose}</div>
                     )}
                 </div>
 
@@ -557,24 +435,7 @@ export default function Calendar() {
                 )}
 
                 {view === "heatmap" && (
-                    <div className={styles.heatmapWrapperMobile}>
-                        <div className={styles.bookcaseFrameMobile}>
-                            {[0, 3, 6, 9].map(rowStart => (
-                                <div
-                                    key={rowStart}
-                                    className={styles.bookcaseRowMobile}
-                                    ref={rowStart === 0 ? mobileShelfAreaRef : undefined}
-                                >
-                                    <div className={styles.bookshelfAreaMobile}>
-                                        {mobileMonthShelves.slice(rowStart, rowStart + 3).map(({ month, totalCount, books, totalSlots }) =>
-                                            renderShelf(month, totalCount, books, totalSlots, true)
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        {hmLegend}
-                    </div>
+                    <div className={styles.heatmapWrapperMobile}>{prose}</div>
                 )}
 
             </section>
