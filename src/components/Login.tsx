@@ -115,10 +115,10 @@ export default function Login() {
                 {/*<div className={styles.footer}>*/}
                 {/*    계정이 없으신가요? <Link to="/signUp" className={styles.a}>회원가입</Link>*/}
                 {/*</div>*/}
-                <p className={styles.googleHint}>현재 구글, 네이버로 가입할 수 있어요 <ArrowDownIcon className={styles.icon}/></p>
+                {/*<p className={styles.googleHint}>현재 구글, 네이버로 가입할 수 있어요 <ArrowDownIcon className={styles.icon}/></p>*/}
 
                 <div className={styles.socialLogin}>
-                    <div className={styles.divider}><span>또는</span></div>
+                    <div className={styles.divider}><span>소셜 로그인</span></div>
                     <div className={styles.socialButtons}>
                         {(['google', 'kakao', 'naver'] as const).map(provider => (
                             <button
