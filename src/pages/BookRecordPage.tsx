@@ -249,7 +249,7 @@ export default function BookRecordPage() {
     };
 
     // 문장 하이라이트 추가
-    const handleAddHighlight = demoGuard(async (recordId: number, start: number, end: number, color: HighlightColor) => {
+    const handleAddHighlight = async (recordId: number, start: number, end: number, color: HighlightColor) => {
         try {
             const created = await addHighlight(recordId, start, end, color);
             setRecords(prev => prev.map(r =>
@@ -258,10 +258,10 @@ export default function BookRecordPage() {
         } catch (e: any) {
             alert(e?.message ?? '하이라이트 저장에 실패했습니다.');
         }
-    });
+    };
 
     // 문장 하이라이트 삭제
-    const handleRemoveHighlight = demoGuard(async (recordId: number, highlightId: number) => {
+    const handleRemoveHighlight = async (recordId: number, highlightId: number) => {
         try {
             await removeHighlight(highlightId);
             setRecords(prev => prev.map(r =>
@@ -270,7 +270,7 @@ export default function BookRecordPage() {
         } catch (e: any) {
             alert(e?.message ?? '하이라이트 삭제에 실패했습니다.');
         }
-    });
+    };
 
     // IntersectionObserver로 센티널 진입 시 다음 페이지 로드
     useEffect(() => {
