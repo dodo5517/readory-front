@@ -3,7 +3,7 @@ import {useNavigate, Link } from 'react-router-dom';
 
 import styles from '../styles/Login.module.css';
 import {loginUser} from "../api/Auth";
-import {ArrowDownIcon, BellIcon} from "@phosphor-icons/react";
+import {BellIcon} from "@phosphor-icons/react";
 import { getActiveNotice } from "../api/Notice";
 
 // 내부 경로만 허용 (오픈 리다이렉트 방지)
