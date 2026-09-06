@@ -18,12 +18,16 @@ type Props = {
 
     onSubmitSearch?: () => void; // 검색 클릭 시 호출
     onAddExternalSearch?: () => void;
+
+    linked?: boolean;          // 현재 기록이 이미 책과 연결되어 있는지
+    onUnlink?: () => void;     // "연결하지 않기" 클릭 시 호출
 };
 
 export default function BookSelectModal({open, candidates, onSelect, onClose,
                                             loading = false, keyword = "", onKeywordChange,
                                             sortKey = 'title', onSortKeyChange,
-                                            onSubmitSearch, onAddExternalSearch}: Props) {
+                                            onSubmitSearch, onAddExternalSearch,
+                                            linked = false, onUnlink}: Props) {
     useModalOpen(open);
     const overlayRef = useRef<HTMLDivElement>(null);
     const [focused, setFocused] = useState<number>(-1);
@@ -174,10 +178,16 @@ export default function BookSelectModal({open, candidates, onSelect, onClose,
                             </div>
                         </>
                     )}
+
+                    {isLocal && !loading && (
+                        <button className={styles.moreResultsLink} onClick={onAddExternalSearch}>
+                            더 많은 결과 검색
+                        </button>
+                    )}
                 </div>
 
                 <footer className={styles.footer}>
-                    {isLocal && <button className={styles.secondaryBtn} onClick={onAddExternalSearch}>더 많은 결과 검색</button>}
+                    {linked && <button className={styles.secondaryBtn} onClick={onUnlink}>책 연결 해제</button>}
                     <button className={styles.secondaryBtn} onClick={onClose}>취소</button>
                 </footer>
             </section>
