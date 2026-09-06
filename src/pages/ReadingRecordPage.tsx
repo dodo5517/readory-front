@@ -54,6 +54,7 @@ export default function ReadingRecordPage() {
     const [candidates, setCandidates] = useState<BookCandidate[]>([]);
     const [candidatesLoading, setCandidatesLoading] = useState(false);
     const [selectedRecordId, setSelectedRecordId] = useState<number | null>(null);
+    const [selectedRecordLinked, setSelectedRecordLinked] = useState(false);
 
     const [editOpen, setEditOpen] = useState(false);
     const [editing, setEditing] = useState<Record | null>(null);
@@ -151,6 +152,7 @@ export default function ReadingRecordPage() {
     // 책 후보 검색 후 모달 띄움
     const openSelectModal = async (rec: Record) => {
         setSelectedRecordId(rec.id);
+        setSelectedRecordLinked(!!rec.bookId);
         const rawTitle = rec.title ?? "";
         const rawAuthor = rec.author ?? "";
         if (rawTitle) {
@@ -227,6 +229,13 @@ export default function ReadingRecordPage() {
         } finally {
             setCandidatesLoading(false);
         }
+    };
+
+    // 책 선택 모달에서 "연결하지 않기" 클릭 시
+    const handleUnlinkFromModal = async () => {
+        if (!selectedRecordId) return;
+        await handleRemoveMatch(selectedRecordId);
+        setModalOpen(false);
     };
 
     // ── 날짜 컨텍스트 배너 계산 ──
@@ -405,7 +414,6 @@ export default function ReadingRecordPage() {
                                         <div className={styles.author}>{record.author?.length ? record.author + "(작가)" : ""}</div>
                                         <div className={styles.sentence}>{record.sentence}</div>
                                         <div className={styles.comment}>{record.comment}</div>
-                                        {record.bookId && <span className={styles.badgeLinked}>연결됨</span>}
                                     </div>
                                 </div>
                                 <div className={styles.actions} onClick={(e) => e.stopPropagation()}>
@@ -422,17 +430,8 @@ export default function ReadingRecordPage() {
                                         className={styles.linkBtn}
                                         onClick={() => openSelectModal(record)}
                                     >
-                                        {record.bookId ? "책 다시 연결" : "책 연결"}
+                                        {record.bookId ? "책 연결 변경" : "책 연결"}
                                     </button>
-                                    {record.bookId && (
-                                        <button
-                                            type="button"
-                                            className={styles.linkBtn}
-                                            onClick={() => handleRemoveMatch(record.id)}
-                                        >
-                                            연결 끊기
-                                        </button>
-                                    )}
                                     <button
                                         type="button"
                                         className={styles.dangerBtn}
@@ -475,6 +474,8 @@ export default function ReadingRecordPage() {
                 onSortKeyChange={setModalSortKey}
                 onSubmitSearch={handleModalSearchLocal}
                 onAddExternalSearch={handleModalSearchExternal}
+                linked={selectedRecordLinked}
+                onUnlink={handleUnlinkFromModal}
             />
 
             {editing && editOpen && (
