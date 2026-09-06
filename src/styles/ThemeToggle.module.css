@@ -35,3 +35,10 @@
 :global(body.modal-open) .toggleButton {
     display: none;
 }
+
+/* 모바일에서는 하단 탭바와 겹치므로 숨김 (마이페이지 안에 별도 다크모드 전환 버튼 있음) */
+@media (max-width: 768px) {
+    .toggleButton {
+        display: none;
+    }
+}
