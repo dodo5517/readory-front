@@ -184,17 +184,6 @@
     word-break: break-word;
 }
 
-.badgeLinked {
-    display: inline-block;
-    margin-top: 4px;
-    padding: 2px 8px;
-    font-size: 0.72rem;
-    border-radius: 999px;
-    border: 1px solid rgba(0,0,0,0.08);
-    background: var(--badge-linked-bg);
-    color: var(--badge-linked-text);
-}
-
 .actions {
     display: flex;
     flex-direction: column;
