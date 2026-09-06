@@ -130,7 +130,7 @@
     font-size: 0.82rem;
     border: 1px solid var(--border-color);
     background-color: var(--card-bg);
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     color: var(--text-main);
     white-space: nowrap;
@@ -138,77 +138,151 @@
 }
 .copyBtn:hover { background: var(--light-bg); }
 
-/* ── Logout all devices ── */
-.box {
+.copyBtnGroup {
+    display: flex;
+    gap: 8px;
+}
+
+/* ── Account actions (전환/공지/관리자) — 모바일 전용, 데스크탑은 헤더/플로팅 버튼이 대신함 ── */
+.actionList {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.actionBtn {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-    padding: 15px 16px;
-    background-color: var(--light-bg);
+    gap: 10px;
+    width: 100%;
+    padding: 13px 16px;
+    background-color: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: left;
     transition: background 0.2s;
 }
-.box:hover { background: var(--link-hover); }
+.actionBtn:hover { background: var(--light-bg); }
 
-.lockIcon {
-    font-size: 18px;
+.actionBtn svg {
     flex-shrink: 0;
 }
 
-.boxText {
-    font-size: 0.93rem;
-    font-weight: 600;
-    color: var(--text-main);
+/* ── 로그아웃 (이 기기) — 모바일 전용, 데스크탑은 헤더의 Logout이 대신함 ── */
+.logoutSection {
+    display: none;
+    margin-bottom: 16px;
 }
 
-/* ── Danger section ── */
-.dangerSection {
+/* ── Danger zone (접기/펼치기) ── */
+.dangerZone {
+    margin-bottom: 24px;
+}
+
+.dangerToggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    background: none;
+    border: 1px dashed var(--danger-border);
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--danger-color);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+.dangerToggle:hover { background: var(--danger-bg); }
+.dangerToggle svg:last-child { margin-left: auto; }
+.dangerToggle:focus {
+    outline: none;
+}
+.dangerToggle:focus-visible {
+    outline: 2px solid var(--danger-border);
+    outline-offset: 2px;
+}
+
+/* 하나의 카드 안에 행을 나열 — 사이트 다른 카드/리스트와 톤을 맞추고,
+   붉은 강조는 테두리·버튼·제목 텍스트 정도로만 최소화 (GitHub Danger Zone 참고) */
+.dangerPanel {
+    margin-top: 10px;
+    border: 1px solid var(--danger-border);
+    border-radius: 10px;
+    background: var(--bg);
+    overflow: hidden;
+}
+
+.dangerRow {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 14px;
     padding: 14px 16px;
-    border: 1px solid var(--danger-border);
-    border-radius: 10px;
-    background: var(--danger-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+.dangerRow:last-child {
+    border-bottom: none;
 }
 
 .dangerInfo { display: grid; gap: 3px; }
 
-.dangerTitle {
+.dangerRowTitle {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+/* 계정 영구 삭제 — 가장 위험한 액션이므로 제목만 붉게 강조 */
+.dangerRowTitleCritical {
     font-weight: 700;
-    font-size: 0.93rem;
+    font-size: 0.9rem;
     color: var(--danger-color);
 }
 
 .dangerDesc {
-    font-size: 0.83rem;
+    font-size: 0.82rem;
     color: var(--text-muted);
 }
 
 .dangerBtn {
     flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     padding: 8px 14px;
     border-radius: 8px;
     cursor: pointer;
-    border: 1px solid var(--danger-border);
-    background: var(--danger-bg);
-    color: var(--danger-color);
-    font-size: 0.88rem;
-    font-weight: 500;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 600;
     white-space: nowrap;
     transition: background 0.2s;
 }
-.dangerBtn:hover { background: var(--danger-hover); }
+.dangerBtn:hover { background: var(--light-bg); }
+
+.dangerBtnCritical {
+    border-color: var(--danger-border);
+    color: var(--danger-color);
+}
+.dangerBtnCritical:hover { background: var(--danger-bg); }
 
 /* ══════════════════════════════
    Mobile
    ══════════════════════════════ */
 @media (max-width: 768px) {
     .container { padding: 24px 20px 48px; }
+
+    .actionList { display: flex; }
+    .logoutSection { display: block; }
 
     .avatarWrapper {
         width: 68px;
@@ -228,11 +302,20 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
+        width: 100%;
     }
 
     .copyBtn { width: 100%; max-width: 200px; }
 
-    .dangerSection {
+    .copyBtnGroup {
+        width: 100%;
+    }
+    .copyBtnGroup .copyBtn {
+        flex: 1;
+        max-width: none;
+    }
+
+    .dangerRow {
         flex-direction: column;
         align-items: stretch;
     }
@@ -241,6 +324,5 @@
         width: 100%;
         padding: 12px;
         text-align: center;
-        font-size: 0.95rem;
     }
 }

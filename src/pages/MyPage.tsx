@@ -4,20 +4,25 @@ import {
     deleteProfileImage, deleteUser,
     getFullApiKey,
     logoutAllDevices,
+    logoutUser,
     reissueApiKey,
     uploadProfileImage
 } from "../api/Auth";
 import styles from '../styles/MyPage.module.css';
 import {Link, useNavigate} from "react-router-dom";
-import { PlusIcon, XIcon, LockIcon, TrashIcon } from '@phosphor-icons/react';
+import { PlusIcon, XIcon, TrashIcon, SignOutIcon, SunIcon, MoonIcon, ShieldCheckIcon, QuestionIcon, WarningIcon, CaretDownIcon, CaretUpIcon } from '@phosphor-icons/react';
 import {useDemoGuard} from "../hook/useDemoGuard";
+import {useTheme} from "../contexts/ThemeContext";
 
 export default function MyPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { user, setUser } = useUser();
     const { demoGuard } = useDemoGuard();
+    const { theme, toggleTheme } = useTheme();
     const [apiKey, setApiKey] = useState<string | null>(null);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const [dangerOpen, setDangerOpen] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // api_key 전체 복사 핸들러
@@ -48,6 +53,23 @@ export default function MyPage() {
         }
     };
     
+    // 이 기기에서 로그아웃 핸들러
+    const handleLogout = async () => {
+        if (isLoggingOut) return;
+        if (!window.confirm("로그아웃 하시겠습니까?")) return;
+
+        setIsLoggingOut(true);
+        try {
+            await logoutUser();
+            navigate('/login');
+        } catch (err) {
+            console.error("로그아웃 실패: ", err);
+            alert("로그아웃을 실패했습니다.");
+        } finally {
+            setIsLoggingOut(false);
+        }
+    };
+
     // 모든 기기에서 로그아웃 핸들러
     const handleLogoutAllDevices = async(e: React.FormEvent) => {
         e.preventDefault();
@@ -175,38 +197,80 @@ export default function MyPage() {
                     <span className={styles.label}>API Key</span>
                     <div className={styles.copyRow}>
                         <span className={styles.value}>{user?.maskedApiKey}</span>
-                        <button className={styles.copyBtn} onClick={() => handleCopy()}>복사하기</button>
+                        <div className={styles.copyBtnGroup}>
+                            <button className={styles.copyBtn} onClick={() => handleCopy()}>복사하기</button>
+                            <button className={styles.copyBtn} onClick={() => handleReissue()}>{loading ? '재발급 중...' : '새로 만들기'}</button>
+                        </div>
                     </div>
-                </li>
-                <li>
-                    <span className={styles.label}></span>
-                    <button className={styles.copyBtn}
-                            onClick={() => handleReissue()}>{loading ? '재발급 중...' : 'Api Key 새로 만들기'}</button>
                 </li>
             </ul>
 
-            <div className={styles.box} onClick={handleLogoutAllDevices}>
-                <span className={styles.lockIcon}><LockIcon /></span>
-                <div>
-                    <div className={styles.boxText}>모든 기기에서 로그아웃</div>
-                </div>
+            <div className={styles.actionList}>
+                <button type="button" className={styles.actionBtn} onClick={toggleTheme}>
+                    {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+                    {theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환'}
+                </button>
+
+                <button type="button" className={styles.actionBtn} onClick={() => navigate('/notice')}>
+                    <QuestionIcon /> 사용법 & 공지사항
+                </button>
+
+                {user?.role === "ADMIN" && (
+                    <button type="button" className={styles.actionBtn} onClick={() => navigate('/admin')}>
+                        <ShieldCheckIcon /> 관리자 페이지
+                    </button>
+                )}
             </div>
 
-            <div className={styles.dangerSection} role="region" aria-label="위험 구역">
-                <div className={styles.dangerInfo}>
-                    <div className={styles.dangerTitle}>계정 영구 삭제</div>
-                    <div className={styles.dangerDesc}>
-                        계정과 모든 기록이 영구 삭제됩니다. 복구할 수 없습니다.
-                    </div>
-                </div>
+            <div className={styles.logoutSection}>
+                <button type="button" className={styles.actionBtn} onClick={handleLogout}>
+                    <SignOutIcon /> {isLoggingOut ? '로그아웃 중...' : '로그아웃'}
+                </button>
+            </div>
+
+            <div className={styles.dangerZone}>
                 <button
                     type="button"
-                    className={styles.dangerBtn}
-                    onClick={handleDeleteUser}   // 기존 핸들러에 연결 (오타 그대로 쓰고 있으면 유지)
-                    aria-label="계정 영구 삭제"
+                    className={styles.dangerToggle}
+                    onClick={() => setDangerOpen(open => !open)}
+                    aria-expanded={dangerOpen}
                 >
-                    <TrashIcon /> 탈퇴하기
+                    <WarningIcon /> 위험 설정
+                    {dangerOpen ? <CaretUpIcon /> : <CaretDownIcon />}
                 </button>
+
+                {dangerOpen && (
+                    <div className={styles.dangerPanel} role="region" aria-label="위험 구역">
+                        <div className={styles.dangerRow}>
+                            <div className={styles.dangerInfo}>
+                                <div className={styles.dangerRowTitle}>다른 기기 전체 로그아웃</div>
+                                <div className={styles.dangerDesc}>
+                                    현재 로그인되어 있는 다른 모든 기기의 세션을 종료합니다.
+                                </div>
+                            </div>
+                            <button type="button" className={styles.dangerBtn} onClick={handleLogoutAllDevices}>
+                                로그아웃
+                            </button>
+                        </div>
+
+                        <div className={styles.dangerRow}>
+                            <div className={styles.dangerInfo}>
+                                <div className={styles.dangerRowTitleCritical}>계정 영구 삭제</div>
+                                <div className={styles.dangerDesc}>
+                                    계정과 모든 기록이 영구 삭제됩니다. 복구할 수 없습니다.
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                className={`${styles.dangerBtn} ${styles.dangerBtnCritical}`}
+                                onClick={handleDeleteUser}   // 기존 핸들러에 연결 (오타 그대로 쓰고 있으면 유지)
+                                aria-label="계정 영구 삭제"
+                            >
+                                <TrashIcon /> 탈퇴하기
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </section>
     );
