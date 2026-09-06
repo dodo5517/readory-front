@@ -380,7 +380,7 @@
     .hr { margin: 0; }
     .container { display: none; }
 
-    /* 모바일 전용 컨테이너 - 고정 높이 */
+    /* 모바일 전용 컨테이너 - 고정 높이 (달마다 주 수가 달라도 탭 전환 시 흔들리지 않도록) */
     .mobileContainer {
         display: flex;
         flex-direction: column;

@@ -20,9 +20,6 @@
     gap: 10px;
 }
 
-.desktopOnly { display: inline !important; }
-.mobileOnly  { display: none !important;   }
-
 .username {
     text-decoration: none;
     font-size: 0.95rem;
@@ -70,35 +67,14 @@
     opacity: 1;
 }
 
-/* ── Hamburger ── */
-.menuButton {
-    display: none;
-    font-size: 20px;
-    background: none;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    width: 36px;
-    height: 36px;
-    cursor: pointer;
-    margin-left: auto;
-    color: var(--text-main);
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-}
-
-.menuButton:hover {
-    background: var(--light-bg);
-}
-
-/* ── Nav ── */
+/* ── Nav (데스크탑 상단 네비) ── */
 .nav {
     display: flex;
     align-items: center;
     gap: 24px;
 }
 
-.nav a {
+.navItem {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -112,17 +88,14 @@
 }
 
 /* 1. 호버 시 색상만 변경 */
-.nav a:hover,
-.navItem.active,
-.desktopOnly.active,
-.mobileOnly.active {
+.navItem:hover,
+.navItem.active {
     color: var(--text-strong);
     font-weight: 700; /* 실제 볼드 적용 */
 }
 
 /* 2. 핵심: 가상 요소로 미리 공간 확보 */
-.nav a::after,
-.logoutButton::after {
+.navItem::after {
     display: block;
     content: attr(data-text); /* HTML의 data-text 속성값을 가져옴 */
     font-weight: 700;         /* 미리 볼드체 두께만큼 공간 계산 */
@@ -156,6 +129,15 @@
     color: var(--danger-color);
 }
 
+.logoutButton::after {
+    display: block;
+    content: attr(data-text);
+    font-weight: 700;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
 /* ── Divider ── */
 .divider {
     display: inline-block;
@@ -167,76 +149,52 @@
     opacity: 0.7;
 }
 
+/* ── Bottom Tab Bar (모바일 전용) ── */
+.bottomNav {
+    display: none;
+}
+
 /* ══════════════════════════════
    Mobile
    ══════════════════════════════ */
 @media (max-width: 768px) {
-    .desktopOnly { display: none !important;   }
-    .mobileOnly  { display: inline !important; }
-
-    /* 모바일에선 tokenBadge / extendBtn hover 동작 비활성 */
-    .tokenWrap:hover .tokenBadge,
-    .tokenWrap:focus-within .tokenBadge { opacity: 0.9 !important; }
-
-
+    /* 상단 헤더는 모바일에서 완전히 숨김 (하단 탭바가 대신함) */
     .header {
-        position: fixed;
-        top: 0; left: 0; right: 0;
-        z-index: 30;
-        padding: 14px 18px;
-        align-items: center;
-        height: auto;
-        flex-wrap: wrap;
+        display: none;
     }
 
-    .menuButton {
+    /* ── Bottom Tab Bar ── */
+    .bottomNav {
         display: flex;
-    }
-
-    /* Collapsed nav */
-    .nav {
-        width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-        overflow: hidden;
-        max-height: 0;
-        opacity: 0;
-        transform: translateY(-6px);
-        pointer-events: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 30;
+        justify-content: space-around;
+        align-items: stretch;
         background: var(--card-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 10px;
-        /*margin-top: 8px;*/
-        transition:
-                max-height 0.2s ease,
-                opacity 0.2s ease,
-                transform 0.2s ease;
+        border-top: 1px solid var(--border-color);
+        padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
     }
 
-    .show {
-        max-height: 400px;
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-        padding: 8px 0;
+    .bottomNavItem {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        padding: 10px 4px;
+        text-decoration: none;
+        color: var(--text-normal);
+        font-size: 0.72rem;
+        font-weight: 500;
+        transition: color 0.2s;
     }
 
-    .nav a,
-    .logoutButton {
-        display: block;
-        width: 100%;
-        padding: 11px 20px;
-        font-size: 0.92rem;
-        box-sizing: border-box;
-        border-radius: 0;
-    }
-
-    .divider {
-        display: block;
-        width: auto;
-        height: 1px;
-        margin: 4px 20px;
-        opacity: 1;
+    .bottomNavItem.active {
+        color: var(--btn-bg);
+        font-weight: 700;
     }
 }
